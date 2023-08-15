@@ -5,16 +5,15 @@ namespace API.Extensions;
 
 public static class ApplicationServiceExtensions
 {
-    public static IServiceCollection AddAplicationService(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddAplicationService(this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddCors(options =>
         {
-            options.AddPolicy("CorsPolicy", policy =>
-            {
-                policy.AllowAnyOrigin().AllowAnyHeader().AllowCredentials().AllowAnyMethod();
-            });
+            options.AddPolicy("CorsPolicy",
+                policy => { policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
         });
-        
+
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
 
