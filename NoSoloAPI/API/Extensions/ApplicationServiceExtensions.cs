@@ -1,4 +1,6 @@
-﻿using Infrastructure.Data;
+﻿using Core.Interfaces;
+using Infrastructure.Data;
+using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions;
@@ -14,6 +16,10 @@ public static class ApplicationServiceExtensions
                 policy => { policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
         });
 
+        services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+        
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
 
