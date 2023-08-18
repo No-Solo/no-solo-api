@@ -23,7 +23,7 @@ jobs:
           dotnet-version: 7.0.x
       
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore NoSoloAPI
 
       - name: Build
-        run: dotnet build -c Release --no-restore NoSoloApi
+        run: dotnet build -c Release --no-restore NoSoloAPI
