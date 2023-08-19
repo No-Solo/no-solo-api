@@ -1,4 +1,5 @@
 ﻿using Core.Interfaces;
+using Infrastructure;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,8 @@ public static class ApplicationServiceExtensions
         services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+        
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
