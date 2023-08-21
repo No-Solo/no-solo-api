@@ -20,19 +20,20 @@ public static class ApplicationServiceExtensions
         });
 
         services.AddEndpointsApiExplorer();
-        
+
         services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
-        
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        
+
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
 
         services.AddDbContext<DataBaseContext>(options =>
         {
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnectionString"));
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnectionString")
+                , x => x.MigrationsAssembly("Infrastructure"));
         });
 
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -54,7 +55,7 @@ public static class ApplicationServiceExtensions
                 return new BadRequestObjectResult(errorResponse);
             };
         });
-        
+
         return services;
     }
 }
