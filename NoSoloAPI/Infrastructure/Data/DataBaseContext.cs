@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using System.Reflection;
+using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -17,7 +18,8 @@ public class DataBaseContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        
         // User Profile
         modelBuilder.Entity<UserProfile>()
             .HasOne(e => e.Photo)
@@ -37,8 +39,6 @@ public class DataBaseContext : DbContext
             .HasOne(e => e.Project)
             .WithOne(e => e.Organization)
             .HasForeignKey<Project>(e => e.OrganizationId);
-
-
 
         if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
         {
