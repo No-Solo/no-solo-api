@@ -1,10 +1,14 @@
-﻿namespace Core.Entities;
+﻿using Core.Enums;
 
-public class Request : BaseEntity
+namespace Core.Entities;
+
+public class Request<T, U> : BaseEntity where T : BaseEntity where U : BaseEntity
 {
-    public List<UserTag> UserTags { get; set; }
-    public string Preferences { get; set; }
-    
-    public Guid UserProfileId { get; set; }
-    public UserProfile UserProfile { get; set; }
+    public T TEntity { get; set; }
+    public Guid TEntityId { get; set; }
+
+    public StatusEnum Status { get; set; }
+
+    public U UEntity { get; set; }
+    public Guid UEntityId { get; set; }
 }
