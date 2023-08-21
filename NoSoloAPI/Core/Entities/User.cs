@@ -9,5 +9,4 @@ public class User : BaseEntity
     public List<OrganizationUser> OrganizationUsers { get; set; } = new List<OrganizationUser>();
     
     public UserProfile UserProfile { get; set; }
-    public Guid UserProfileId { get; set; }
 }

@@ -14,15 +14,16 @@ public class UserProfile : BaseEntity
 
     public string PhotoUrl { get; set; }
     public UserPhoto Photo { get; set; }
-    public Guid PhotoId { get; set; }
-    
+
     public LocaleEnum Locale { get; set; }
     public GenderEnum Gender { get; set; }
 
     public List<Contact<UserProfile>> Contacts { get; set; } = new List<Contact<UserProfile>>();
-    public List<Request> Requests { get; set; } = new List<Request>();
+    public List<UserOffer> Offers { get; set; } = new List<UserOffer>();
     public List<UserTag> Tags { get; set; } = new List<UserTag>();
 
+    public List<Request<UserProfile, OrganizationOffer>> RequestsFromUserProfileToOgranizationOffer { get; set; }
+    
     public User User { get; set; }
     public Guid UserId { get; set; }
 }
