@@ -1,15 +1,10 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using API.Errors;
+﻿using API.Errors;
 using Core.Interfaces;
 using Infrastructure;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 namespace API.Extensions;
 
@@ -37,6 +32,8 @@ public static class ApplicationServiceExtensions
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
 
+        services.AddSwaggerDocumentation();
+        
         services.AddDbContext<DataBaseContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnectionString")
@@ -63,26 +60,6 @@ public static class ApplicationServiceExtensions
             };
         });
 
-        services.AddAuthentication(opt =>
-        {
-            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(opt =>
-        {
-            opt.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Secret)),
-                ValidIssuer = "saar",
-                ValidateIssuer = true,
-                ValidAudience = "saar-audience",
-                ValidateAudience = true,
-                NameClaimType = JwtRegisteredClaimNames.Sub,
-                RoleClaimType = ClaimTypes.Role,
-                ClockSkew = System.TimeSpan.Zero,
-            };
-        });
-        
         return services;
     }
 }
