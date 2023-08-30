@@ -4,6 +4,7 @@ namespace Core.Interfaces;
 
 public interface IUserRepository
 {
-    Task<User> GetUserByUsernameAsync(string username);
+    Task<User> GetUserByUsernameWithIncludesAsync(string username);
+    void Update(User user);
     Task<bool> UserExists(string username);
 }

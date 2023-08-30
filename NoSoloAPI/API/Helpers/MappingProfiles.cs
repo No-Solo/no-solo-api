@@ -10,5 +10,7 @@ public class MappingProfiles : Profile
     {
         CreateMap<User, UserDto>();
         CreateMap<UserProfile, UserProfileDto>();
+        CreateMap<UserPhoto, UserProfilePhotoDto>();
+        CreateMap<UpdateUserProfileDto, UserProfile>();
     }
 }
