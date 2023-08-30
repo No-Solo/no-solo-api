@@ -1,10 +1,16 @@
-﻿using API.Errors;
+﻿using System.Text;
+using API.Errors;
+using Core.Entities;
 using Core.Interfaces;
 using Infrastructure;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
+using Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API.Extensions;
 
@@ -23,9 +29,14 @@ public static class ApplicationServiceExtensions
 
         services.AddEndpointsApiExplorer();
 
-        services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
+        services.AddIdentity<User, IdentityRole<Guid>>()
+            .AddEntityFrameworkStores<DataBaseContext>()
+            .AddDefaultTokenProviders();
+
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+        services.AddScoped<ITokenService, TokenService>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -33,7 +44,7 @@ public static class ApplicationServiceExtensions
         services.AddSwaggerGen();
 
         services.AddSwaggerDocumentation();
-        
+
         services.AddDbContext<DataBaseContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnectionString")
@@ -41,6 +52,26 @@ public static class ApplicationServiceExtensions
         });
 
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(o =>
+        {
+            o.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidIssuer = configuration["Jwt:Issuer"],
+                ValidAudience = configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = false,
+                ValidateIssuerSigningKey = true
+            };
+        });
+        services.AddAuthorization();
 
         services.Configure<ApiBehaviorOptions>(options =>
         {

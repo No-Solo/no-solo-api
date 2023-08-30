@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-public class ProtectedResourceController : ControllerBase
+public class ProtectedResourceController : BaseApiController
 {
     [Route("protectedInfo")]
     [HttpGet]
-    [Authorize(Roles = "User, Admin")]
+    [Authorize]
     public IActionResult Get()
     {
         return Ok("You can see this message means you are a valid user.");

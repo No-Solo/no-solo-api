@@ -16,26 +16,28 @@ public class UnitOfWork : IUnitOfWork
     {
         _dataBaseContext = dataBaseContext;
     }
-    
-    public IUserRepository UserRepository => new UserRepository();
+
+    public IUserRepository UserRepository => new UserRepository(_dataBaseContext);
     public IOrganizationRepository OrganizationRepository => new OrganizationRepository();
-    
+    public IRefreshTokenRepository RefreshTokenRepository => new RefreshTokenRepository(_dataBaseContext);
+
     public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity
     {
-        if(_repositories == null) 
+        if (_repositories == null)
             _repositories = new Hashtable();
-    
+
         var type = typeof(TEntity).Name;
-    
+
         if (!_repositories.ContainsKey(type))
         {
             var repositoryType = typeof(GenericRepository<>);
-            var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(TEntity)), _dataBaseContext);
-    
+            var repositoryInstance =
+                Activator.CreateInstance(repositoryType.MakeGenericType(typeof(TEntity)), _dataBaseContext);
+
             _repositories.Add(type, repositoryInstance);
         }
-    
-        return (IGenericRepository<TEntity>) _repositories[type];
+
+        return (IGenericRepository<TEntity>)_repositories[type];
     }
 
     public async Task<bool> Complete()

@@ -6,6 +6,7 @@ namespace API.Controllers;
 public class AdminResourceController : ControllerBase
 {
     private const string AllowedRoles = "Admin";
+
     [Route("adminResource")]
     [HttpGet]
     [Authorize(Roles = AllowedRoles)]

@@ -18,12 +18,12 @@ public class UserProfile : BaseEntity
     public LocaleEnum Locale { get; set; }
     public GenderEnum Gender { get; set; }
 
-    public List<Contact<UserProfile>> Contacts { get; set; } = new List<Contact<UserProfile>>();
-    public List<UserOffer> Offers { get; set; } = new List<UserOffer>();
-    public List<UserTag> Tags { get; set; } = new List<UserTag>();
+    public List<Contact<UserProfile>> Contacts { get; set; } = new();
+    public List<UserOffer> Offers { get; set; } = new();
+    public List<UserTag> Tags { get; set; } = new();
 
     public List<Request<UserProfile, OrganizationOffer>> RequestsFromUserProfileToOgranizationOffer { get; set; }
-    
+
     public User User { get; set; }
     public Guid UserId { get; set; }
 }
