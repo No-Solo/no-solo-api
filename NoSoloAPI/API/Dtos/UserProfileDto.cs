@@ -12,9 +12,8 @@ public class UserProfileDto : BaseDto
     public string About { get; set; }
     public string Description { get; set; }
     public string Location { get; set; }
-
-    public string PhotoUrl { get; set; }
-    public UserPhoto Photo { get; set; }
+    
+    public UserProfilePhotoDto Photo { get; set; }
 
     public LocaleEnum Locale { get; set; }
     public GenderEnum Gender { get; set; }

@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using API.Dtos;
+﻿using API.Dtos;
 using API.Errors;
 using AutoMapper;
 using Core.Entities;
@@ -26,8 +25,7 @@ public class AccountController : BaseApiController
         _mapper = mapper;
     }
 
-    [HttpPost]
-    [Route("register")]
+    [HttpPost("register")]
     public async Task<ActionResult> Register([FromBody] RegisterDto registerDto)
     {
         var user = await _userManager.FindByNameAsync(registerDto.UserName);
@@ -49,8 +47,7 @@ public class AccountController : BaseApiController
         return Ok(new ApiResponse(200, "User created"));
     }
 
-    [HttpPost]
-    [Route("login")]
+    [HttpPost("login")]
     public async Task<ActionResult<TokensDto>> Login([FromBody] LoginDto loginDto)
     {
         var user = await _userManager.FindByNameAsync(loginDto.UserName);
@@ -78,8 +75,7 @@ public class AccountController : BaseApiController
         return BadRequest(new ApiResponse(400, "Problem"));
     }
 
-    [HttpPost]
-    [Route("refresh-token")]
+    [HttpPost("refresh-token")]
     public async Task<ActionResult<string>> RefreshToken([FromBody] TokensDto tokenModel)
     {
         var principals = _tokenService.GetPrincipalFromExpiredToken(tokenModel.AccessToken);
@@ -97,11 +93,10 @@ public class AccountController : BaseApiController
     }
 
     [Authorize]
-    [HttpGet]
-    [Route("me")]
+    [HttpGet("me")]
     public async Task<ActionResult<UserDto>> GetCurrentUser()
     {
-        var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(HttpContext.User.Identity.Name);
+        var user = await _unitOfWork.UserRepository.GetUserByUsernameWithIncludesAsync(HttpContext.User.Identity.Name);
 
         var userToReturn = _mapper.Map<UserDto>(user);
 
