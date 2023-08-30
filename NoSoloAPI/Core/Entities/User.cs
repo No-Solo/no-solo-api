@@ -1,12 +1,12 @@
-﻿namespace Core.Entities;
+﻿using Microsoft.AspNetCore.Identity;
 
-public class User : BaseEntity
+namespace Core.Entities;
+
+public class User : IdentityUser<Guid>
 {
-    public string Login { get; set; }
-    public string Password { get; set; }
-    public string Email { get; set; }
+    public List<OrganizationUser> OrganizationUsers { get; set; } = new();
 
-    public List<OrganizationUser> OrganizationUsers { get; set; } = new List<OrganizationUser>();
-    
     public UserProfile UserProfile { get; set; }
+
+    public List<RefreshToken> RefreshTokens { get; set; } = new();
 }

@@ -1,12 +1,12 @@
-﻿namespace API.Dtos;
+﻿using Core.Entities;
 
-public class UserDto
+namespace API.Dtos;
+
+public class UserDto : BaseDto
 {
-    public string Login { get; set; }
-    
-    public string Email { get; set; }
+    public string UserName { get; set; }
 
-    // public List<OrganizationUserDto> OrganizationUsers { get; set; }
-    //
-    // public UserProfileDto UserProfile { get; set; }
+    public string Email { get; set; }
+    
+    public UserProfile UserProfile { get; set; }
 }
