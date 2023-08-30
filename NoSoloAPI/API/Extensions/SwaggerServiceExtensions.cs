@@ -9,7 +9,7 @@ public static class SwaggerServiceExtensions
     {
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo {Title = "API", Version = "v1"});
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
 
             c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
             {
@@ -43,12 +43,15 @@ public static class SwaggerServiceExtensions
 
         return services;
     }
-    
+
     public static IApplicationBuilder UseSwaggerDocumention(this IApplicationBuilder app)
     {
         app.UseSwagger();
-        app.UseSwaggerUI(c => {c
-            .SwaggerEndpoint("/swagger/v1/swagger.json", "API");});
+        app.UseSwaggerUI(c =>
+        {
+            c
+                .SwaggerEndpoint("/swagger/v1/swagger.json", "API");
+        });
 
         return app;
     }

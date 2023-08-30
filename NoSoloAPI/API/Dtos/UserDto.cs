@@ -3,7 +3,7 @@
 public class UserDto
 {
     public string Login { get; set; }
-    
+
     public string Email { get; set; }
 
     // public List<OrganizationUserDto> OrganizationUsers { get; set; }
