@@ -8,5 +8,5 @@ public class UserDto : BaseDto
 
     public string Email { get; set; }
     
-    public UserProfile UserProfile { get; set; }
+    public UserProfileDto UserProfile { get; set; }
 }
