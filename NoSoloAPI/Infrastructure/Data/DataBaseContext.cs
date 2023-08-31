@@ -16,6 +16,9 @@ public class DataBaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     public DbSet<User> Users { get; set; }
     public DbSet<Organization> Organizations { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    
+    public DbSet<UserProfile> UserProfiles { get; set; }
+    public DbSet<UserTag> UserTags { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
