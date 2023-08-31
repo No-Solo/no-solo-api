@@ -1,5 +1,6 @@
 ﻿using API.Dtos;
 using API.Errors;
+using API.Extensions;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
@@ -96,7 +97,7 @@ public class AccountController : BaseApiController
     [HttpGet("me")]
     public async Task<ActionResult<UserDto>> GetCurrentUser()
     {
-        var user = await _unitOfWork.UserRepository.GetUserByUsernameWithIncludesAsync(HttpContext.User.Identity.Name);
+        var user = await _unitOfWork.UserRepository.GetUserByUsernameWithAllIncludesAsync(User.GetUsername());
 
         var userToReturn = _mapper.Map<UserDto>(user);
 
