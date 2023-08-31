@@ -44,19 +44,19 @@ public class UserTagsController : BaseApiController
 
         return BadRequest(new ApiResponse(400, "Problem adding tag"));
     }
-
-    /// <summary>
-    /// **************************************************************************************************************
-    /// </summary>
-    /// <param name="userTagDto"></param>
-    /// <returns></returns>
+    
     [HttpPut("update-tag")]
     public async Task<ActionResult> UpdateTag(UserTagDto userTagDto)
     {
-        var userTag = _mapper.Map<UserTag>(userTagDto);
+        var userTag = await _unitOfWork.UserTagRepository.GetUserTagByGuid(userTagDto.Id);
 
-        _unitOfWork.Repository<UserTag>().Update(userTag);
+        if (userTag == null)
+            return NotFound(new ApiResponse(404, "Tag not found"));
 
+        userTag.Description = userTagDto.Description;
+        userTag.Active = userTagDto.Active;
+        userTag.Tag = userTagDto.Tag;
+        
         if (await _unitOfWork.Complete())
             return Ok();
 
