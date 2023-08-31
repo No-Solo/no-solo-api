@@ -14,14 +14,31 @@ public class UserRepository : IUserRepository
         _dataBaseContext = dataBaseContext;
     }
 
-    public async Task<User> GetUserByUsernameWithIncludesAsync(string username)
+    public async Task<User> GetUserByUsernameWithAllIncludesAsync(string username)
+    {
+        return await _dataBaseContext.Users
+            .Include(x => x.UserProfile)
+            .Include(x => x.UserProfile.Photo)
+            .Include(x => x.UserProfile.Tags)
+            .SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
+    }
+
+    public async Task<User> GetUserByUsernameWithTagIncludeAsync(string username)
+    {
+        return await _dataBaseContext.Users
+            .Include(x => x.UserProfile)
+            .Include(x => x.UserProfile.Tags)
+            .SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
+    }
+
+    public async Task<User> GetUserByUsernameWithPhotoIncludeAsync(string username)
     {
         return await _dataBaseContext.Users
             .Include(x => x.UserProfile)
             .Include(x => x.UserProfile.Photo)
             .SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
     }
-
+    
     public async Task<bool> UserExists(string username)
     {
         return await _dataBaseContext.Users.AnyAsync(x => x.UserName == username.ToLower());

@@ -20,7 +20,7 @@ public class UserProfileDto : BaseDto
 
     // public List<Contact<UserProfile>> Contacts { get; set; } = new();
     // public List<UserOffer> Offers { get; set; } = new();
-    // public List<UserTag> Tags { get; set; } = new();
+    public List<UserTagDto> Tags { get; set; }
     //
     // public List<Request<UserProfile, OrganizationOffer>> RequestsFromUserProfileToOgranizationOffer { get; set; }
 }
