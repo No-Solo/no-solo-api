@@ -20,6 +20,8 @@ public class UnitOfWork : IUnitOfWork
     public IUserRepository UserRepository => new UserRepository(_dataBaseContext);
     public IOrganizationRepository OrganizationRepository => new OrganizationRepository();
     public IRefreshTokenRepository RefreshTokenRepository => new RefreshTokenRepository(_dataBaseContext);
+    public IUserProfileRepository UserProfileRepository => new UserProfileRepository(_dataBaseContext);
+    public IUserTagRepository UserTagRepository => new UserTagRepository(_dataBaseContext);
 
     public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity
     {
