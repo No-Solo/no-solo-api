@@ -18,6 +18,7 @@ public class UserRepository : IUserRepository
     {
         return await _dataBaseContext.Users
             .Include(x => x.UserProfile)
+            .Include(x => x.UserProfile.Photo)
             .SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
     }
 
