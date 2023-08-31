@@ -23,6 +23,7 @@ public class UserPhotosController : BaseApiController
         _photoService = photoService;
     }
     
+    
     [HttpGet("photo")]
     public async Task<ActionResult<UserProfilePhotoDto>> GetUserProfilePhoto()
     {
