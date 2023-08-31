@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using API.Errors;
+using API.Helpers;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure;
@@ -33,10 +34,15 @@ public static class ApplicationServiceExtensions
             .AddEntityFrameworkStores<DataBaseContext>()
             .AddDefaultTokenProviders();
 
+        services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
+        
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+
+
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IPhotoService, PhotoService>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
