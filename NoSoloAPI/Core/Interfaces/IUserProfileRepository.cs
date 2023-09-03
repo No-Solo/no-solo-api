@@ -9,6 +9,7 @@ public interface IUserProfileRepository
     Task<UserProfile> GetUserProfileByUsernameWithPhotoIncludeAsync(string username);
     Task<UserProfile> GetUserProfileByUsernameWithContactsIncludeAsync(string username);
     Task<UserProfile> GetUserProfileByUsernameWithOffersIncludeAsync(string username);
+    Task<UserProfile> GetUserProfileByContactGuid(Guid contactId);
     // void DeleteTag();
     void Update(UserProfile userProfile);
 }

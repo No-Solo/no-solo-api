@@ -20,6 +20,7 @@ public class ApiResponse
             401 => "Authorized, you are not",
             404 => "Resource found, it was not",
             500 => "Errors are the path to the dark side",
+            403 => "You don`t have access",
             _ => null
         };
     }
