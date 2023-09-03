@@ -52,6 +52,11 @@ public class UserProfileRepository : IUserProfileRepository
             .SingleOrDefaultAsync(x => string.Equals(x.User.UserName, username, StringComparison.CurrentCultureIgnoreCase));
     }
 
+    public async Task<UserProfile> GetUserProfileByContactGuid(Contact<UserProfile> contact)
+    {
+        return await _dataBaseContext.UserProfiles.FirstOrDefaultAsync(x => x.Contacts.Contains(contact));
+    }
+
     public void Update(UserProfile userProfile)
     {
         _dataBaseContext.Entry(userProfile).State = EntityState.Modified;

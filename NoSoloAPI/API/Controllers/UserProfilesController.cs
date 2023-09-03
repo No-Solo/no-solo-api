@@ -31,7 +31,7 @@ public class UserProfilesController : BaseApiController
         return Ok(_mapper.Map<UserProfileDto>(userProfile));
     }
 
-    [HttpPost("create-profile")]
+    [HttpPost("create")]
     public async Task<ActionResult<UserProfileDto>> CreateUserProfile([FromBody] CreateUserProfileDto userProfileDto)
     {
         var user = await _unitOfWork.UserRepository.GetUserByUsernameWithAllIncludesAsync(User.GetUsername());
@@ -51,9 +51,6 @@ public class UserProfilesController : BaseApiController
             Gender = userProfileDto.Gender
         };
 
-        if (userProfileDto.Locale == null)
-            userProfile.Locale = LocaleEnum.Ukrainian;
-
         user.UserProfile = userProfile;
         if (await _unitOfWork.Complete())
             // Ok(new ApiResponse(200, "The user profile successfully created"));
@@ -63,7 +60,7 @@ public class UserProfilesController : BaseApiController
         return BadRequest(new ApiResponse(400, "Problem user profile creating"));
     }
 
-    [HttpPut("update-profile")]
+    [HttpPut("update")]
     public async Task<ActionResult<UserProfileDto>> UpdateUserProfile([FromBody] UpdateUserProfileDto userProfileDto)
     {
         var user = await _unitOfWork.UserRepository.GetUserByUsernameWithAllIncludesAsync(User.GetUsername());

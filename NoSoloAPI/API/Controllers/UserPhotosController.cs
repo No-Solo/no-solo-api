@@ -33,7 +33,7 @@ public class UserPhotosController : BaseApiController
         return Ok(_mapper.Map<UserProfilePhotoDto>(userProfile.Photo));
     }
 
-    [HttpPost("add-photo")]
+    [HttpPost("add")]
     public async Task<ActionResult<UserProfilePhotoDto>> AddPhotoToUserProfile(IFormFile file)
     {
         var user = await _unitOfWork.UserRepository.GetUserByUsernameWithPhotoIncludeAsync(User.GetUsername());
@@ -59,7 +59,7 @@ public class UserPhotosController : BaseApiController
         return BadRequest("Problem adding photo");
     }
 
-    [HttpDelete("delete-photo")]
+    [HttpDelete("delete")]
     public async Task<ActionResult> DeletePhoto()
     {
         var userProfile = await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithPhotoIncludeAsync(User.GetUsername());

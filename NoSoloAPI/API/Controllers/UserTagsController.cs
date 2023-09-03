@@ -21,7 +21,7 @@ public class UserTagsController : BaseApiController
         _mapper = mapper;
     }
     
-    [HttpGet("user-tags", Name = "GetUserProfileTags")]
+    [HttpGet("tags", Name = "GetUserProfileTags")]
     public async Task<ActionResult<IReadOnlyList<UserTagDto>>> GetAllUserProfileTags()
     {
         var userProfile =
@@ -30,7 +30,7 @@ public class UserTagsController : BaseApiController
         return Ok(_mapper.Map<IReadOnlyList<UserTagDto>>(userProfile.Tags));
     }
 
-    [HttpPost("add-tag")]
+    [HttpPost("add")]
     public async Task<ActionResult> AddTagToUserProfile(CreateUserTagDto userTagDto)
     {
         var userProfile =
@@ -45,7 +45,7 @@ public class UserTagsController : BaseApiController
         return BadRequest(new ApiResponse(400, "Problem adding tag"));
     }
     
-    [HttpPut("update-tag")]
+    [HttpPut("update")]
     public async Task<ActionResult> UpdateTag(UserTagDto userTagDto)
     {
         var userTag = await _unitOfWork.UserTagRepository.GetUserTagByGuid(userTagDto.Id);
@@ -63,7 +63,7 @@ public class UserTagsController : BaseApiController
         return BadRequest(new ApiResponse(400, "Failed to update the tag"));
     }
 
-    [HttpDelete("delete-tag/{id:guid}")]
+    [HttpDelete("delete/{id:guid}")]
     public async Task<ActionResult> DeleteTagFromUserProfile(Guid id)
     {
         var userProfile =
