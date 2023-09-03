@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Authorize]
+[Authorize(Roles = "RegisteredUser")]
 public class UserTagsController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;

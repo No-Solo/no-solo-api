@@ -6,6 +6,7 @@ using Core.Entities;
 using Core.Enums;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -15,11 +16,13 @@ public class UserProfilesController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly UserManager<User> _userManager;
 
-    public UserProfilesController(IUnitOfWork unitOfWork, IMapper mapper)
+    public UserProfilesController(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _userManager = userManager;
     }
     
     [HttpGet("profile", Name = "GetUserProfile")]
@@ -52,6 +55,7 @@ public class UserProfilesController : BaseApiController
         };
 
         user.UserProfile = userProfile;
+        await _userManager.AddToRoleAsync(user, "RegisteredUser");
         if (await _unitOfWork.Complete())
             // Ok(new ApiResponse(200, "The user profile successfully created"));
             return Ok(userProfile);

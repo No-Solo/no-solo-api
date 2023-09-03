@@ -2,14 +2,16 @@
 using API.Errors;
 using API.Extensions;
 using AutoMapper;
+using CloudinaryDotNet.Actions;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Authorize]
+[Authorize(Roles = "RegisteredUser")]
 public class UserContactController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -31,7 +33,7 @@ public class UserContactController : BaseApiController
         
         return Ok(_mapper.Map<IReadOnlyList<ContactDto>>(userProfileToReturn.Contacts));
     }
-
+    
     [HttpPut("update")]
     public async Task<ActionResult> UpdateUserProfileContact(ContactDto contactDto)
     {
