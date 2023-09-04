@@ -55,11 +55,11 @@ public class UserProfilesController : BaseApiController
         };
 
         user.UserProfile = userProfile;
-        await _userManager.AddToRoleAsync(user, "RegisteredUser");
         if (await _unitOfWork.Complete())
-            // Ok(new ApiResponse(200, "The user profile successfully created"));
+        {
+            await _userManager.AddToRoleAsync(user, "RegisteredUser");
             return Ok(userProfile);
-
+        }
 
         return BadRequest(new ApiResponse(400, "Problem user profile creating"));
     }

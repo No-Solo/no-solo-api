@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data;
 
-public class DataBaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
+public class DataBaseContext : IdentityDbContext<User, UserRole, Guid>
 {
     public DataBaseContext(DbContextOptions options) : base(options)
     {
