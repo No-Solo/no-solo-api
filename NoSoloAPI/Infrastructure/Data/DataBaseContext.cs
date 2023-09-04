@@ -19,6 +19,7 @@ public class DataBaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     
     public DbSet<UserProfile> UserProfiles { get; set; }
     public DbSet<UserTag> UserTags { get; set; }
+    public DbSet<UserOffer> UserOffers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
