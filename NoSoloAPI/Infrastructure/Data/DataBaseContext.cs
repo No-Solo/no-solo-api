@@ -47,7 +47,7 @@ public class DataBaseContext : IdentityDbContext<User, UserRole, Guid>
             .WithOne(e => e.Organization)
             .HasForeignKey<Project>(e => e.OrganizationId);
 
-        if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
+        if (Database.ProviderName == "Npgsql.EntityFrameworkCore.PostgreSQL")
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
                 var properties = entityType.ClrType.GetProperties().Where(p => p.PropertyType == typeof(decimal));
