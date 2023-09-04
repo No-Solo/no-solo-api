@@ -57,6 +57,11 @@ public class UserProfileRepository : IUserProfileRepository
         return await _dataBaseContext.UserProfiles.FirstOrDefaultAsync(x => x.Contacts.Any(y => y.Id == contactId));
     }
 
+    public async Task<UserProfile> GetUserProfileByOfferGuid(Guid offerId)
+    {
+        return await _dataBaseContext.UserProfiles.FirstOrDefaultAsync(x => x.Offers.Any(y => y.Id == offerId));
+    }
+
     public void Update(UserProfile userProfile)
     {
         _dataBaseContext.Entry(userProfile).State = EntityState.Modified;
