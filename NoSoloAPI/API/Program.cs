@@ -1,6 +1,7 @@
 using API.Extensions;
 using API.Middleware;
 using Infrastructure.Data;
+using Infrastructure.Data.Migrations;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,5 +50,7 @@ catch (Exception exception)
     var logger = services.GetRequiredService<ILogger<Program>>();
     logger.LogError(exception, "An error occured during migration");
 }
+
+await Seed.SeedRoles(services);
 
 app.Run();

@@ -43,7 +43,7 @@ public class AccountController : BaseApiController
         );
 
         if (!result.Succeeded)
-            return BadRequest(new ApiResponse(400, result.Errors.ToString()));
+            return BadRequest(result.Errors);
 
         return Ok(new ApiResponse(200, "User created"));
     }

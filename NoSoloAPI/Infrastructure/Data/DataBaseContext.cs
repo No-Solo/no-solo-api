@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data;
 
-public class DataBaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
+public class DataBaseContext : IdentityDbContext<User, UserRole, Guid>
 {
     public DataBaseContext(DbContextOptions options) : base(options)
     {
@@ -19,6 +19,7 @@ public class DataBaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     
     public DbSet<UserProfile> UserProfiles { get; set; }
     public DbSet<UserTag> UserTags { get; set; }
+    public DbSet<UserOffer> UserOffers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -46,7 +47,7 @@ public class DataBaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
             .WithOne(e => e.Organization)
             .HasForeignKey<Project>(e => e.OrganizationId);
 
-        if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
+        if (Database.ProviderName == "Npgsql.EntityFrameworkCore.PostgreSQL")
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
                 var properties = entityType.ClrType.GetProperties().Where(p => p.PropertyType == typeof(decimal));

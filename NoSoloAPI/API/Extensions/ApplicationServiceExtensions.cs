@@ -5,6 +5,7 @@ using Core.Entities;
 using Core.Interfaces;
 using Infrastructure;
 using Infrastructure.Data;
+using Infrastructure.Data.Migrations;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -30,7 +31,7 @@ public static class ApplicationServiceExtensions
 
         services.AddEndpointsApiExplorer();
 
-        services.AddIdentity<User, IdentityRole<Guid>>()
+        services.AddIdentity<User, UserRole>()
             .AddEntityFrameworkStores<DataBaseContext>()
             .AddDefaultTokenProviders();
 
