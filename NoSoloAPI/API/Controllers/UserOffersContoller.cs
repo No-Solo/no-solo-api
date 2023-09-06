@@ -10,22 +10,22 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 
 [Authorize(Roles = "RegisteredUser")]
-public class UserOfferContoller : BaseApiController
+public class UserOffersContoller : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public UserOfferContoller(IUnitOfWork unitOfWork, IMapper mapper)
+    public UserOffersContoller(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
     
     [AllowAnonymous]
-    [HttpGet]
+    [HttpGet("offers", Name = "GetAllUserOffers")]
     public async Task<ActionResult<IReadOnlyList<UserOfferDto>>> GetAllOffers()
     {
-        return Ok(_mapper.Map<UserOfferDto>(await _unitOfWork.Repository<UserOffer>().ListAllAsync()));
+        return Ok(_mapper.Map<IReadOnlyList<UserOfferDto>>(await _unitOfWork.Repository<UserOffer>().ListAllAsync()));
     }
     
     [AllowAnonymous]
@@ -58,13 +58,20 @@ public class UserOfferContoller : BaseApiController
         return Ok(_mapper.Map<UserOfferDto>(await _unitOfWork.Repository<UserOffer>().GetByGuidAsync(id)));
     }
 
-    [HttpPost]
+    [HttpPost("add")]
     public async Task<ActionResult> AddUserOffer(CreateUserOfferDto userOfferDto)
     {
         var userProfile =
             await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithOffersIncludeAsync(User.GetUsername());
 
-        userProfile.Offers.Add(_mapper.Map<UserOffer>(userOfferDto));
+        var userOffer = new UserOffer
+        {
+            Preferences = userOfferDto.Preferences,
+            UserProfile = userProfile,
+            UserProfileId = userProfile.Id
+        };
+        
+        userProfile.Offers.Add(userOffer);
 
         if (await _unitOfWork.Complete())
             return Ok();
@@ -72,7 +79,7 @@ public class UserOfferContoller : BaseApiController
         return BadRequest(new ApiResponse(400, "Failed to create the offer"));
     }
     
-    [HttpPut]
+    [HttpPut("update")]
     public async Task<ActionResult> UpdateUserOffer(UserOfferDto userOfferDto)
     {
         var userProfile =
@@ -93,7 +100,7 @@ public class UserOfferContoller : BaseApiController
         return BadRequest(new ApiResponse(400, "Failed to update the offer"));
     }
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("delete/{id:guid}")]
     public async Task<ActionResult> DeleteUserOffer(Guid id)
     {
         var userProfile =
