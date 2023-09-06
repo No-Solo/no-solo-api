@@ -2,11 +2,9 @@
 using API.Errors;
 using API.Extensions;
 using AutoMapper;
-using CloudinaryDotNet.Actions;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -29,10 +27,25 @@ public class UserContactController : BaseApiController
         var userProfile = await
             _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithContactsIncludeAsync(User.GetUsername());
 
+        if (userProfile.Contacts == null)
+            return NotFound(new ApiResponse(404, "The contacts not found"));
+        
         var userProfileToReturn = _mapper.Map<UserProfileDto>(userProfile);
         
         return Ok(_mapper.Map<IReadOnlyList<ContactDto>>(userProfileToReturn.Contacts));
     }
+    
+    // [HttpGet("my/{id:guid}")]
+    // public async Task<ActionResult<ContactDto>> GetMyUserProfileContactByGuid(Guid id)
+    // {
+    //     
+    // }
+    //
+    // [HttpGet("{id:guid}")]
+    // public async Task<ActionResult<ContactDto>> GetUserProfileContactByGuid(Guid id)
+    // {
+    //     var userProfile = await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithContactsIncludeAsync(id);
+    // }
     
     [HttpPut("update")]
     public async Task<ActionResult> UpdateUserProfileContact(ContactDto contactDto)

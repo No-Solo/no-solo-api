@@ -19,7 +19,7 @@ public class UserProfileDto : BaseDto
     public GenderEnum Gender { get; set; }
 
     public List<ContactDto> Contacts { get; set; }
-    // public List<UserOffer> Offers { get; set; }
+    public List<UserOfferDto> Offers { get; set; }
     public List<UserTagDto> Tags { get; set; }
     //
     // public List<Request<UserProfile, OrganizationOffer>> RequestsFromUserProfileToOgranizationOffer { get; set; }

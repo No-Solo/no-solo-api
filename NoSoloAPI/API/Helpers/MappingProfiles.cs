@@ -20,5 +20,8 @@ public class MappingProfiles : Profile
         CreateMap<UserTagDto, UserTag>();
         // Contacts
         CreateMap<Contact<UserProfile>, ContactDto>();
+        // Offers
+        CreateMap<UserOffer, UserOfferDto>();
+        CreateMap<CreateUserOfferDto, UserOffer>();
     }
 }

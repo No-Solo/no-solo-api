@@ -30,6 +30,9 @@ public class UserPhotosController : BaseApiController
         var userProfile =
             await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithPhotoIncludeAsync(User.GetUsername());
 
+        if (userProfile.Photo == null)
+            return NoContent();
+        
         return Ok(_mapper.Map<UserProfilePhotoDto>(userProfile.Photo));
     }
 
