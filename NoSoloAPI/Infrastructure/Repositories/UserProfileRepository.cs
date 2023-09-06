@@ -13,7 +13,13 @@ public class UserProfileRepository : IUserProfileRepository
     {
         _dataBaseContext = dataBaseContext;
     }
-    
+
+    public async Task<UserProfile> GetUserProfileWithoutIncludesAsync(string username)
+    {
+        return await _dataBaseContext.UserProfiles.SingleOrDefaultAsync(x =>
+            x.User.UserName.ToLower() == username.ToLower());
+    }
+
     public async Task<UserProfile> GetUserProfileByUsernameWithAllIncludesAsync(string username)
     {
         return await _dataBaseContext.UserProfiles
@@ -49,7 +55,7 @@ public class UserProfileRepository : IUserProfileRepository
     {
         return await _dataBaseContext.UserProfiles
             .Include(x => x.Offers)
-            .SingleOrDefaultAsync(x => string.Equals(x.User.UserName, username, StringComparison.CurrentCultureIgnoreCase));
+            .SingleOrDefaultAsync(x => x.User.UserName.ToLower() == username.ToLower());
     }
 
     public async Task<UserProfile> GetUserProfileByContactGuid(Guid contactId)
