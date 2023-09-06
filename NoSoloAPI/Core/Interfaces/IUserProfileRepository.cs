@@ -4,6 +4,7 @@ namespace Core.Interfaces;
 
 public interface IUserProfileRepository
 {
+    Task<UserProfile> GetUserProfileWithoutIncludesAsync(string username);
     Task<UserProfile> GetUserProfileByUsernameWithAllIncludesAsync(string username);
     Task<UserProfile> GetUserProfileByUsernameWithTagsIncludeAsync(string username);
     Task<UserProfile> GetUserProfileByUsernameWithPhotoIncludeAsync(string username);
