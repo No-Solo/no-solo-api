@@ -27,9 +27,23 @@ public class UserTagsController : BaseApiController
         var userProfile =
             await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithTagsIncludeAsync(User.GetUsername());
 
+        if (userProfile.Tags == null)
+            return NotFound(new ApiResponse(404, "The user tags not found"));
+        
         return Ok(_mapper.Map<IReadOnlyList<UserTagDto>>(userProfile.Tags));
     }
 
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<UserTagDto>> GetUserProfileTagByGuid(Guid id)
+    {
+        var userTag = await _unitOfWork.UserTagRepository.GetUserTagByGuid(id);
+
+        if (userTag == null)
+            return NotFound(new ApiResponse(404, "The user tag not found"));
+
+        return Ok(_mapper.Map<UserTagDto>(userTag));
+    }
+    
     [HttpPost("add")]
     public async Task<ActionResult> AddTagToUserProfile(CreateUserTagDto userTagDto)
     {
