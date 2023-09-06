@@ -3,7 +3,6 @@ using API.Errors;
 using API.Extensions;
 using AutoMapper;
 using Core.Entities;
-using Core.Enums;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -28,9 +27,12 @@ public class UserProfilesController : BaseApiController
     [HttpGet("profile", Name = "GetUserProfile")]
     public async Task<ActionResult<UserProfileDto>> GetCurrentUserProfile()
     {
-        var userProfile =
+        var userProfile = await
             _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithAllIncludesAsync(User.GetUsername());
 
+        if (userProfile == null)
+            return NotFound(new ApiResponse(404, "The profile not found"));
+        
         return Ok(_mapper.Map<UserProfileDto>(userProfile));
     }
 
@@ -58,7 +60,7 @@ public class UserProfilesController : BaseApiController
         if (await _unitOfWork.Complete())
         {
             await _userManager.AddToRoleAsync(user, "RegisteredUser");
-            return Ok(userProfile);
+            return Ok(_mapper.Map<UserProfileDto>(user.UserProfile));
         }
 
         return BadRequest(new ApiResponse(400, "Problem user profile creating"));
@@ -69,6 +71,9 @@ public class UserProfilesController : BaseApiController
     {
         var user = await _unitOfWork.UserRepository.GetUserByUsernameWithAllIncludesAsync(User.GetUsername());
 
+        if (user.UserProfile == null)
+            return NotFound(new ApiResponse(404, "The profile not found"));
+        
         _mapper.Map(userProfileDto, user.UserProfile);
 
         _unitOfWork.UserRepository.Update(user);
