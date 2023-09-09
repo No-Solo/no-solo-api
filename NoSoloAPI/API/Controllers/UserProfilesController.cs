@@ -1,9 +1,11 @@
 ﻿using API.Dtos;
 using API.Errors;
 using API.Extensions;
+using API.Helpers;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specification;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +25,24 @@ public class UserProfilesController : BaseApiController
         _mapper = mapper;
         _userManager = userManager;
     }
-    
+
+    [HttpGet("profiles", Name = "GetAllProfiles")]
+    public async Task<ActionResult<IReadOnlyList<UserProfileDto>>> GetAllUserProfiles([FromQuery] UserProfileParams userProfileParams)
+    {
+        var spec = new UserProfileWithSpecificationParams(userProfileParams);
+        
+        var countSpec = new UserProfileWithFiltersForCountSpecification(userProfileParams);
+
+        var totalItems = await _unitOfWork.Repository<UserProfile>().CountAsync(countSpec);
+        
+        var userProfiles = await _unitOfWork.Repository<UserProfile>().ListAsync(spec);
+        
+        var data = _mapper
+            .Map<IReadOnlyList<UserProfile>, IReadOnlyList<UserProfileDto>>(userProfiles);
+
+        return Ok(new Pagination<UserProfileDto>(userProfileParams.PageNumber, userProfileParams.PageSize, totalItems, data));
+    }
+
     [HttpGet("profile", Name = "GetUserProfile")]
     public async Task<ActionResult<UserProfileDto>> GetCurrentUserProfile()
     {
