@@ -1,6 +1,8 @@
-﻿namespace Core.Entities;
+﻿using Core.Interfaces.Data;
 
-public class Contact<T> : BaseEntity where T : BaseEntity
+namespace Core.Entities;
+
+public class Contact<T> : BaseEntity where T : IBaseForContact
 {
     public T TEntity { get; set; }
     public Guid TEntityId { get; set; }
