@@ -1,9 +1,11 @@
 ﻿using API.Dtos;
 using API.Errors;
 using API.Extensions;
+using API.Helpers;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specification.UserOffer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,9 +25,9 @@ public class UserOfferContoller : BaseApiController
     
     [AllowAnonymous]
     [HttpGet("offers", Name = "GetAllUserOffers")]
-    public async Task<ActionResult<IReadOnlyList<UserOfferDto>>> GetAllOffers()
+    public async Task<ActionResult<Pagination<UserOfferDto>>> GetAllOffers([FromQuery] UserOfferParams userOfferParams)
     {
-        return Ok(_mapper.Map<IReadOnlyList<UserOfferDto>>(await _unitOfWork.Repository<UserOffer>().ListAllAsync()));
+        return Ok(await GetUserOffersBySpecificationParams(userOfferParams));
     }
     
     [AllowAnonymous]
@@ -36,12 +38,14 @@ public class UserOfferContoller : BaseApiController
     }
     
     [HttpGet("my", Name = "GetMyUserOffers")]
-    public async Task<ActionResult<IReadOnlyList<UserOfferDto>>> GetUserOffers()
+    public async Task<ActionResult<Pagination<UserOfferDto>>> GetUserOffers([FromQuery] UserOfferParams userOfferParams)
     {
         var userProfile =
             await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithOffersIncludeAsync(User.GetUsername());
 
-        return Ok(_mapper.Map<IReadOnlyList<UserOfferDto>>(userProfile.Offers));
+        userOfferParams.UserProfileId = userProfile.Id;
+        
+        return Ok(await GetUserOffersBySpecificationParams(userOfferParams));
     }
 
     // [HttpGet("my/{id:guid}")]
@@ -66,9 +70,7 @@ public class UserOfferContoller : BaseApiController
 
         var userOffer = new UserOffer
         {
-            Preferences = userOfferDto.Preferences,
-            UserProfile = userProfile,
-            UserProfileId = userProfile.Id
+            Preferences = userOfferDto.Preferences
         };
         
         userProfile.Offers.Add(userOffer);
@@ -85,9 +87,7 @@ public class UserOfferContoller : BaseApiController
         var userProfile =
             await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithOffersIncludeAsync(User.GetUsername());
         
-        var userProfileWithOffer = await _unitOfWork.UserProfileRepository.GetUserProfileByOfferGuid(userOfferDto.Id);
-        
-        if (userProfile.Id != userProfileWithOffer.Id)
+        if (await ComplianceCheck(userProfile.Id, userOfferDto.Id))
             return NotFound(new ApiResponse(404, "The offer not found"));
 
         var userOffer = await _unitOfWork.Repository<UserOffer>().GetByGuidAsync(userOfferDto.Id);
@@ -105,10 +105,8 @@ public class UserOfferContoller : BaseApiController
     {
         var userProfile =
             await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithOffersIncludeAsync(User.GetUsername());
-        
-        var userProfileWithOffer = await _unitOfWork.UserProfileRepository.GetUserProfileByOfferGuid(id);
-        
-        if (userProfile.Id != userProfileWithOffer.Id)
+
+        if (await ComplianceCheck(userProfile.Id, id))
             return NotFound(new ApiResponse(404, "The offer not found"));
 
         var userOffer = await _unitOfWork.Repository<UserOffer>().GetByGuidAsync(id);
@@ -119,5 +117,31 @@ public class UserOfferContoller : BaseApiController
             return Ok();
         
         return BadRequest(new ApiResponse(400, "Failed to delete the offer"));
+    }
+
+    private async Task<bool> ComplianceCheck(Guid userProfileId, Guid offerId)
+    {
+        var userProfileWithOffer = await _unitOfWork.UserProfileRepository.GetUserProfileByOfferGuid(offerId);
+
+        if (userProfileId != userProfileWithOffer.Id)
+            return true;
+
+        return false;
+    }
+
+    private async Task<Pagination<UserOfferDto>> GetUserOffersBySpecificationParams(UserOfferParams userOfferParams)
+    {
+        var spec = new UserOfferWithSpecificationParams(userOfferParams);
+        
+        var countSpec = new UserOfferWithFiltersForCountSpecification(userOfferParams);
+
+        var totalItems = await _unitOfWork.Repository<UserOffer>().CountAsync(countSpec);
+        
+        var userOffers = await _unitOfWork.Repository<UserOffer>().ListAsync(spec);
+        
+        var data = _mapper
+            .Map<IReadOnlyList<UserOffer>, IReadOnlyList<UserOfferDto>>(userOffers);
+
+        return new Pagination<UserOfferDto>(userOfferParams.PageNumber, userOfferParams.PageSize, totalItems, data);
     }
 }
