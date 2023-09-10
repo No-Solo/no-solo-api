@@ -9,14 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Authorize(Roles = "RegisteredUser")]
-public class UserPhotosController : BaseApiController
+[Authorize(Policy = "HasProfile")]
+public class UserPhotoController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly IPhotoService _photoService;
 
-    public UserPhotosController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService)
+    public UserPhotoController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
