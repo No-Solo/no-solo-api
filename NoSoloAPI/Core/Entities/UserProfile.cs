@@ -1,8 +1,10 @@
 ﻿using Core.Enums;
+using Core.Interfaces;
+using Core.Interfaces.Data;
 
 namespace Core.Entities;
 
-public class UserProfile : BaseEntity
+public class UserProfile : BaseEntity, IBaseForContact
 {
     public string FirstName { get; set; }
     public string? MiddleName { get; set; }
