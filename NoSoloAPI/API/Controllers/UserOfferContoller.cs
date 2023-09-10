@@ -10,12 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 
 [Authorize(Policy = "HasProfile")]
-public class UserOffersContoller : BaseApiController
+public class UserOfferContoller : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public UserOffersContoller(IUnitOfWork unitOfWork, IMapper mapper)
+    public UserOfferContoller(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
@@ -41,22 +41,22 @@ public class UserOffersContoller : BaseApiController
         var userProfile =
             await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithOffersIncludeAsync(User.GetUsername());
 
-        return Ok(_mapper.Map<UserOfferDto>(userProfile.Offers));
+        return Ok(_mapper.Map<IReadOnlyList<UserOfferDto>>(userProfile.Offers));
     }
 
-    [HttpGet("my/{id:guid}")]
-    public async Task<ActionResult<UserOfferDto>> GetUserOfferByGuid(Guid id)
-    {
-        var userProfile =
-            await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithOffersIncludeAsync(User.GetUsername());
-
-        var userProfileWithOffer = await _unitOfWork.UserProfileRepository.GetUserProfileByOfferGuid(id);
-
-        if (userProfile.Id != userProfileWithOffer.Id)
-            return NotFound(new ApiResponse(404, "The offer not found"));
-        
-        return Ok(_mapper.Map<UserOfferDto>(await _unitOfWork.Repository<UserOffer>().GetByGuidAsync(id)));
-    }
+    // [HttpGet("my/{id:guid}")]
+    // public async Task<ActionResult<UserOfferDto>> GetUserOfferByGuid(Guid id)
+    // {
+    //     var userProfile =
+    //         await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithOffersIncludeAsync(User.GetUsername());
+    //
+    //     var userProfileWithOffer = await _unitOfWork.UserProfileRepository.GetUserProfileByOfferGuid(id);
+    //
+    //     if (userProfile.Id != userProfileWithOffer.Id)
+    //         return NotFound(new ApiResponse(404, "The offer not found"));
+    //     
+    //     return Ok(_mapper.Map<UserOfferDto>(await _unitOfWork.Repository<UserOffer>().GetByGuidAsync(id)));
+    // }
 
     [HttpPost("add")]
     public async Task<ActionResult> AddUserOffer(CreateUserOfferDto userOfferDto)
@@ -80,7 +80,7 @@ public class UserOffersContoller : BaseApiController
     }
     
     [HttpPut("update")]
-    public async Task<ActionResult> UpdateUserOffer(UserOfferDto userOfferDto)
+    public async Task<ActionResult<UserOfferDto>> UpdateUserOffer(UserOfferDto userOfferDto)
     {
         var userProfile =
             await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithOffersIncludeAsync(User.GetUsername());
@@ -95,7 +95,7 @@ public class UserOffersContoller : BaseApiController
         userOffer.Preferences = userOfferDto.Preferences;
         
         if (await _unitOfWork.Complete())
-            return Ok();
+            return Ok(_mapper.Map<UserOfferDto>(userOffer));
 
         return BadRequest(new ApiResponse(400, "Failed to update the offer"));
     }

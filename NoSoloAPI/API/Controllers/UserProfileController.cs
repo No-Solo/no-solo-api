@@ -13,13 +13,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 
 [Authorize]
-public class UserProfilesController : BaseApiController
+public class UserProfileController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly UserManager<User> _userManager;
 
-    public UserProfilesController(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager)
+    public UserProfileController(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
@@ -98,7 +98,7 @@ public class UserProfilesController : BaseApiController
         _unitOfWork.UserRepository.Update(user);
 
         if (await _unitOfWork.Complete())
-            return Ok(user.UserProfile);
+            return Ok(_mapper.Map<UserProfileDto>(user.UserProfile));
 
         return BadRequest(new ApiResponse(400, "Failed to update user"));
     }
