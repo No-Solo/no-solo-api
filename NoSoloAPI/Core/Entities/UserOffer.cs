@@ -6,4 +6,5 @@ public class UserOffer : BaseEntity
     public Guid UserProfileId { get; set; }
 
     public string Preferences { get; set; }
+    public DateTime Created { get; set; } = DateTime.UtcNow;
 }
