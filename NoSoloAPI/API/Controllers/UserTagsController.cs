@@ -1,9 +1,11 @@
 ﻿using API.Dtos;
 using API.Errors;
 using API.Extensions;
+using API.Helpers;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specification.UserTag;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,16 +23,15 @@ public class UserTagsController : BaseApiController
         _mapper = mapper;
     }
     
-    [HttpGet("tags", Name = "GetUserProfileTags")]
-    public async Task<ActionResult<IReadOnlyList<UserTagDto>>> GetAllUserProfileTags()
+    [HttpGet("my/tags", Name = "GetUserProfileTags")]
+    public async Task<ActionResult<IReadOnlyList<UserTagDto>>> GetAllUserProfileTags([FromQuery] UserTagParams userTagParams)
     {
         var userProfile =
             await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithTagsIncludeAsync(User.GetUsername());
 
-        if (userProfile.Tags == null)
-            return NotFound(new ApiResponse(404, "The user tags not found"));
+        userTagParams.UserProfileId = userProfile.Id;
         
-        return Ok(_mapper.Map<IReadOnlyList<UserTagDto>>(userProfile.Tags));
+        return Ok(await GetAllTagsBySpecificationParams(userTagParams));
     }
 
     [HttpGet("{id:guid}")]
@@ -94,5 +95,21 @@ public class UserTagsController : BaseApiController
             return Ok();
  
         return BadRequest(new ApiResponse(400, "Failed to delete the tag"));
+    }
+
+    private async Task<Pagination<UserTagDto>> GetAllTagsBySpecificationParams(UserTagParams userTagParams)
+    {
+        var spec = new UserTagWithSpecificationParams(userTagParams);
+        
+        var countSpec = new UserTagWithFiltersForCountSpecification(userTagParams);
+
+        var totalItems = await _unitOfWork.Repository<UserTag>().CountAsync(countSpec);
+        
+        var userProfiles = await _unitOfWork.Repository<UserTag>().ListAsync(spec);
+        
+        var data = _mapper
+            .Map<IReadOnlyList<UserTag>, IReadOnlyList<UserTagDto>>(userProfiles);
+
+        return new Pagination<UserTagDto>(userTagParams.PageNumber, userTagParams.PageSize, totalItems, data);
     }
 }
