@@ -1,6 +1,8 @@
-﻿namespace Core.Entities;
+﻿using Core.Interfaces.Data;
 
-public class Organization : BaseEntity
+namespace Core.Entities;
+
+public class Organization : BaseEntity, IBaseForContact
 {
     public string Name { get; set; }
     public string PhotoUrl { get; set; }

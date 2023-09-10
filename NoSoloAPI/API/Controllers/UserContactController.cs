@@ -110,9 +110,4 @@ public class UserContactController : BaseApiController
         
         return BadRequest(new ApiResponse(400, "Failed to delete contact from your profile"));
     }
-
-    // private bool ContactExist(UserProfile userProfile, Guid contactId)
-    // {
-    //     
-    // }
 }
