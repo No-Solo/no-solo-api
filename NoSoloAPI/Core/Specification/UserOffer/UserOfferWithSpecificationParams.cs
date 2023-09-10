@@ -19,7 +19,7 @@ public class UserOfferWithSpecificationParams : BaseSpecification<Entities.UserO
                     AddOrderByDescending(p => p.Preferences);
                     break;
                 default:
-                    AddOrderBy(p => p.Id);
+                    AddOrderBy(p => p.Created);
                     break;
             }
         }
@@ -35,7 +35,7 @@ public class UserOfferWithSpecificationParams : BaseSpecification<Entities.UserO
                     AddOrderByDescending(p => p.Created);
                     break;
                 default:
-                    AddOrderBy(p => p.Id);
+                    AddOrderBy(p => p.Created);
                     break;
             }
         }
