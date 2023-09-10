@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using API.Authorization;
 using API.Errors;
 using API.Helpers;
 using Core.Entities;
@@ -9,6 +10,7 @@ using Infrastructure.Data.Migrations;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -78,7 +80,13 @@ public static class ApplicationServiceExtensions
                 ValidateIssuerSigningKey = true
             };
         });
-        services.AddAuthorization();
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("HasProfile", policy => policy.AddRequirements(
+                new HasProfileRequirement()
+            ));
+        });
+        services.AddSingleton<IAuthorizationHandler, HasProfileHandler>();
 
         services.Configure<ApiBehaviorOptions>(options =>
         {

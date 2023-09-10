@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Authorize(Roles = "RegisteredUser")]
+[Authorize(Policy = "HasProfile")]
 public class UserOffersContoller : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
