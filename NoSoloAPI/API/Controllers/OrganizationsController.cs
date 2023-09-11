@@ -24,7 +24,7 @@ public class OrganizationsController : BaseApiController
         _mapper = mapper;
     }
 
-    [HttpGet("organizations")]
+    [HttpGet("all")]
     public async Task<ActionResult<Pagination<OrganizationDto>>> GetAllOrganizations(
         [FromQuery] OrganizationParams organizationParams)
     {
@@ -32,7 +32,7 @@ public class OrganizationsController : BaseApiController
     }
 
     [HttpPost("create")]
-    public async Task<ActionResult<OrganizationDto>> CreateOrganization(CreateOrganizationDto organizationDto)
+    public async Task<ActionResult<OrganizationDto>> CreateOrganization([FromBody] CreateOrganizationDto organizationDto)
     {
         var user = await _unitOfWork.UserRepository.GetUserByUsernameWithAllIncludesAsync(User.GetUsername());
 
@@ -67,10 +67,10 @@ public class OrganizationsController : BaseApiController
 
         var totalItems = await _unitOfWork.Repository<Organization>().CountAsync(countSpec);
         
-        var userOffers = await _unitOfWork.Repository<Organization>().ListAsync(spec);
+        var organizations = await _unitOfWork.Repository<Organization>().ListAsync(spec);
         
         var data = _mapper
-            .Map<IReadOnlyList<Organization>, IReadOnlyList<OrganizationDto>>(userOffers);
+            .Map<IReadOnlyList<Organization>, IReadOnlyList<OrganizationDto>>(organizations);
 
         return new Pagination<OrganizationDto>(organizationParams.PageNumber, organizationParams.PageSize, totalItems, data);
     }
