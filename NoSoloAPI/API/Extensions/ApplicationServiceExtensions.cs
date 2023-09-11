@@ -4,6 +4,7 @@ using API.Errors;
 using API.Helpers;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Interfaces.Repositories;
 using Infrastructure;
 using Infrastructure.Data;
 using Infrastructure.Data.Migrations;

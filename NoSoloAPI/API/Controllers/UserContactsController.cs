@@ -12,12 +12,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 
 [Authorize(Policy = "HasProfile")]
-public class UserContactController : BaseApiController
+public class UserContactsController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public UserContactController(IUnitOfWork unitOfWork, IMapper mapper)
+    public UserContactsController(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;

@@ -12,12 +12,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 
 [Authorize(Policy = "HasProfile")]
-public class UserOfferContoller : BaseApiController
+public class UserOffersContoller : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public UserOfferContoller(IUnitOfWork unitOfWork, IMapper mapper)
+    public UserOffersContoller(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Interfaces.Repositories;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 
@@ -18,7 +19,7 @@ public class UnitOfWork : IUnitOfWork
     }
 
     public IUserRepository UserRepository => new UserRepository(_dataBaseContext);
-    public IOrganizationRepository OrganizationRepository => new OrganizationRepository();
+    public IOrganizationRepository OrganizationRepository => new OrganizationRepository(_dataBaseContext);
     public IRefreshTokenRepository RefreshTokenRepository => new RefreshTokenRepository(_dataBaseContext);
     public IUserProfileRepository UserProfileRepository => new UserProfileRepository(_dataBaseContext);
     public IUserTagRepository UserTagRepository => new UserTagRepository(_dataBaseContext);
