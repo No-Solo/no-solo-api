@@ -14,12 +14,14 @@ public class DataBaseContext : IdentityDbContext<User, UserRole, Guid>
     }
 
     public DbSet<User> Users { get; set; }
-    public DbSet<Organization> Organizations { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     
     public DbSet<UserProfile> UserProfiles { get; set; }
     public DbSet<UserTag> UserTags { get; set; }
     public DbSet<UserOffer> UserOffers { get; set; }
+    
+    public DbSet<Organization> Organizations { get; set; }
+    public DbSet<Project> Projects { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,13 +41,13 @@ public class DataBaseContext : IdentityDbContext<User, UserRole, Guid>
             .HasOne(e => e.UserProfile)
             .WithOne(e => e.User)
             .HasForeignKey<UserProfile>(e => e.UserId);
-
-
+        
         // Organization
         modelBuilder.Entity<Organization>()
             .HasOne(e => e.Project)
             .WithOne(e => e.Organization)
             .HasForeignKey<Project>(e => e.OrganizationId);
+        
 
         if (Database.ProviderName == "Npgsql.EntityFrameworkCore.PostgreSQL")
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())

@@ -14,12 +14,26 @@ public class UserRepository : IUserRepository
         _dataBaseContext = dataBaseContext;
     }
 
+    public async Task<User> GetUserByUsernameWithMembersIncludeAsync(string username)
+    {
+        return await _dataBaseContext.Users
+            .Include(x => x.OrganizationUsers)
+            .SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
+    }
+
+    public async Task<User> GetUserByUsernameWithWithoutIncludesAsync(string username)
+    {
+        return await _dataBaseContext.Users
+            .SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
+    }
+
     public async Task<User> GetUserByUsernameWithAllIncludesAsync(string username)
     {
         return await _dataBaseContext.Users
             .Include(x => x.UserProfile)
             .Include(x => x.UserProfile.Photo)
             .Include(x => x.UserProfile.Tags)
+            .Include(x => x.OrganizationUsers)
             .SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
     }
 
@@ -38,7 +52,14 @@ public class UserRepository : IUserRepository
             .Include(x => x.UserProfile.Photo)
             .SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
     }
-    
+
+    public async Task<User> GetUserByUsernameWithOrganization(string username)
+    {
+        return await _dataBaseContext.Users
+            .Include(x => x.OrganizationUsers)
+            .SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
+    }
+
     public async Task<bool> UserExists(string username)
     {
         return await _dataBaseContext.Users.AnyAsync(x => x.UserName == username.ToLower());

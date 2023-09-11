@@ -10,8 +10,11 @@ public class Organization : BaseEntity, IBaseForContact
     public List<OrganizationOffer> Offers { get; set; } = new();
     public List<OrganizationPhoto> Photos { get; set; } = new();
     public List<OrganizationUser> OrganizationUsers { get; set; } = new();
-
+    public List<Contact<Organization>> Contacts { get; set; } = new();
+    
     public List<Request<Organization, UserOffer>> RequestsFromOrganizationToUserOffer { get; set; }
 
+    public DateTime Created { get; set; } = DateTime.UtcNow;
+    
     public Project Project { get; set; }
 }
