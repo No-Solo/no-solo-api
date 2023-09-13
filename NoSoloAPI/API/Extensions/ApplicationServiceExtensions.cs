@@ -5,6 +5,7 @@ using API.Helpers;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Interfaces.Repositories;
+using Core.Interfaces.Serivces;
 using Infrastructure;
 using Infrastructure.Data;
 using Infrastructure.Data.Migrations;
@@ -47,7 +48,8 @@ public static class ApplicationServiceExtensions
 
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IPhotoService, PhotoService>();
-
+        services.AddScoped<IMemberService, MemberService>();
+        
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddEndpointsApiExplorer();
