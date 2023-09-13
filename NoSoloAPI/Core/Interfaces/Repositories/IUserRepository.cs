@@ -1,6 +1,6 @@
 ﻿using Core.Entities;
 
-namespace Core.Interfaces;
+namespace Core.Interfaces.Repositories;
 
 public interface IUserRepository
 {
@@ -10,6 +10,7 @@ public interface IUserRepository
     Task<User> GetUserByUsernameWithTagIncludeAsync(string username);
     Task<User> GetUserByUsernameWithPhotoIncludeAsync(string username);
     Task<User> GetUserByUsernameWithOrganization(string username);
+    Task<User> GetUserByGuidWithMembersIncludeAsync(Guid guid);
     void Update(User user);
     Task<bool> UserExists(string username);
 }

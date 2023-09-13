@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
+using Core.Interfaces.Repositories;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -58,6 +59,13 @@ public class UserRepository : IUserRepository
         return await _dataBaseContext.Users
             .Include(x => x.OrganizationUsers)
             .SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
+    }
+
+    public async Task<User> GetUserByGuidWithMembersIncludeAsync(Guid guid)
+    {
+        return await _dataBaseContext.Users
+            .Include(x => x.OrganizationUsers)
+            .SingleOrDefaultAsync(x => x.Id == guid);
     }
 
     public async Task<bool> UserExists(string username)
