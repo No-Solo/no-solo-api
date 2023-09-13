@@ -27,6 +27,7 @@ public class MappingProfiles : Profile
         CreateMap<Organization, OrganizationDto>();
         CreateMap<CreateOrganizationDto, Organization>();
         CreateMap<OrganizationUser, OrganizationUserDto>();
+        CreateMap<UpdateOrganizationDto, Organization>();
         // Projects
         CreateMap<Project, ProjectDto>();
     }
