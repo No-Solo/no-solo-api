@@ -5,6 +5,7 @@ using API.Helpers;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Interfaces.Data;
 using Core.Specification.UserContact;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +42,7 @@ public class UserContactsController : BaseApiController
             _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithContactsIncludeAsync(User.GetUsername());
 
         if (userProfile.Contacts == null)
-            return NotFound(new ApiResponse(404, "The contacts not found"));
+            return NotFound(new ApiResponse(404, "Contacts not found"));
         
         return Ok(_mapper.Map<IReadOnlyList<ContactDto>>(userProfile.Contacts));
     }

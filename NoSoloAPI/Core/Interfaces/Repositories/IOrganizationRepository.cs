@@ -11,4 +11,6 @@ public interface IOrganizationRepository
     Task<Organization> GetOrganizationWithPhotosIncludeByGuid(Guid id);
     Task<Organization> GetOrganizationWithContactsIncludeByGuid(Guid id);
     Task<Organization> GetOrganizationWithProjectIncludeByGuid(Guid id);
+
+    Task<Organization> GetOrganizationWithContactsAndMembersIncludesAsync(Guid id);
 }

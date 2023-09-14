@@ -1,7 +1,7 @@
 ﻿using Core.Entities;
 using Core.Enums;
 
-namespace Core.Interfaces.Serivces;
+namespace Core.Interfaces.Services;
 
 public interface IMemberService
 {

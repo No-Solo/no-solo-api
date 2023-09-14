@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Interfaces.Data;
 using Core.Interfaces.Repositories;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
