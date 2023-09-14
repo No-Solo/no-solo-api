@@ -51,6 +51,8 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IPhotoService, PhotoService>();
         services.AddScoped<IMemberService, MemberService>();
         services.AddScoped<IRecommendService, RecommendService>();
+
+        services.AddScoped<IResponseCacheService, ResponseCacheService>();
         
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
