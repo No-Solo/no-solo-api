@@ -1,4 +1,6 @@
-﻿namespace Core.Specification.Organization.OrganizationPhotoParams;
+﻿using Core.Specification.BaseSpecification;
+
+namespace Core.Specification.Organization.OrganizationPhotoParams;
 
 public class OrganizationPhotoParams : BasicParams
 {

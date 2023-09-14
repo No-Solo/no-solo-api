@@ -1,4 +1,6 @@
-﻿namespace Core.Specification.Project;
+﻿using Core.Specification.BaseSpecification;
+
+namespace Core.Specification.Project;
 
 public class ProjectParams : BasicParams
 {

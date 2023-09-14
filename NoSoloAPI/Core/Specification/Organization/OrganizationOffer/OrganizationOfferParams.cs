@@ -1,4 +1,6 @@
-﻿namespace Core.Specification.Organization.OrganizationOffer;
+﻿using Core.Specification.BaseSpecification;
+
+namespace Core.Specification.Organization.OrganizationOffer;
 
 public class OrganizationOfferParams : BasicParams
 {

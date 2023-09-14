@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Specification.Organization.Organization;
 
 namespace Core.Specification.Organizations;
 
