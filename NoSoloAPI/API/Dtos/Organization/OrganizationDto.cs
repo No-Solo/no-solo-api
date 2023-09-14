@@ -5,8 +5,8 @@ public class OrganizationDto : BaseDto
     public string Name { get; set; }
     public string PhotoUrl { get; set; }
 
-    // public List<OrganizationOfferDto> Offers { get; set; } = new();
-    // public List<OrganizationPhotoDto> Photos { get; set; } = new();
+    public List<OrganizationOfferDto> Offers { get; set; }
+    public List<OrganizationPhotoDto> Photos { get; set; }
     public List<OrganizationUserDto> OrganizationUsers { get; set; }
     public List<ContactDto> Contacts { get; set; } = new();
     

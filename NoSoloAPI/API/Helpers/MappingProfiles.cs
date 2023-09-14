@@ -12,7 +12,6 @@ public class MappingProfiles : Profile
         CreateMap<User, UserDto>();
         // User Profile
         CreateMap<UserProfile, UserProfileDto>();
-        CreateMap<UserPhoto, UserProfilePhotoDto>();
         CreateMap<UpdateUserProfileDto, UserProfile>();
         // Tags
         CreateMap<CreateUserTagDto, UserTag>();
@@ -28,11 +27,18 @@ public class MappingProfiles : Profile
         CreateMap<OrganizationOffer, OrganizationOfferDto>();
         CreateMap<OrganizationOfferDto, OrganizationOffer>();
         // Organizations
-        CreateMap<Organization, OrganizationDto>();
+        CreateMap<Organization, OrganizationDto>()
+            .ForMember(dest => dest.PhotoUrl,
+                opt => opt
+                    .MapFrom(src => src.Photos
+                        .FirstOrDefault(x => x.IsMain).Url));
         CreateMap<CreateOrganizationDto, Organization>();
         CreateMap<OrganizationUser, OrganizationUserDto>();
         CreateMap<UpdateOrganizationDto, Organization>();
         // Projects
         CreateMap<Project, ProjectDto>();
+        // Photos
+        CreateMap<UserPhoto, UserProfilePhotoDto>();
+        CreateMap<OrganizationPhoto, OrganizationPhotoDto>();
     }
 }
