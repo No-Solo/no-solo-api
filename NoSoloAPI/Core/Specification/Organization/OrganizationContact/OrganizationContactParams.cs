@@ -1,4 +1,6 @@
-﻿namespace Core.Specification.OrganizationContact;
+﻿using Core.Specification.BaseSpecification;
+
+namespace Core.Specification.OrganizationContact;
 
 public class OrganizationContactParams : BasicParams
 {

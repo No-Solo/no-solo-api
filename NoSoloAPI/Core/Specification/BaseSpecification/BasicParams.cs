@@ -1,4 +1,4 @@
-﻿namespace Core.Specification;
+﻿namespace Core.Specification.BaseSpecification;
 
 public class BasicParams
 {
