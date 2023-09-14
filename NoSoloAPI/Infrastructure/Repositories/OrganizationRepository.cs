@@ -66,4 +66,12 @@ public class OrganizationRepository : IOrganizationRepository
             .Include(x => x.Project)
             .SingleOrDefaultAsync(x => x.Id == id);
     }
+
+    public async Task<Organization> GetOrganizationWithContactsAndMembersIncludesAsync(Guid id)
+    {
+        return await _dataBaseContext.Organizations
+            .Include(x => x.Contacts)
+            .Include(x => x.OrganizationUsers)
+            .SingleOrDefaultAsync(x => x.Id == id);
+    }
 }

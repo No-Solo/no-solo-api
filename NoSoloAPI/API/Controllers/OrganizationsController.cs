@@ -6,8 +6,10 @@ using AutoMapper;
 using Core.Entities;
 using Core.Enums;
 using Core.Interfaces;
+using Core.Interfaces.Data;
+using Core.Interfaces.Services;
+using Core.Specification.OrganizationContact;
 using Core.Specification.Organizations;
-using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,20 +20,31 @@ public class OrganizationsController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly MemberService _memberService;
+    private readonly IMemberService _memberService;
 
-    public OrganizationsController(IUnitOfWork unitOfWork, IMapper mapper, MemberService memberService)
+    public OrganizationsController(IUnitOfWork unitOfWork, IMapper mapper, IMemberService memberService)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _memberService = memberService;
     }
 
-    [HttpGet("all")]
+    [AllowAnonymous]
+    [HttpGet("all/with-params")]
     public async Task<ActionResult<Pagination<OrganizationDto>>> GetAllOrganizations(
         [FromQuery] OrganizationParams organizationParams)
     {
         return Ok(await GetOrganizationsBySpecificationParams(organizationParams));
+    }
+
+    [AllowAnonymous]
+    [HttpGet("{organizationId:guid}")]
+    public async Task<ActionResult<OrganizationDto>> GetOrganization(Guid organizationId)
+    {
+        var organization =
+            await _unitOfWork.OrganizationRepository.GetOrganizationWithAllIncludesByGuid(organizationId);
+
+        return Ok(_mapper.Map<OrganizationDto>(organization));
     }
 
     [HttpPost("create")]
@@ -188,12 +201,116 @@ public class OrganizationsController : BaseApiController
         if (await _memberService.MemberHasRoleAsync(RoleEnum.None, organization, targetUser))
             return BadRequest(new ApiResponse(400, "The member not in the organization"));
 
-        
 
         if (await _unitOfWork.Complete())
             return Ok();
 
         return BadRequest(new ApiResponse(400, "Failed to upgrade role"));
+    }
+    
+    /// <summary>
+    /// Contacts
+    /// </summary>
+    /// <param name="organizationId"></param>
+    /// <returns></returns>
+    
+    [AllowAnonymous]
+    [HttpGet("{organizationId:guid}/contacts/all")]
+    public async Task<ActionResult<IReadOnlyList<ContactDto>>> GetOrganizationContacts(Guid organizationId)
+    {
+        var organization =
+            await _unitOfWork.OrganizationRepository.GetOrganizationWithContactsIncludeByGuid(organizationId);
+
+        if (organization.Contacts == null)
+            return NotFound(new ApiResponse(404, "Contacts not found"));
+        
+        return Ok(_mapper.Map<IReadOnlyList<ContactDto>>(organization.Contacts));
+    }
+    
+    [AllowAnonymous]
+    [HttpGet("{organizationId:guid}/contacts/all/with-params")]
+    public async Task<ActionResult<Pagination<ContactDto>>> GetOrganizationContacts([FromQuery] OrganizationContactParams organizationContactParams, Guid organizationId)
+    {
+        organizationContactParams.OrganizationId = organizationId;
+
+        return Ok(await GetOrganizationContactsBySpecificationParams(organizationContactParams));
+    }
+
+    [AllowAnonymous]
+    [HttpGet("{organizationId:Guid}/contacts/{contactId:guid}")]
+    public async Task<ActionResult<ContactDto>> GetOrganizationContactByGuid(Guid organizationId, Guid contactId)
+    {
+        var organization =
+            await _unitOfWork.OrganizationRepository.GetOrganizationWithContactsIncludeByGuid(organizationId);
+        
+        var contact = organization.Contacts.SingleOrDefault(x => x.Id == contactId);
+        
+        if (contact == null)
+            return NotFound(new ApiResponse(404, "The contact not found"));
+
+        return Ok(_mapper.Map<ContactDto>(contact));
+    }
+
+    [HttpPut("{organizationId:guid}/update-contact")]
+    public async Task<ActionResult> UpdateUserProfileContact(Guid organizationId, ContactDto contactDto)
+    {
+        var organization =
+            await _unitOfWork.OrganizationRepository.GetOrganizationWithContactsAndMembersIncludesAsync(organizationId);
+
+        var contact = organization.Contacts.SingleOrDefault(x => x.Id == contactDto.Id);
+        
+        if (contact == null)
+            return NotFound(new ApiResponse(404, "The contact not found"));
+
+        _mapper.Map(contactDto, contact);
+
+        if (await _unitOfWork.Complete())
+            return Ok();
+        
+        return BadRequest(new ApiResponse(400, "Failed to update the contact"));
+    }
+
+    [HttpPost("{organizationId:guid}/add-contact")]
+    public async Task<ActionResult> AddContactToOrganization([FromBody] CreateContactDto contactDto, Guid organizationId)
+    {
+        var organization =
+            await _unitOfWork.OrganizationRepository.GetOrganizationWithContactsAndMembersIncludesAsync(organizationId);
+
+        if (!await _memberService.MemberHasRolesAsync(new[] { RoleEnum.Administrator, RoleEnum.Owner }, organization,
+                User.GetUsername()))
+            return BadRequest(new ApiResponse(400, "You don't have access"));
+        
+        var contact = new Contact<Organization>
+        {
+            Type = contactDto.Type,
+            Text = contactDto.Text,
+            Url = contactDto.Url
+        };
+        
+        organization.Contacts.Add(contact);
+
+        if (await _unitOfWork.Complete())
+            return Ok();
+
+        return BadRequest(new ApiResponse(400, "Failed to add contact to organization"));
+    }
+
+    [HttpDelete("{organizationId:guid}/delete-contact/{contactId:guid}")]
+    public async Task<ActionResult> DeleteContactFromUserProfile(Guid organizationId, Guid contactId)
+    {
+        var organization =
+            await _unitOfWork.OrganizationRepository.GetOrganizationWithContactsAndMembersIncludesAsync(organizationId);
+
+        if (!await _memberService.MemberHasRolesAsync(new[] { RoleEnum.Administrator, RoleEnum.Owner }, organization,
+                User.GetUsername()))
+            return BadRequest(new ApiResponse(400, "You don't have access"));
+
+        organization.Contacts.Remove(organization.Contacts.SingleOrDefault(x => x.Id == contactId));
+
+        if (await _unitOfWork.Complete())
+            return Ok();
+        
+        return BadRequest(new ApiResponse(400, "Failed to delete contact from your profile"));
     }
 
     private async Task<Pagination<OrganizationDto>> GetOrganizationsBySpecificationParams(
@@ -212,5 +329,21 @@ public class OrganizationsController : BaseApiController
 
         return new Pagination<OrganizationDto>(organizationParams.PageNumber, organizationParams.PageSize, totalItems,
             data);
+    }
+    
+    private async Task<Pagination<ContactDto>> GetOrganizationContactsBySpecificationParams(OrganizationContactParams organizationContactParams)
+    {
+        var spec = new OrganizationContactWithSpecificationParams(organizationContactParams);
+        
+        var countSpec = new OrganizationContactWithFiltersForCountSpecification(organizationContactParams);
+
+        var totalItems = await _unitOfWork.Repository<Contact<Organization>>().CountAsync(countSpec);
+        
+        var userOffers = await _unitOfWork.Repository<Contact<Organization>>().ListAsync(spec);
+        
+        var data = _mapper
+            .Map<IReadOnlyList<Contact<Organization>>, IReadOnlyList<ContactDto>>(userOffers);
+
+        return new Pagination<ContactDto>(organizationContactParams.PageNumber, organizationContactParams.PageSize, totalItems, data);
     }
 }
