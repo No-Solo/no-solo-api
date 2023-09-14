@@ -27,6 +27,7 @@ public class UserProfileController : BaseApiController
         _userManager = userManager;
     }
 
+    [Cached(600)] // example of using CacheAttribute
     [HttpGet("profiles", Name = "GetAllProfiles")]
     public async Task<ActionResult<IReadOnlyList<UserProfileDto>>> GetAllUserProfiles([FromQuery] UserProfileParams userProfileParams)
     {
@@ -44,6 +45,7 @@ public class UserProfileController : BaseApiController
         return Ok(new Pagination<UserProfileDto>(userProfileParams.PageNumber, userProfileParams.PageSize, totalItems, data));
     }
 
+    [Cached(600)] // example of using CacheAttribute
     [HttpGet("profile", Name = "GetUserProfile")]
     public async Task<ActionResult<UserProfileDto>> GetCurrentUserProfile()
     {
