@@ -1,8 +1,9 @@
 ﻿using Core.Entities;
+using Core.Specification.OrganizationContact;
 
-namespace Core.Specification.OrganizationContact;
+namespace Core.Specification.Organization.OrganizationContact;
 
-public class OrganizationContactWithSpecificationParams : BaseSpecification<Contact<Organization>>
+public class OrganizationContactWithSpecificationParams : BaseSpecification<Contact<Entities.Organization>>
 {
     public OrganizationContactWithSpecificationParams(OrganizationContactParams organizationContactParams)
         : base(x => (string.IsNullOrEmpty(organizationContactParams.Search) || x.Text.ToLower().Contains(organizationContactParams.Search)
