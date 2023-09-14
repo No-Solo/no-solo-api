@@ -1,7 +1,8 @@
 ﻿using Core.Entities;
 using Core.Enums;
 using Core.Interfaces;
-using Core.Interfaces.Serivces;
+using Core.Interfaces.Data;
+using Core.Interfaces.Services;
 
 namespace Infrastructure.Services;
 

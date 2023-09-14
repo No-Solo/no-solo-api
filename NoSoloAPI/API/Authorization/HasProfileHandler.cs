@@ -1,5 +1,6 @@
 ﻿using API.Extensions;
 using Core.Interfaces;
+using Core.Interfaces.Data;
 using Microsoft.AspNetCore.Authorization;
 
 namespace API.Authorization;

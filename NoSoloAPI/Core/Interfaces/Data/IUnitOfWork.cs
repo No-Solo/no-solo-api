@@ -1,7 +1,7 @@
 ﻿using Core.Entities;
 using Core.Interfaces.Repositories;
 
-namespace Core.Interfaces;
+namespace Core.Interfaces.Data;
 
 public interface IUnitOfWork : IDisposable
 {
