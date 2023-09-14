@@ -6,7 +6,6 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Interfaces.Data;
 using Core.Interfaces.Repositories;
-using Core.Interfaces.Serivces;
 using Core.Interfaces.Services;
 using Infrastructure;
 using Infrastructure.Data;
@@ -51,6 +50,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IPhotoService, PhotoService>();
         services.AddScoped<IMemberService, MemberService>();
+        services.AddScoped<IRecommendService, RecommendService>();
         
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 

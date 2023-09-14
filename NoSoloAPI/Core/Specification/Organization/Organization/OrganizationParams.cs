@@ -1,9 +1,9 @@
-﻿namespace Core.Specification.Organizations;
+﻿using Core.Specification.BaseSpecification;
+
+namespace Core.Specification.Organization.Organization;
 
 public class OrganizationParams : BasicParams
 {
-    private int _pageSize = 6;
-    
     public bool WithOffers { get; set; }
     public bool WithPhotos { get; set; }
     public bool WithContacts { get; set; }

@@ -5,7 +5,6 @@ using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Interfaces.Data;
-using Core.Interfaces.Serivces;
 using Core.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

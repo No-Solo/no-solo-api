@@ -1,4 +1,6 @@
-﻿namespace Core.Specification.UserOffer;
+﻿using Core.Specification.BaseSpecification;
+
+namespace Core.Specification.UserOffer;
 
 public class UserOfferParams : BasicParams
 {

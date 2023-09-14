@@ -1,4 +1,6 @@
-﻿namespace Core.Specification.UserTag;
+﻿using Core.Specification.BaseSpecification;
+
+namespace Core.Specification.UserTag;
 
 public class UserTagParams : BasicParams
 {

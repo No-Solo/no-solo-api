@@ -1,4 +1,6 @@
-﻿namespace Core.Specification;
+﻿using Core.Specification.BaseSpecification;
+
+namespace Core.Specification;
 
 public class UserProfileParams : BasicParams
 {

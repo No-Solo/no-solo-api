@@ -1,4 +1,6 @@
-﻿namespace Core.Specification.UserContact;
+﻿using Core.Specification.BaseSpecification;
+
+namespace Core.Specification.UserContact;
 
 public class UserContactParams : BasicParams
 {
