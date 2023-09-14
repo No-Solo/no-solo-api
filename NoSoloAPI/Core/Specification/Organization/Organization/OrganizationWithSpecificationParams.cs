@@ -1,8 +1,8 @@
-﻿using Core.Entities;
+﻿using Core.Specification.Organizations;
 
-namespace Core.Specification.Organizations;
+namespace Core.Specification.Organization.Organization;
 
-public class OrganizationWithSpecificationParams : BaseSpecification<Organization>
+public class OrganizationWithSpecificationParams : BaseSpecification<Entities.Organization>
 {
     public OrganizationWithSpecificationParams(OrganizationParams organizationParams)
         : base(x => string.IsNullOrEmpty(organizationParams.Search) || x.Name.Contains(organizationParams.Search))

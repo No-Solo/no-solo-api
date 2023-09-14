@@ -25,6 +25,8 @@ public class MappingProfiles : Profile
         // Offers
         CreateMap<UserOffer, UserOfferDto>();
         CreateMap<CreateUserOfferDto, UserOffer>();
+        CreateMap<OrganizationOffer, OrganizationOfferDto>();
+        CreateMap<OrganizationOfferDto, OrganizationOffer>();
         // Organizations
         CreateMap<Organization, OrganizationDto>();
         CreateMap<CreateOrganizationDto, Organization>();
