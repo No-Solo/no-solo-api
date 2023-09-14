@@ -11,6 +11,7 @@ using Core.Interfaces.Services;
 using Core.Specification.Organization.Organization;
 using Core.Specification.Organization.OrganizationContact;
 using Core.Specification.Organization.OrganizationOffer;
+using Core.Specification.Organization.OrganizationPhotoParams;
 using Core.Specification.OrganizationContact;
 using Core.Specification.Organizations;
 using Microsoft.AspNetCore.Authorization;
@@ -24,12 +25,14 @@ public class OrganizationsController : BaseApiController
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly IMemberService _memberService;
+    private readonly IPhotoService _photoService;
 
-    public OrganizationsController(IUnitOfWork unitOfWork, IMapper mapper, IMemberService memberService)
+    public OrganizationsController(IUnitOfWork unitOfWork, IMapper mapper, IMemberService memberService, IPhotoService photoService)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _memberService = memberService;
+        _photoService = photoService;
     }
 
     [AllowAnonymous]
@@ -262,11 +265,11 @@ public class OrganizationsController : BaseApiController
 
         if (organization == null)
             return NotFound(new ApiResponse(400, "The organization not found"));
-        
+
         if (!await _memberService.MemberHasRolesAsync(new[] { RoleEnum.Administrator, RoleEnum.Owner }, organization,
                 User.GetUsername()))
             return BadRequest(new ApiResponse(400, "You don't have access"));
-        
+
         var contact = organization.Contacts.SingleOrDefault(x => x.Id == contactDto.Id);
 
         if (contact == null)
@@ -378,10 +381,27 @@ public class OrganizationsController : BaseApiController
             organizationOfferParams.PageSize, totalItems, data);
     }
 
+    private async Task<Pagination<OrganizationPhotoDto>> GetOrganizationPhotosBySpecificationParams(
+        OrganizationPhotoParams organizationPhotoParams)
+    {
+        var spec = new OrganizationPhotoWithSpecificationParams(organizationPhotoParams);
+
+        var countSpec = new OrganizationPhotoWithPaginationForCountSpecification(organizationPhotoParams);
+
+        var totalItems = await _unitOfWork.Repository<OrganizationPhoto>().CountAsync(countSpec);
+
+        var userOffers = await _unitOfWork.Repository<OrganizationPhoto>().ListAsync(spec);
+
+        var data = _mapper
+            .Map<IReadOnlyList<OrganizationPhoto>, IReadOnlyList<OrganizationPhotoDto>>(userOffers);
+
+        return new Pagination<OrganizationPhotoDto>(organizationPhotoParams.PageNumber,
+            organizationPhotoParams.PageSize, totalItems, data);
+    }
+
     /// <summary>
     /// Organization Offers
     /// </summary>
-    /// <returns></returns>
     [AllowAnonymous]
     [HttpGet("{organizationId:guid}/offers/with-params")]
     public async Task<ActionResult<Pagination<OrganizationOfferDto>>> GetOrganizationOffersWithParams(
@@ -409,7 +429,8 @@ public class OrganizationsController : BaseApiController
 
     [AllowAnonymous]
     [HttpGet("offers/with-params")]
-    public async Task<ActionResult<Pagination<OrganizationOfferDto>>> GetOffersWithParams([FromQuery] OrganizationOfferParams organizationOfferParams)
+    public async Task<ActionResult<Pagination<OrganizationOfferDto>>> GetOffersWithParams(
+        [FromQuery] OrganizationOfferParams organizationOfferParams)
     {
         return Ok(await GetOrganizationOffersBySpecificationParams(organizationOfferParams));
     }
@@ -436,14 +457,14 @@ public class OrganizationsController : BaseApiController
         if (!await _memberService.MemberHasRolesAsync(
                 new[] { RoleEnum.Owner, RoleEnum.Administrator, RoleEnum.Moderator }, organization, User.GetUsername()))
             return BadRequest(new ApiResponse(400, "You don't have access"));
-        
+
         var organizationOffer = new OrganizationOffer
         {
             Name = organizationOfferDto.Name,
             Description = organizationOfferDto.Description,
             Tags = organizationOfferDto.Tags
         };
-        
+
         organization.Offers.Add(organizationOffer);
 
         if (await _unitOfWork.Complete())
@@ -451,7 +472,7 @@ public class OrganizationsController : BaseApiController
 
         return BadRequest(new ApiResponse(400, "Failed to create offer"));
     }
-    
+
     [HttpPut("{organizationId:guid}/update-offer")]
     public async Task<ActionResult> UpdateOrganizationOffer(Guid organizationId,
         [FromBody] OrganizationOfferDto organizationOfferDto)
@@ -465,7 +486,7 @@ public class OrganizationsController : BaseApiController
         if (!await _memberService.MemberHasRolesAsync(
                 new[] { RoleEnum.Owner, RoleEnum.Administrator, RoleEnum.Moderator }, organization, User.GetUsername()))
             return BadRequest(new ApiResponse(400, "You don't have access"));
-        
+
         var offer = organization.Offers.SingleOrDefault(x => x.Id == organizationOfferDto.Id);
 
         if (offer == null)
@@ -491,7 +512,7 @@ public class OrganizationsController : BaseApiController
         if (!await _memberService.MemberHasRolesAsync(
                 new[] { RoleEnum.Owner, RoleEnum.Administrator, RoleEnum.Moderator }, organization, User.GetUsername()))
             return BadRequest(new ApiResponse(400, "You don't have access"));
-        
+
         var offer = organization.Offers.SingleOrDefault(x => x.Id == offerId);
 
         if (offer == null)
@@ -503,5 +524,147 @@ public class OrganizationsController : BaseApiController
             return Ok();
 
         return BadRequest(new ApiResponse(400, "Failed to create offer"));
+    }
+
+    /// <summary>
+    /// Organization Offers
+    /// </summary>
+    [AllowAnonymous]
+    [HttpGet("{organizationId:guid}/photo")]
+    public async Task<ActionResult<OrganizationPhotoDto>> GetMainOrganizationPhoto(Guid organizationId)
+    {
+        var organization =
+            await _unitOfWork.OrganizationRepository.GetOrganizationWithPhotosIncludeByGuid(organizationId);
+
+        var photo = organization.Photos.SingleOrDefault(x => x.IsMain = true);
+
+        if (photo == null)
+            return NotFound(new ApiResponse(404, "The organization doesn't have main photo"));
+
+        return Ok(_mapper.Map<OrganizationPhotoDto>(photo));
+    }
+
+    [AllowAnonymous]
+    [HttpGet("{organizationId:guid}/photos")]
+    public async Task<ActionResult<IReadOnlyList<OrganizationPhotoDto>>> GetOrganizationPhotos(Guid organizationId)
+    {
+        var organization =
+            await _unitOfWork.OrganizationRepository.GetOrganizationWithPhotosIncludeByGuid(organizationId);
+
+        if (organization.Photos == null)
+            return NotFound(new ApiResponse(404, "The organization doesn't have photos"));
+
+        return Ok(_mapper.Map<IReadOnlyList<OrganizationPhotoDto>>(organization.Photos));
+    }
+
+    [AllowAnonymous]
+    [HttpGet("{organizationId:guid}/photos/with-params")]
+    public async Task<ActionResult<IReadOnlyList<OrganizationPhotoDto>>> GetOrganizationPhotosWithParams(
+        Guid organizationId, OrganizationPhotoParams organizationPhotoParams)
+    {
+        organizationPhotoParams.OrganizationId = organizationId;
+        return Ok(await GetOrganizationPhotosBySpecificationParams(organizationPhotoParams));
+    }
+
+    [HttpPost("{organizationId:guid}/add-photo")]
+    public async Task<ActionResult> AddPhotoToOrganization(Guid organizationId, IFormFile file)
+    {
+        var organization =
+            await _unitOfWork.OrganizationRepository.GetOrganizationWithPhotosIncludeByGuid(organizationId);
+
+        if (organization == null)
+            return NotFound(new ApiResponse(404, "The organization not found"));
+        
+        if (!await _memberService.MemberHasRolesAsync(new[] { RoleEnum.Administrator, RoleEnum.Owner }, organization,
+                User.GetUsername()))
+            return BadRequest(new ApiResponse(400, "You don't have access"));
+        
+        var result = await _photoService.AddPhotoAsync(file);
+
+        if (result.Error != null)
+            return BadRequest(new ApiResponse(400, result.Error.Message));
+
+        var photo = new OrganizationPhoto
+        {
+            Url = result.SecureUrl.AbsoluteUri,
+            PublicId = result.PublicId,
+            IsMain = false
+        };
+        
+        if (organization.Photos.Count == 0)
+            photo.IsMain = true;
+
+        if (await _unitOfWork.Complete())
+            return Ok();
+
+        return BadRequest(new ApiResponse(400, "Failed to add photo to organization"));
+    }
+
+    [HttpPut("{organizationId:guid}/set-main-photo/{photoId}")]
+    public async Task<ActionResult> SetMainPhoto(Guid organizationId, Guid photoId)
+    {
+        var organization =
+            await _unitOfWork.OrganizationRepository.GetOrganizationWithPhotosIncludeByGuid(organizationId);
+        
+        if (organization == null)
+            return NotFound(new ApiResponse(404, "The organization not found"));
+
+        if (!await _memberService.MemberHasRolesAsync(new[] { RoleEnum.Owner }, organization, User.GetUsername()))
+            return BadRequest(new ApiResponse(400, "You don't have access"));
+        
+        var photo = organization.Photos.FirstOrDefault(photo => photo.Id == photoId);
+
+        if (photo == null)
+            return NotFound(new ApiResponse(404, "The photo not found"));
+        if (photo.IsMain)
+            return BadRequest("This is already your main photo");
+        
+        var currentMainPhoto = organization.Photos.FirstOrDefault(photo => photo.IsMain);
+        
+        if (currentMainPhoto != null)
+            currentMainPhoto.IsMain = false;
+
+        photo.IsMain = true;
+
+        if (await _unitOfWork.Complete())
+            return Ok();
+
+        return BadRequest(new ApiResponse(400, "Failed to set main photo for organization"));
+    }
+
+    [HttpDelete("{organizationId:guid}/delete-photo/{photoId}")]
+    public async Task<ActionResult> DeletePhoto(Guid organizationId, Guid photoId)
+    {
+        var organization =
+            await _unitOfWork.OrganizationRepository.GetOrganizationWithPhotosIncludeByGuid(organizationId);
+        
+        if (organization == null)
+            return NotFound(new ApiResponse(404, "The organization not found"));
+        
+        if (await _memberService.MemberHasRolesAsync(new [] { RoleEnum.Owner, RoleEnum.Administrator }, organization, User.GetUsername()))
+            return BadRequest(new ApiResponse(400, "You don't have access"));
+        
+        var photo = organization.Photos.FirstOrDefault(photo => photo.Id == photoId);
+
+        if (photo == null)
+            return NotFound(new ApiResponse(404, "The photo not found"));
+
+        if (photo.IsMain)
+            return BadRequest("You cannot delete your main photo");
+
+        if (photo.PublicId != null)
+        {
+            var result = await _photoService.DeletePhotoAsync(photo.PublicId);
+
+            if (result.Error != null)
+                return BadRequest(result.Error.Message);
+        }
+
+        organization.Photos.Remove(photo);
+
+        if (await _unitOfWork.Complete())
+            return Ok();
+
+        return BadRequest("Problem deleting photo");
     }
 }
