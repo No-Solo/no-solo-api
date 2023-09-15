@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-public class RecommendController : BaseApiController
+public class RecommendationController : BaseApiController
 {
     private readonly IRecommendService _recommendService;
 
-    public RecommendController(IRecommendService recommendService)
+    public RecommendationController(IRecommendService recommendService)
     {
         _recommendService = recommendService;
     }
