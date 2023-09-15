@@ -1,12 +1,11 @@
-﻿using Core.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Data.Config;
+namespace Infrastructure.Data.Config.User;
 
-public class UserConfiguration : IEntityTypeConfiguration<User>
+public class UserConfiguration : IEntityTypeConfiguration<Core.Entities.User>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<Core.Entities.User> builder)
     {
         builder.Property(p => p.Id).IsRequired();
         builder.Property(x => x.UserName).IsRequired().HasMaxLength(50);
