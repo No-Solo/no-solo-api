@@ -1,12 +1,11 @@
-﻿using Core.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Data.Config;
+namespace Infrastructure.Data.Config.Organization;
 
-public class OrganizationConfiguration : IEntityTypeConfiguration<Organization>
+public class OrganizationConfiguration : IEntityTypeConfiguration<Core.Entities.Organization>
 {
-    public void Configure(EntityTypeBuilder<Organization> builder)
+    public void Configure(EntityTypeBuilder<Core.Entities.Organization> builder)
     {
         builder.Property(p => p.Id).IsRequired();
         builder.Property(p => p.Name).IsRequired().HasMaxLength(100);

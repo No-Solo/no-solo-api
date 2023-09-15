@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Data.Config;
+namespace Infrastructure.Data.Config.User;
 
 public class UserPhotoConfiguration : IEntityTypeConfiguration<UserPhoto>
 {
