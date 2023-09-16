@@ -362,19 +362,16 @@ public class UsersController : BaseApiController
         return BadRequest(new ApiResponse(400, "Failed to add contact to your profile"));
     }
 
-    [HttpDelete("contacts/delete/{id:guid}")]
-    public async Task<ActionResult> DeleteContactFromUserProfile(Guid id)
+    [HttpDelete("contacts/delete/{offerId:guid}")]
+    public async Task<ActionResult> DeleteContactFromUserProfile(Guid offerId)
     {
         var userProfile =
             await _unitOfWork.UserProfileRepository
                 .GetUserProfileByUsernameWithContactsIncludeAsync(User.GetUsername());
 
-        var userProfileWithContact = await _unitOfWork.UserProfileRepository.GetUserProfileByContactGuid(id);
+        var contact = userProfile.Contacts.SingleOrDefault(x => x.Id == offerId);
 
-        if (userProfile.Id != userProfileWithContact.Id)
-            return NotFound(new ApiResponse(404, "The contact not found"));
-
-        userProfile.Contacts.Remove(userProfile.Contacts.SingleOrDefault(x => x.Id == id));
+        userProfile.Contacts.Remove(contact);
 
         if (await _unitOfWork.Complete())
             return Ok();
@@ -411,20 +408,6 @@ public class UsersController : BaseApiController
         return Ok(await GetUserOffersBySpecificationParams(userOfferParams));
     }
 
-    // [HttpGet("my/{id:guid}")]
-    // public async Task<ActionResult<UserOfferDto>> GetUserOfferByGuid(Guid id)
-    // {
-    //     var userProfile =
-    //         await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithOffersIncludeAsync(User.GetUsername());
-    //
-    //     var userProfileWithOffer = await _unitOfWork.UserProfileRepository.GetUserProfileByOfferGuid(id);
-    //
-    //     if (userProfile.Id != userProfileWithOffer.Id)
-    //         return NotFound(new ApiResponse(404, "The offer not found"));
-    //     
-    //     return Ok(_mapper.Map<UserOfferDto>(await _unitOfWork.Repository<UserOffer>().GetByGuidAsync(id)));
-    // }
-
     [HttpPost("offers/add")]
     public async Task<ActionResult> AddUserOffer(CreateUserOfferDto userOfferDto)
     {
@@ -447,15 +430,12 @@ public class UsersController : BaseApiController
     [HttpPut("offers/update")]
     public async Task<ActionResult<UserOfferDto>> UpdateUserOffer(UserOfferDto userOfferDto)
     {
-        var userProfile =
-            await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithOffersIncludeAsync(User.GetUsername());
-
-        if (await ComplianceCheck(userProfile.Id, userOfferDto.Id))
+        if (await ComplianceCheck(User.GetUserId(), userOfferDto.Id))
             return NotFound(new ApiResponse(404, "The offer not found"));
 
         var userOffer = await _unitOfWork.Repository<UserOffer>().GetByGuidAsync(userOfferDto.Id);
 
-        userOffer.Preferences = userOfferDto.Preferences;
+        _mapper.Map(userOfferDto, userOffer);
 
         if (await _unitOfWork.Complete())
             return Ok(_mapper.Map<UserOfferDto>(userOffer));
@@ -463,16 +443,13 @@ public class UsersController : BaseApiController
         return BadRequest(new ApiResponse(400, "Failed to update the offer"));
     }
 
-    [HttpDelete("offers/delete/{id:guid}")]
-    public async Task<ActionResult> DeleteUserOffer(Guid id)
+    [HttpDelete("offers/delete/{offerId:guid}")]
+    public async Task<ActionResult> DeleteUserOffer(Guid offerId)
     {
-        var userProfile =
-            await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithOffersIncludeAsync(User.GetUsername());
-
-        if (await ComplianceCheck(userProfile.Id, id))
+        if (await ComplianceCheck(User.GetUserId(), offerId))
             return NotFound(new ApiResponse(404, "The offer not found"));
 
-        var userOffer = await _unitOfWork.Repository<UserOffer>().GetByGuidAsync(id);
+        var userOffer = await _unitOfWork.Repository<UserOffer>().GetByGuidAsync(offerId);
 
         _unitOfWork.Repository<UserOffer>().Delete(userOffer);
 
