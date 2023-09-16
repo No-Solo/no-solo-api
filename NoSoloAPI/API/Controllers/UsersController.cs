@@ -45,11 +45,20 @@ public class UsersController : BaseApiController
 
         return Ok(await GetAllTagsBySpecificationParams(userTagParams));
     }
-
-    [HttpGet("tags/{id:guid}")]
-    public async Task<ActionResult<UserTagDto>> GetUserProfileTagByGuid(Guid id)
+    
+    [HttpGet("tags/user/{userId:guid}", Name = "GetUserProfileTags")]
+    public async Task<ActionResult<IReadOnlyList<UserTagDto>>> GetAllUserProfileTagsByUserId(Guid userId,
+        [FromQuery] UserTagParams userTagParams)
     {
-        var userTag = await _unitOfWork.UserTagRepository.GetUserTagByGuid(id);
+        userTagParams.UserProfileId = userId;
+
+        return Ok(await GetAllTagsBySpecificationParams(userTagParams));
+    }
+
+    [HttpGet("tags/{tagId:guid}")]
+    public async Task<ActionResult<UserTagDto>> GetUserProfileTagByGuid(Guid tagId)
+    {
+        var userTag = await _unitOfWork.UserTagRepository.GetUserTagByGuid(tagId);
 
         if (userTag == null)
             return NotFound(new ApiResponse(404, "The user tag not found"));
