@@ -4,6 +4,7 @@ using API.Extensions;
 using API.Helpers;
 using AutoMapper;
 using Core.Entities;
+using Core.Entities.User;
 using Core.Interfaces;
 using Core.Interfaces.Data;
 using Core.Specification;
@@ -32,6 +33,8 @@ public class UsersController : BaseApiController
         _userManager = userManager;
     }
 
+    #region User
+
     #region User Tag
 
     [HttpGet("tags/my", Name = "GetUserProfileTags")]
@@ -45,8 +48,8 @@ public class UsersController : BaseApiController
 
         return Ok(await GetAllTagsBySpecificationParams(userTagParams));
     }
-    
-    [HttpGet("tags/user/{userId:guid}", Name = "GetUserProfileTags")]
+
+    [HttpGet("tags/user/{userId:guid}")]
     public async Task<ActionResult<IReadOnlyList<UserTagDto>>> GetAllUserProfileTagsByUserId(Guid userId,
         [FromQuery] UserTagParams userTagParams)
     {
@@ -54,7 +57,7 @@ public class UsersController : BaseApiController
 
         return Ok(await GetAllTagsBySpecificationParams(userTagParams));
     }
-
+    
     [HttpGet("tags/{tagId:guid}")]
     public async Task<ActionResult<UserTagDto>> GetUserProfileTagByGuid(Guid tagId)
     {
@@ -84,33 +87,28 @@ public class UsersController : BaseApiController
     [HttpPut("tags/update")]
     public async Task<ActionResult> UpdateTag([FromBody] UserTagDto userTagDto)
     {
-        var userTag = await _unitOfWork.UserTagRepository.GetUserTagByGuid(userTagDto.Id);
+        var userTag = await _unitOfWork.Repository<UserTag>().GetByGuidAsync(userTagDto.Id);
 
-        if (userTag == null)
-            return NotFound(new ApiResponse(404, "Tag not found"));
+        if (userTag.UserProfileId != User.GetUserId())
+            return NotFound(new ApiResponse(404, "You don't have access"));
 
-        userTag.Description = userTagDto.Description;
-        userTag.Active = userTagDto.Active;
-        userTag.Tag = userTagDto.Tag;
-
+        _mapper.Map(userTagDto, userTag);
+        
         if (await _unitOfWork.Complete())
             return Ok();
 
         return BadRequest(new ApiResponse(400, "Failed to update the tag"));
     }
 
-    [HttpDelete("tags/delete/{id:guid}")]
-    public async Task<ActionResult> DeleteTagFromUserProfile(Guid id)
+    [HttpDelete("tags/delete/{tagId:guid}")]
+    public async Task<ActionResult> DeleteTagFromUserProfile(Guid tagId)
     {
-        var userProfile =
-            await _unitOfWork.UserProfileRepository.GetUserProfileByUsernameWithTagsIncludeAsync(User.GetUsername());
+        var userTag = await _unitOfWork.Repository<UserTag>().GetByGuidAsync(tagId);
 
-        var userTag = await _unitOfWork.UserTagRepository.GetUserTagByGuid(id);
+        if (userTag.UserProfileId != User.GetUserId())
+            return NotFound(new ApiResponse(404, "You don't have access"));
 
-        if (!userProfile.Tags.Contains(userTag))
-            return NotFound(new ApiResponse(404, "The user profile doesnt have the tag"));
-
-        userProfile.Tags.Remove(userTag);
+        _unitOfWork.Repository<UserTag>().Delete(userTag);
 
         if (await _unitOfWork.Complete())
             return Ok();
@@ -118,11 +116,28 @@ public class UsersController : BaseApiController
         return BadRequest(new ApiResponse(400, "Failed to delete the tag"));
     }
 
+    [HttpPost("tags/active/{tagId:guid}")]
+    public async Task<ActionResult> ChangeActiveTask(Guid tagId)
+    {
+        var userTag = await _unitOfWork.Repository<UserTag>().GetByGuidAsync(tagId);
+
+        var userId = User.GetUserId();
+        
+        if (userTag.UserProfileId != User.GetUserId())
+            return NotFound(new ApiResponse(404, "You don't have access"));
+
+        userTag.Active = !userTag.Active;
+
+        if (await _unitOfWork.Complete())
+            return Ok();
+
+        return BadRequest(new ApiResponse(400, "Failed to change activity of the user tag"));
+    }
+
     #endregion
 
     #region User Profile
-
-    [Cached(600)] // example of using CacheAttribute
+    
     [HttpGet("profiles", Name = "GetAllProfiles")]
     public async Task<ActionResult<IReadOnlyList<UserProfileDto>>> GetAllUserProfiles(
         [FromQuery] UserProfileParams userProfileParams)
@@ -141,9 +156,8 @@ public class UsersController : BaseApiController
         return Ok(new Pagination<UserProfileDto>(userProfileParams.PageNumber, userProfileParams.PageSize, totalItems,
             data));
     }
-
-    [Cached(600)] // example of using CacheAttribute
-    [HttpGet("profile", Name = "GetUserProfile")]
+    
+    [HttpGet("profile")]
     public async Task<ActionResult<UserProfileDto>> GetCurrentUserProfile()
     {
         var userProfile = await
@@ -312,7 +326,7 @@ public class UsersController : BaseApiController
 
         return Ok(_mapper.Map<ContactDto>(contact));
     }
-    
+
     // [HttpGet("contacts/{userProfileId:guid}/{contactId:guid}")]
     // public async Task<ActionResult<ContactDto>> GetMyUserProfileContactByGuid(Guid userProfileId, Guid contactId)
     // {
@@ -467,6 +481,8 @@ public class UsersController : BaseApiController
 
         return BadRequest(new ApiResponse(400, "Failed to delete the offer"));
     }
+
+    #endregion
 
     #endregion
 
