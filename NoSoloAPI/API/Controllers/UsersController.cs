@@ -4,7 +4,6 @@ using API.Extensions;
 using API.Helpers;
 using AutoMapper;
 using Core.Entities;
-using Core.Entities.User;
 using Core.Interfaces;
 using Core.Interfaces.Data;
 using Core.Specification;
