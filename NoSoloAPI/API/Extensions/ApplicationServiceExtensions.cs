@@ -13,18 +13,9 @@ public static class ApplicationServiceExtensions
     public static IServiceCollection AddAplicationService(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddCors(options =>
-        {
-            options.AddPolicy("CorsPolicy",
-                policy => { policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
-        });
-
-        services.AddEndpointsApiExplorer();
-
         services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
         
         services.AddSwaggerGen();
-
         services.AddSwaggerDocumentation();
 
         services.AddDbContext<DataBaseContext>(options =>
@@ -35,23 +26,7 @@ public static class ApplicationServiceExtensions
 
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-        services.Configure<ApiBehaviorOptions>(options =>
-        {
-            options.InvalidModelStateResponseFactory = context =>
-            {
-                var errors = context.ModelState
-                    .Where(error => error.Value.Errors.Count > 0)
-                    .SelectMany(x => x.Value.Errors)
-                    .Select(x => x.ErrorMessage).ToArray();
-
-                var errorResponse = new ApiValidationErrorResponse
-                {
-                    Errors = errors
-                };
-
-                return new BadRequestObjectResult(errorResponse);
-            };
-        });
+        services.AddApiBehaviourServices();
 
         services.AddScopeService();
         services.AddIdentityServices(configuration);
