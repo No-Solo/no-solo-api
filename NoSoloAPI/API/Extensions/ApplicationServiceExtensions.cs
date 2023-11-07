@@ -3,17 +3,8 @@ using API.Authorization;
 using API.Errors;
 using API.Helpers;
 using Core.Entities;
-using Core.Interfaces;
-using Core.Interfaces.Data;
-using Core.Interfaces.Repositories;
-using Core.Interfaces.Services;
-using Infrastructure;
 using Infrastructure.Data;
-using Infrastructure.Data.Migrations;
-using Infrastructure.Repositories;
-using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -41,20 +32,6 @@ public static class ApplicationServiceExtensions
             .AddDefaultTokenProviders();
 
         services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
-        
-        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-        services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IOrganizationRepository, OrganizationRepository>();
-
-
-        services.AddScoped<ITokenService, TokenService>();
-        services.AddScoped<IPhotoService, PhotoService>();
-        services.AddScoped<IMemberService, MemberService>();
-        services.AddScoped<IRecommendService, RecommendService>();
-
-        services.AddScoped<IResponseCacheService, ResponseCacheService>();
-        
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
@@ -93,7 +70,6 @@ public static class ApplicationServiceExtensions
                 new HasProfileRequirement()
             ));
         });
-        services.AddSingleton<IAuthorizationHandler, HasProfileHandler>();
 
         services.Configure<ApiBehaviorOptions>(options =>
         {
