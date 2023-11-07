@@ -1,14 +1,8 @@
-﻿using System.Text;
-using API.Authorization;
-using API.Errors;
+﻿using API.Errors;
 using API.Helpers;
-using Core.Entities;
 using Infrastructure.Data;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 namespace API.Extensions;
 
@@ -27,13 +21,8 @@ public static class ApplicationServiceExtensions
 
         services.AddEndpointsApiExplorer();
 
-        services.AddIdentity<User, UserRole>()
-            .AddEntityFrameworkStores<DataBaseContext>()
-            .AddDefaultTokenProviders();
-
         services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
-
-        services.AddEndpointsApiExplorer();
+        
         services.AddSwaggerGen();
 
         services.AddSwaggerDocumentation();
@@ -45,31 +34,6 @@ public static class ApplicationServiceExtensions
         });
 
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(o =>
-        {
-            o.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidIssuer = configuration["Jwt:Issuer"],
-                ValidAudience = configuration["Jwt:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = false,
-                ValidateIssuerSigningKey = true
-            };
-        });
-        services.AddAuthorization(options =>
-        {
-            options.AddPolicy("HasProfile", policy => policy.AddRequirements(
-                new HasProfileRequirement()
-            ));
-        });
 
         services.Configure<ApiBehaviorOptions>(options =>
         {
@@ -89,6 +53,9 @@ public static class ApplicationServiceExtensions
             };
         });
 
+        services.AddScopeService();
+        services.AddIdentityServices(configuration);
+        
         return services;
     }
 }
