@@ -1,0 +1,12 @@
+﻿using NoSolo.Core.Specification.BaseSpecification;
+
+namespace NoSolo.Core.Specification.Organization.Organization;
+
+public class OrganizationWithFiltersForCountSpecification : BaseSpecification<Entities.Organization.Organization>
+{
+    public OrganizationWithFiltersForCountSpecification(OrganizationParams organizationParams)
+        : base(x => string.IsNullOrEmpty(organizationParams.Search) || x.Name.Contains(organizationParams.Search))
+    {
+        
+    }
+}
