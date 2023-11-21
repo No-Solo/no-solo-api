@@ -1,8 +1,7 @@
-﻿using NoSolo.Core.Entities;
-using NoSolo.Core.Entities.Organization;
+﻿using NoSolo.Core.Entities.Organization;
 using NoSolo.Core.Enums;
-using NoSolo.Abstractions.Data;
-using NoSolo.Abstractions.Services;
+using NoSolo.Abstractions.Data.Data;
+using NoSolo.Abstractions.Services.Services;
 using NoSolo.Core.Entities.User;
 
 namespace NoSolo.Infrastructure.Services;

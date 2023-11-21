@@ -1,8 +1,7 @@
 ﻿using System.Collections;
-using NoSolo.Core.Entities;
 using NoSolo.Abstractions.Base;
-using NoSolo.Abstractions.Data;
-using NoSolo.Abstractions.Repositories;
+using NoSolo.Abstractions.Data.Data;
+using NoSolo.Abstractions.Repositories.Repositories;
 using NoSolo.Infrastructure.Data;
 using NoSolo.Infrastructure.Repositories;
 

@@ -2,11 +2,10 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using NoSolo.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using NoSolo.Abstractions.Services;
+using NoSolo.Abstractions.Services.Services;
 using NoSolo.Core.Entities.User;
 
 namespace NoSolo.Infrastructure.Services;

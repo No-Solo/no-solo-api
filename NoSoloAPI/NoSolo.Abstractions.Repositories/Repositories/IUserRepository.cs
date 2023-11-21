@@ -1,7 +1,6 @@
-﻿using NoSolo.Core.Entities;
-using NoSolo.Core.Entities.User;
+﻿using NoSolo.Core.Entities.User;
 
-namespace NoSolo.Abstractions.Repositories;
+namespace NoSolo.Abstractions.Repositories.Repositories;
 
 public interface IUserRepository
 {

@@ -1,4 +1,4 @@
-﻿namespace NoSolo.Abstractions.Services;
+﻿namespace NoSolo.Abstractions.Services.Services;
 
 public interface IResponseCacheService
 {
