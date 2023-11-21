@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using NoSolo.Abstractions.Services;
+using NoSolo.Abstractions.Services.Services;
 using StackExchange.Redis;
 
 namespace NoSolo.Infrastructure.Services;

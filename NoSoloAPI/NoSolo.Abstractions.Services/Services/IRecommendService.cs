@@ -1,9 +1,8 @@
-﻿using NoSolo.Core.Entities;
-using NoSolo.Core.Entities.Organization;
+﻿using NoSolo.Core.Entities.Organization;
 using NoSolo.Core.Entities.User;
 using NoSolo.Core.Enums;
 
-namespace NoSolo.Abstractions.Services;
+namespace NoSolo.Abstractions.Services.Services;
 
 public interface IRecommendService
 {

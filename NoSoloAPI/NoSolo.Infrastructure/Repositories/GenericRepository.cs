@@ -1,8 +1,6 @@
-﻿using NoSolo.Core.Entities;
-using NoSolo.Core.Specification;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NoSolo.Abstractions.Base;
-using NoSolo.Abstractions.Repositories;
+using NoSolo.Abstractions.Repositories.Repositories;
 using NoSolo.Abstractions.Services;
 using NoSolo.Infrastructure.Data;
 

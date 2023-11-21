@@ -1,7 +1,7 @@
 ﻿using NoSolo.Core.Entities;
 using NoSolo.Core.Entities.Organization;
 using Microsoft.EntityFrameworkCore;
-using NoSolo.Abstractions.Repositories;
+using NoSolo.Abstractions.Repositories.Repositories;
 using NoSolo.Infrastructure.Data;
 
 namespace NoSolo.Infrastructure.Repositories;

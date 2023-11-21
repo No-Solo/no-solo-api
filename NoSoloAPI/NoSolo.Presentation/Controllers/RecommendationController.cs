@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NoSolo.Abstractions.Services;
+using NoSolo.Abstractions.Services.Services;
 using NoSolo.Core.Entities.Organization;
 using NoSolo.Core.Entities.User;
 using NoSolo.Core.Enums;
