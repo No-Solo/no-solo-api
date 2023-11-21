@@ -1,8 +1,7 @@
 ﻿using System.Security.Claims;
-using NoSolo.Core.Entities;
 using NoSolo.Core.Entities.User;
 
-namespace NoSolo.Abstractions.Services;
+namespace NoSolo.Abstractions.Services.Services;
 
 public interface ITokenService
 {

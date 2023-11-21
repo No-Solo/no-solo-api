@@ -1,8 +1,9 @@
-﻿using NoSolo.Core.Entities;
-using NoSolo.Abstractions.Base;
-using NoSolo.Abstractions.Repositories;
+﻿
 
-namespace NoSolo.Abstractions.Data;
+using NoSolo.Abstractions.Base;
+using NoSolo.Abstractions.Repositories.Repositories;
+
+namespace NoSolo.Abstractions.Data.Data;
 
 public interface IUnitOfWork : IDisposable
 {

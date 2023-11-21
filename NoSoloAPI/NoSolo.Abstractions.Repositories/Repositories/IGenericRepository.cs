@@ -1,9 +1,7 @@
-﻿using NoSolo.Core.Entities;
-using NoSolo.Core.Specification;
-using NoSolo.Abstractions.Base;
+﻿using NoSolo.Abstractions.Base;
 using NoSolo.Abstractions.Services;
 
-namespace NoSolo.Abstractions.Repositories;
+namespace NoSolo.Abstractions.Repositories.Repositories;
 
 public interface IGenericRepository<T> where T : BaseEntity
 {

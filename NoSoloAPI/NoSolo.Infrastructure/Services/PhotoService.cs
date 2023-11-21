@@ -3,7 +3,7 @@ using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using NoSolo.Abstractions.Services;
+using NoSolo.Abstractions.Services.Services;
 
 namespace NoSolo.Infrastructure.Services;
 

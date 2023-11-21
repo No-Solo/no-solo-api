@@ -27,8 +27,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\NoSolo.Abstractions.Services\NoSolo.Abstractions.Services.csproj" />
         <ProjectReference Include="..\NoSolo.Core\NoSolo.Core.csproj" />
-        <ProjectReference Include="..\NoSolo.Abstractions\NoSolo.Abstractions.csproj" />
+        <ProjectReference Include="..\NoSolo.Abstractions.Data\NoSolo.Abstractions.Data.csproj" />
     </ItemGroup>
 
 

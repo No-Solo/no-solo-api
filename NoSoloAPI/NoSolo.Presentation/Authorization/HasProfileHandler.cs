@@ -1,6 +1,7 @@
 ﻿using NoSolo.Presentation.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using NoSolo.Abstractions.Data;
+using NoSolo.Abstractions.Data.Data;
 
 namespace NoSolo.Presentation.Authorization;
 
