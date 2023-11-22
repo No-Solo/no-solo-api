@@ -1151,3 +1151,7 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/windows,linux,macos,rider,vs,aspnetcore,csharp,clion,visualstudio,visualstudiocode,notepadpp,sublimetext,azurefunctions
 NoSoloAPI/API/appsettings.json
 NoSoloAPI/API/appsettings.Development.json
+
+NoSoloAPI/NoSolo.Web.API/appsettings.development.json
+
+NoSoloAPI/NoSolo.Web.API/appsettings.json
