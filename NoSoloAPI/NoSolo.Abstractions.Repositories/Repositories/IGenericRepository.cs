@@ -3,7 +3,7 @@ using NoSolo.Abstractions.Services;
 
 namespace NoSolo.Abstractions.Repositories.Repositories;
 
-public interface IGenericRepository<T> where T : BaseEntity
+public interface IGenericRepository<T> where T : class
 {
     Task<T> GetByIdAsync(int id);
     Task<T> GetByGuidAsync(Guid id);

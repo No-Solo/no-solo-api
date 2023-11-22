@@ -12,7 +12,7 @@ public interface IUnitOfWork : IDisposable
     IRefreshTokenRepository RefreshTokenRepository { get; }
     IUserProfileRepository UserProfileRepository { get; }
     IUserTagRepository UserTagRepository { get; }
-    IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity;
+    IGenericRepository<TEntity> Repository<TEntity>() where TEntity : class;
     Task<bool> Complete();
     bool HasChanges();
     void Dispose();
