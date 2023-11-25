@@ -1,6 +1,6 @@
 ﻿using NoSolo.Core.Entities.Auth;
 
-namespace NoSolo.Abstractions.Repositories.Repositories;
+namespace NoSolo.Abstractions.Repositories.Utility;
 
 public interface IRefreshTokenRepository
 {

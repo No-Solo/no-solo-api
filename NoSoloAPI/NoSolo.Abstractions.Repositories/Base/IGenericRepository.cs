@@ -1,7 +1,6 @@
-﻿using NoSolo.Abstractions.Base;
-using NoSolo.Abstractions.Services;
+﻿using NoSolo.Abstractions.Services;
 
-namespace NoSolo.Abstractions.Repositories.Repositories;
+namespace NoSolo.Abstractions.Repositories.Base;
 
 public interface IGenericRepository<T> where T : class
 {
