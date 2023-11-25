@@ -1,10 +1,10 @@
 ﻿using NoSolo.Core.Specification.BaseSpecification;
 
-namespace NoSolo.Core.Specification.UserContact;
+namespace NoSolo.Core.Specification.Users.UserContact;
 
 public class UserContactParams : BasicParams
 {
-    public Guid? UserProfileId { get; set; }
+    public Guid? UserGuid { get; set; }
     
     public string? SortByAlphabetical { get; set; }
     private string _search;

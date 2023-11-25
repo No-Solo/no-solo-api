@@ -15,11 +15,11 @@ public class RecommendService : IRecommendService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<IReadOnlyList<UserProfile>> RecommendUsersForOrganizationOfferByTags(List<TagEnum> tags)
+    public async Task<IReadOnlyList<User>> RecommendUsersForOrganizationOfferByTags(List<string> tags)
     {
-        var userProfiles = await _unitOfWork.Repository<UserProfile>().ListAllAsync();
+        var userProfiles = await _unitOfWork.Repository<User>().ListAllAsync();
 
-        var targetUserProfiles = new List<UserProfile>();
+        var targetUserProfiles = new List<User>();
 
         foreach (var userProfile in userProfiles)
         {
@@ -39,7 +39,7 @@ public class RecommendService : IRecommendService
         return targetUserProfiles;
     }
 
-    public async Task<IReadOnlyList<Organization>> RecommendOrganizationsForUserOfferByTags(List<TagEnum> tags)
+    public async Task<IReadOnlyList<Organization>> RecommendOrganizationsForUserOfferByTags(List<string> tags)
     {
         var organizations = await _unitOfWork.Repository<Organization>().ListAllAsync();
 

@@ -1,9 +1,8 @@
-﻿using NoSolo.Core.Entities;
-using NoSolo.Core.Entities.Base;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NoSolo.Core.Entities.Base;
 
-namespace NoSolo.Infrastructure.Data.Data.Config.Organization;
+namespace NoSolo.Infrastructure.Data.Config.Organization;
 
 public class OrganizationContactConfiguration : IEntityTypeConfiguration<Contact<NoSolo.Core.Entities.Organization.Organization>>
 {

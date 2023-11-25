@@ -10,4 +10,8 @@
       <ProjectReference Include="..\NoSolo.Core\NoSolo.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Dtos\Base\Create\" />
+    </ItemGroup>
+
 </Project>

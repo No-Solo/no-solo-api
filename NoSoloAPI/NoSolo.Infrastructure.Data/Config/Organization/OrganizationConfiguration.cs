@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace NoSolo.Infrastructure.Data.Data.Config.Organization;
+namespace NoSolo.Infrastructure.Data.Config.Organization;
 
 public class OrganizationConfiguration : IEntityTypeConfiguration<NoSolo.Core.Entities.Organization.Organization>
 {
@@ -16,7 +16,5 @@ public class OrganizationConfiguration : IEntityTypeConfiguration<NoSolo.Core.En
             .HasForeignKey(x => x.TEntityId);
         builder.HasMany(p => p.Photos).WithOne()
             .HasForeignKey(x => x.OrganizationId);
-
-        builder.HasOne(p => p.Project).WithOne();
     }
 }

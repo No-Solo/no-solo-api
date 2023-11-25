@@ -1,9 +1,8 @@
-﻿using NoSolo.Core.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NoSolo.Core.Entities.Organization;
 
-namespace NoSolo.Infrastructure.Data.Data.Config.Organization;
+namespace NoSolo.Infrastructure.Data.Config.Organization;
 
 public class OrganizationPhotoConfiguration : IEntityTypeConfiguration<OrganizationPhoto>
 {

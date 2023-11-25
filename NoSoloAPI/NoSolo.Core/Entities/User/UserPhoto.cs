@@ -4,6 +4,6 @@ namespace NoSolo.Core.Entities.User;
 
 public class UserPhoto : Photo
 {
-    public UserProfile UserProfile { get; set; }
-    public Guid UserProfileId { get; set; }
+    public User User { get; set; }
+    public Guid UserGuid { get; set; }
 }

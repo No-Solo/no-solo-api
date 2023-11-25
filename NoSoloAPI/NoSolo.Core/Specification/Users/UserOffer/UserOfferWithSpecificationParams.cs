@@ -1,5 +1,5 @@
 ﻿using NoSolo.Core.Specification.BaseSpecification;
-using NoSolo.Core.Specification.UserOffer;
+using NoSolo.Core.Specification.Users.UserOffer;
 
 namespace NoSolo.Core.Specification.User.UserOffer;
 
@@ -7,7 +7,7 @@ public class UserOfferWithSpecificationParams : BaseSpecification<Entities.User.
 {
     public UserOfferWithSpecificationParams(UserOfferParams userOfferParams)
         : base(x => (string.IsNullOrEmpty(userOfferParams.Search) || x.Preferences.ToLower().Contains(userOfferParams.Search))
-                    && (!userOfferParams.UserProfileId.HasValue || x.UserProfileId == userOfferParams.UserProfileId))
+                    && (!userOfferParams.UserGuid.HasValue || x.UserGuid == userOfferParams.UserGuid))
     {
         ApplyPaging(userOfferParams.PageSize * (userOfferParams.PageNumber -1), userOfferParams.PageSize);
         

@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NoSolo.Abstractions.Base;
-using NoSolo.Abstractions.Repositories.Repositories;
+using NoSolo.Abstractions.Repositories.Base;
 using NoSolo.Abstractions.Services;
 using NoSolo.Infrastructure.Data.Data;
+using NoSolo.Infrastructure.Data.DbContext;
 
 namespace NoSolo.Infrastructure.Repositories.Base;
 

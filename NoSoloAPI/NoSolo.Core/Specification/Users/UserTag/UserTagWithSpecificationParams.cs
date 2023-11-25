@@ -1,31 +1,30 @@
 ﻿using NoSolo.Core.Specification.BaseSpecification;
-using NoSolo.Core.Specification.UserTag;
 
-namespace NoSolo.Core.Specification.User.UserTag;
+namespace NoSolo.Core.Specification.Users.UserTag;
 
 public class UserTagWithSpecificationParams : BaseSpecification<Entities.User.UserTag>
 {
     public UserTagWithSpecificationParams(UserTagParams userTagParams)
-        : base(x => (string.IsNullOrEmpty(userTagParams.Search) || x.Description.ToLower().Contains(userTagParams.Search))
-                    && (!userTagParams.UserProfileId.HasValue || x.UserProfileId == userTagParams.UserProfileId)
+        : base(x => (string.IsNullOrEmpty(userTagParams.Search) || x.Tag.ToLower().Contains(userTagParams.Search))
+                    && (!userTagParams.UserGuid.HasValue || x.UserGuid == userTagParams.UserGuid)
                     && (userTagParams.IsActive == x.Active))
     {
-        ApplyPaging(userTagParams.PageSize * (userTagParams.PageNumber -1), userTagParams.PageSize);
-        
         if (!string.IsNullOrEmpty(userTagParams.SortByAlphabetical))
         {
             switch (userTagParams.SortByAlphabetical)
             {
                 case "alphaAsc":
-                    AddOrderBy(p => p.Description);
+                    AddOrderBy(p => p.Tag);
                     break;
                 case "alphaDesc":
-                    AddOrderByDescending(p => p.Description);
+                    AddOrderByDescending(p => p.Tag);
                     break;
                 default:
                     AddOrderBy(p => p.Id);
                     break;
             }
         }
+        
+        ApplyPaging(userTagParams.PageSize * (userTagParams.PageNumber -1), userTagParams.PageSize);
     }
 }

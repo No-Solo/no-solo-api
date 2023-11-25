@@ -3,7 +3,7 @@ using NoSolo.Core.Enums;
 
 namespace NoSolo.Core.Entities.Base;
 
-public class Request<T, U> : BaseEntity where T : BaseEntity where U : BaseEntity
+public class Request<T, U> : BaseEntity where T : class where U : BaseEntity
 {
     public T TEntity { get; set; }
     public Guid TEntityId { get; set; }

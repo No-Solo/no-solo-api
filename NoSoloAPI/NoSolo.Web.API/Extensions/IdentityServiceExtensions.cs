@@ -1,10 +1,9 @@
 ﻿using System.Text;
-using NoSolo.Infrastructure.Data.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using NoSolo.Core.Entities.User;
-using NoSolo.Web.API.Authorization;
+using NoSolo.Infrastructure.Data.DbContext;
 
 namespace NoSolo.Web.API.Extensions;
 
@@ -34,12 +33,13 @@ public static class IdentityServiceExtensions
                 ValidateIssuerSigningKey = true
             };
         });
-        services.AddAuthorization(options =>
-        {
-            options.AddPolicy("HasProfile", policy => policy.AddRequirements(
-                new HasProfileRequirement()
-            ));
-        });
+        
+        // services.AddAuthorization(options =>
+        // {
+        //     options.AddPolicy("HasProfile", policy => policy.AddRequirements(
+        //         new HasProfileRequirement()
+        //     ));
+        // });
 
         return services;
     }

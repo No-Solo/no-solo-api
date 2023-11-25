@@ -1,12 +1,10 @@
 ﻿using System.Collections;
-using NoSolo.Abstractions.Base;
 using NoSolo.Abstractions.Data.Data;
-using NoSolo.Abstractions.Repositories.Repositories;
-using NoSolo.Infrastructure.Data.Data;
+using NoSolo.Abstractions.Repositories.Base;
+using NoSolo.Abstractions.Repositories.Utility;
+using NoSolo.Infrastructure.Data.DbContext;
 using NoSolo.Infrastructure.Repositories.Auth;
 using NoSolo.Infrastructure.Repositories.Base;
-using NoSolo.Infrastructure.Repositories.Organization;
-using NoSolo.Infrastructure.Repositories.Users;
 
 namespace NoSolo.Infrastructure.Repositories.UOW;
 
@@ -20,12 +18,8 @@ public class UnitOfWork : IUnitOfWork
     {
         _dataBaseContext = dataBaseContext;
     }
-
-    public IUserRepository UserRepository => new UserRepository(_dataBaseContext);
-    public IOrganizationRepository OrganizationRepository => new OrganizationRepository(_dataBaseContext);
+    
     public IRefreshTokenRepository RefreshTokenRepository => new RefreshTokenRepository(_dataBaseContext);
-    public IUserProfileRepository UserProfileRepository => new UserProfileRepository(_dataBaseContext);
-    public IUserTagRepository UserTagRepository => new UserTagRepository(_dataBaseContext);
 
     public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : class
     {
