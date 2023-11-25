@@ -3,14 +3,13 @@ using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using NoSolo.Abstractions.Data.Data;
-using NoSolo.Abstractions.Repositories.Repositories;
 using NoSolo.Abstractions.Services.Auth;
 using NoSolo.Abstractions.Services.Users;
 using NoSolo.Contracts.Dtos.Auth;
-using NoSolo.Contracts.Dtos.User;
 using NoSolo.Contracts.Dtos.Users;
 using NoSolo.Core.Entities.Auth;
 using NoSolo.Core.Entities.User;
+using NoSolo.Core.Enums;
 using NoSolo.Core.Exceptions;
 using NoSolo.Core.Specification.Users.Users;
 
@@ -20,18 +19,16 @@ public class UserCredentialsService : IUserCredentialsService
 {
     private readonly IMapper _mapper;
     private readonly ITokenService _tokenService;
-    private readonly IUserRepository _userRepository;
     private readonly UserManager<User> _userManager;
     private readonly IUnitOfWork _unitOfWork;
 
     private User? _user;
 
-    public UserCredentialsService(IMapper mapper, ITokenService tokenService, IUserRepository userRepository,
+    public UserCredentialsService(IMapper mapper, ITokenService tokenService,
         UserManager<User> userManager, IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _tokenService = tokenService;
-        _userRepository = userRepository;
         _userManager = userManager;
         _unitOfWork = unitOfWork;
 
@@ -40,7 +37,7 @@ public class UserCredentialsService : IUserCredentialsService
 
     public async Task<UserDto> GetAuthorizedUser(string email)
     {
-        _user = await GetUserByEmailWithAllIncludes(email);
+        _user ??= await GetUserByEmailWithAllIncludes(email);
 
         return _mapper.Map<UserDto>(_user);
     }
@@ -59,7 +56,9 @@ public class UserCredentialsService : IUserCredentialsService
             {
                 UserName = signUpDto.UserName,
                 Email = signUpDto.Email,
-                UserProfile = null
+                Locale = LocaleEnum.English,
+                OrganizationUsers = null,
+                Photo = null
             },
             signUpDto.Password
         );
@@ -73,7 +72,7 @@ public class UserCredentialsService : IUserCredentialsService
             throw new InvalidCredentialsException(stringBuilder.ToString());
         }
 
-        _user = await _userRepository.GetUserByEmailWithAllIncludesAsync(signUpDto.Email);
+        _user = await GetUserByEmailWithAllIncludes(signUpDto.Email);
 
         return _mapper.Map<UserDto>(_user);
     }
@@ -119,10 +118,17 @@ public class UserCredentialsService : IUserCredentialsService
         var userParams = new UserParams()
         {
             Email = email,
-            OrganizationsInclude = true,
-            UserProfileInclude = true
+            Includes = new List<UserInclude>()
+            {
+                UserInclude.Contacts,
+                UserInclude.Membership,
+                UserInclude.Offers,
+                UserInclude.Photo,
+                UserInclude.Requests,
+                UserInclude.Tags
+            }
         };
-        
+
         var spec = new UserWithSpecificationParams(userParams);
 
         return await _unitOfWork.Repository<User>().GetEntityWithSpec(spec);

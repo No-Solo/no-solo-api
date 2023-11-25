@@ -1,10 +1,11 @@
 ﻿using NoSolo.Core.Specification.BaseSpecification;
 
-namespace NoSolo.Core.Specification.UserTag;
+namespace NoSolo.Core.Specification.Users.UserTag;
 
 public class UserTagParams : BasicParams
 {
-    public Guid? UserProfileId { get; set; }
+    public Guid UserTagGuid { get; set; }
+    public Guid? UserGuid { get; set; }
 
     public bool IsActive { get; set; } = true;
     public string? SortByAlphabetical { get; set; }

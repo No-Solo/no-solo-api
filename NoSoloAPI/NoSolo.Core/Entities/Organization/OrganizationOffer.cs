@@ -10,7 +10,7 @@ public class OrganizationOffer : BaseEntity
 
     public string Name { get; set; }
     public string Description { get; set; }
-    public List<TagEnum> Tags { get; set; } = new();
+    public List<string> Tags { get; set; } = new();
 
     public DateTime Created { get; set; } = DateTime.UtcNow;
 }

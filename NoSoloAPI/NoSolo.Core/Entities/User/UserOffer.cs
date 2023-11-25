@@ -4,8 +4,8 @@ namespace NoSolo.Core.Entities.User;
 
 public class UserOffer : BaseEntity
 {
-    public UserProfile UserProfile { get; set; }
-    public Guid UserProfileId { get; set; }
+    public User User { get; set; }
+    public Guid UserGuid { get; set; }
 
     public string Preferences { get; set; }
     public DateTime Created { get; set; } = DateTime.UtcNow;

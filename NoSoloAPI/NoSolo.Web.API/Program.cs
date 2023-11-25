@@ -3,6 +3,7 @@ using NoSolo.Web.API.Middleware;
 using NoSolo.Infrastructure.Data.Data;
 using NoSolo.Infrastructure.Data.Data.Migrations;
 using Microsoft.EntityFrameworkCore;
+using NoSolo.Infrastructure.Data.DbContext;
 
 var builder = WebApplication.CreateBuilder(args);
 

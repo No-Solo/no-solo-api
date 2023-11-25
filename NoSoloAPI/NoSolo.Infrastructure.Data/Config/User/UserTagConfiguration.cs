@@ -1,9 +1,8 @@
-﻿using NoSolo.Core.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NoSolo.Core.Entities.User;
 
-namespace NoSolo.Infrastructure.Data.Data.Config.User;
+namespace NoSolo.Infrastructure.Data.Config.User;
 
 public class UserTagConfiguration : IEntityTypeConfiguration<UserTag>
 {
@@ -11,7 +10,6 @@ public class UserTagConfiguration : IEntityTypeConfiguration<UserTag>
     {
         builder.Property(p => p.Id).IsRequired();
         builder.Property(p => p.Active).IsRequired();
-        builder.Property(p => p.Description).IsRequired().HasMaxLength(500);
-        builder.Property(p => p.Tag).IsRequired();
+        builder.Property(p => p.Tag).IsRequired().HasMaxLength(20);
     }
 }

@@ -6,6 +6,6 @@ namespace NoSolo.Abstractions.Services.Users;
 
 public interface IRecommendService
 {
-    Task<IReadOnlyList<UserProfile>> RecommendUsersForOrganizationOfferByTags(List<TagEnum> tags);
-    Task<IReadOnlyList<Organization>> RecommendOrganizationsForUserOfferByTags(List<TagEnum> tags);
+    Task<IReadOnlyList<User>> RecommendUsersForOrganizationOfferByTags(List<string> tags);
+    Task<IReadOnlyList<Organization>> RecommendOrganizationsForUserOfferByTags(List<string> tags);
 }

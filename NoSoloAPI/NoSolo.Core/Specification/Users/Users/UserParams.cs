@@ -1,9 +1,9 @@
-﻿namespace NoSolo.Core.Specification.Users.Users;
+﻿using NoSolo.Core.Enums;
+
+namespace NoSolo.Core.Specification.Users.Users;
 
 public class UserParams
 {
     public string? Email { get; set; }
-
-    public bool UserProfileInclude { get; set; }
-    public bool OrganizationsInclude { get; set; }
+    public List<UserInclude> Includes { get; set; }
 }

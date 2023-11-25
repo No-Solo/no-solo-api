@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using NoSolo.Abstractions.Repositories.Repositories;
+using NoSolo.Abstractions.Repositories.Utility;
 using NoSolo.Abstractions.Services.Auth;
 using NoSolo.Contracts.Dtos.Auth;
 using NoSolo.Core.Entities.User;

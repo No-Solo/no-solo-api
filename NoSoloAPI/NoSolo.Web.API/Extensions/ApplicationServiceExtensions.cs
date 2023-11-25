@@ -1,6 +1,7 @@
 ﻿using NoSolo.Infrastructure.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using NoSolo.Abstractions.Services.Email;
+using NoSolo.Infrastructure.Data.DbContext;
 using NoSolo.Infrastructure.Services.Email;
 using NoSolo.Infrastructure.Services.Email.Options;
 using NoSolo.Infrastructure.Services.Photos.Settings;
@@ -29,14 +30,14 @@ public static class ApplicationServiceExtensions
 
         services.AddApiBehaviourServices();
 
-        services.AddScopedService();
-        services.AddScopedHandlers();
+        services.AddScopedServices();
+        // services.AddScopedHandlers();
         services.AddScopedRepositories();
-
+        
         services.AddEmailService(configuration);
         
         services.AddIdentityServices(configuration);
-
+        
         return services;
     }
 

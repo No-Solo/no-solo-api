@@ -20,10 +20,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSolo.Contracts", "NoSolo.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSolo.Presentation", "NoSolo.Presentation\NoSolo.Presentation.csproj", "{73B8D851-DBB2-47AD-ACE1-AC929A0BF872}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSolo.Services.Tests.Unit", "NoSolo.Services.Tests.Unit\NoSolo.Services.Tests.Unit.csproj", "{77BBCD6A-3B60-4AF5-A845-27A64EA9C327}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSolo.Services.Tests.Integration", "NoSolo.Services.Tests.Integration\NoSolo.Services.Tests.Integration.csproj", "{8AF9754C-21BB-4080-9BE2-1289B1A47706}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,13 +66,5 @@ Global
 		{73B8D851-DBB2-47AD-ACE1-AC929A0BF872}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73B8D851-DBB2-47AD-ACE1-AC929A0BF872}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73B8D851-DBB2-47AD-ACE1-AC929A0BF872}.Release|Any CPU.Build.0 = Release|Any CPU
-		{77BBCD6A-3B60-4AF5-A845-27A64EA9C327}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{77BBCD6A-3B60-4AF5-A845-27A64EA9C327}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{77BBCD6A-3B60-4AF5-A845-27A64EA9C327}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{77BBCD6A-3B60-4AF5-A845-27A64EA9C327}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8AF9754C-21BB-4080-9BE2-1289B1A47706}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AF9754C-21BB-4080-9BE2-1289B1A47706}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AF9754C-21BB-4080-9BE2-1289B1A47706}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AF9754C-21BB-4080-9BE2-1289B1A47706}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

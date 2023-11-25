@@ -10,4 +10,8 @@
       <ProjectReference Include="..\NoSolo.Infrastructure.Data\NoSolo.Infrastructure.Data.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Users\" />
+    </ItemGroup>
+
 </Project>

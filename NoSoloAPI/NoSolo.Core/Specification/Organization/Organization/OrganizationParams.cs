@@ -1,14 +1,14 @@
 ﻿using NoSolo.Abstractions.Base;
+using NoSolo.Core.Enums;
 using NoSolo.Core.Specification.BaseSpecification;
 
 namespace NoSolo.Core.Specification.Organization.Organization;
 
 public class OrganizationParams : BasicParams
 {
-    public bool WithOffers { get; set; }
-    public bool WithPhotos { get; set; }
-    public bool WithContacts { get; set; }
-    public bool WithMembers { get; set; }
+    public Guid? OrganizationGuid { get; set; }
+    
+    public List<OrganizationIncludeEnum>? Includes { get; set; }
     
     public string? SortByAlphabetical { get; set; }
     public string? SortByDate { get; set; }

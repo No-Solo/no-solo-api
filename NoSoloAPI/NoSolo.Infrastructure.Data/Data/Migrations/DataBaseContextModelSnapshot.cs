@@ -4,6 +4,7 @@ using NoSolo.Infrastructure.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NoSolo.Infrastructure.Data.DbContext;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -145,7 +146,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                     b.ToTable("OrganizationPhoto");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.OrganizationUser", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.Member", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -166,7 +167,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("OrganizationUser");
+                    b.ToTable("Member");
                 });
 
             modelBuilder.Entity("NoSolo.Core.Entities.Project", b =>
@@ -615,7 +616,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                     b.Navigation("Organization");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.OrganizationUser", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.Member", b =>
                 {
                     b.HasOne("NoSolo.Core.Entities.Organization", "Organization")
                         .WithMany("OrganizationUsers")

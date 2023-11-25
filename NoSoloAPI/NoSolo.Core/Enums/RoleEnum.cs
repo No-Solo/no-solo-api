@@ -2,9 +2,9 @@
 
 public enum RoleEnum
 {
-    Owner,
-    Administrator,
-    Moderator,
-    Member,
-    None
+    Owner = 4,
+    Administrator = 3,
+    Moderator = 2,
+    Member = 1,
+    None = 0
 }

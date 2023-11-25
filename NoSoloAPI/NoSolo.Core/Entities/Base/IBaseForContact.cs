@@ -1,4 +1,4 @@
-﻿namespace NoSolo.Abstractions.Base;
+﻿namespace NoSolo.Core.Entities.Base;
 
 public interface IBaseForContact
 {

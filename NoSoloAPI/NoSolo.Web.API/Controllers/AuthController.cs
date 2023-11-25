@@ -1,16 +1,10 @@
-﻿using NoSolo.Web.API.Extensions;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NoSolo.Abstractions.Data.Data;
 using NoSolo.Abstractions.Services.Auth;
 using NoSolo.Abstractions.Services.Users;
 using NoSolo.Contracts.Dtos.Auth;
-using NoSolo.Contracts.Dtos.User;
-using NoSolo.Core.Entities.Auth;
-using NoSolo.Core.Entities.User;
-using NoSolo.Web.API.Errors;
+using NoSolo.Contracts.Dtos.Users;
+using NoSolo.Web.API.Extensions;
 
 namespace NoSolo.Web.API.Controllers;
 
@@ -29,14 +23,14 @@ public class AuthController : BaseApiController
     
     [Authorize]
     [HttpPost("refresh-token")]
-    public async Task<ActionResult<TokensDto>> RefreshToken([FromBody] TokensDto tokenModel)
+    public async Task<TokensDto> RefreshToken([FromBody] TokensDto tokenModel)
     {
         return await _authService.RefreshToken(tokenModel);
     }
 
     [Authorize]
     [HttpGet("me")]
-    public async Task<ActionResult<UserDto>> GetCurrentUser()
+    public async Task<UserDto> GetCurrentUser()
     {
         return await _userCredentialsService.GetAuthorizedUser(User.GetEmail());
     }
