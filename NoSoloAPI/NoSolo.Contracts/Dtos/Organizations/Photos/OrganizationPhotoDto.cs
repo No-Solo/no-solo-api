@@ -1,6 +1,6 @@
 ﻿using NoSolo.Contracts.Dtos.Base;
 
-namespace NoSolo.Contracts.Dtos.Organization;
+namespace NoSolo.Contracts.Dtos.Organizations.Photos;
 
 public class OrganizationPhotoDto : BaseDto
 {
