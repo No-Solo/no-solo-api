@@ -17,13 +17,13 @@ public class RecommendationController : BaseApiController
     }
 
     [HttpGet("users")]
-    public async Task<IReadOnlyList<UserProfile>> GetRecommendedUsersForOrganizationOfferByTags(List<TagEnum> tags)
+    public async Task<IReadOnlyList<User>> GetRecommendedUsersForOrganizationOfferByTags(List<string> tags)
     {
         return await _recommendService.RecommendUsersForOrganizationOfferByTags(tags);
     }
     
     [HttpGet("organization")]
-    public async Task<IReadOnlyList<Organization>> GetRecommendedOrganizationsForUserOfferByTags(List<TagEnum> tags)
+    public async Task<IReadOnlyList<Organization>> GetRecommendedOrganizationsForUserOfferByTags(List<string> tags)
     {
         return await _recommendService.RecommendOrganizationsForUserOfferByTags(tags);
     }

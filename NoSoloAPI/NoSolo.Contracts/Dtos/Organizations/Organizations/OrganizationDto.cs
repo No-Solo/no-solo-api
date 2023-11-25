@@ -1,7 +1,8 @@
 ﻿using NoSolo.Contracts.Dtos.Base;
-using NoSolo.Contracts.Dtos.Organization.Project;
+using NoSolo.Contracts.Dtos.Organizations.Offers;
+using NoSolo.Contracts.Dtos.Organizations.Photos;
 
-namespace NoSolo.Contracts.Dtos.Organization;
+namespace NoSolo.Contracts.Dtos.Organizations.Organizations;
 
 public class OrganizationDto : BaseDto
 {
@@ -16,6 +17,4 @@ public class OrganizationDto : BaseDto
     // public List<Request<Organization, UserOffer>> RequestsFromOrganizationToUserOffer { get; set; }
 
     public DateTime Created { get; set; }
-    
-    public ProjectDto Project { get; set; }
 }

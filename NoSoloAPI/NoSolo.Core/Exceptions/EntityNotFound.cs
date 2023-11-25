@@ -9,7 +9,7 @@ public class EntityNotFound : BaseException.BaseException
         
     }
 
-    public EntityNotFound() : this("Entity not found")
+    public EntityNotFound() : this("The entity is not found")
     {
 
     }

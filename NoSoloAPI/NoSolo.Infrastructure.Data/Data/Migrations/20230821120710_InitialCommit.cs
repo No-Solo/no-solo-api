@@ -101,7 +101,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrganizationUser",
+                name: "Member",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -303,12 +303,12 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrganizationUser_OrganizationId",
-                table: "OrganizationUser",
+                table: "Member",
                 column: "OrganizationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrganizationUser_UserId",
-                table: "OrganizationUser",
+                table: "Member",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -370,7 +370,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                 name: "OrganizationPhoto");
 
             migrationBuilder.DropTable(
-                name: "OrganizationUser");
+                name: "Member");
 
             migrationBuilder.DropTable(
                 name: "Project");

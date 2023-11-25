@@ -1,8 +1,8 @@
 ﻿using NoSolo.Contracts.Dtos.Base;
 
-namespace NoSolo.Contracts.Dtos.User;
+namespace NoSolo.Contracts.Dtos.Users.Photo;
 
-public class UserProfilePhotoDto : BaseDto
+public class UserPhotoDto : BaseDto
 {
     public string Url { get; set; }
     public string? PublicId { get; set; }

@@ -1,13 +1,11 @@
-﻿using NoSolo.Core.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NoSolo.Core.Entities.User;
 
-namespace NoSolo.Infrastructure.Data.Data.Config.User;
+namespace NoSolo.Infrastructure.Data.Config.User;
 
-public class UserProfileConfiguration : IEntityTypeConfiguration<UserProfile>
+public class UserProfileConfiguration : IEntityTypeConfiguration<Core.Entities.User.User>
 {
-    public void Configure(EntityTypeBuilder<UserProfile> builder)
+    public void Configure(EntityTypeBuilder<Core.Entities.User.User> builder)
     {
         builder.Property(p => p.Id).IsRequired();
         builder.Property(p => p.Description).IsRequired().HasMaxLength(250);
@@ -21,9 +19,9 @@ public class UserProfileConfiguration : IEntityTypeConfiguration<UserProfile>
         builder.HasMany(p => p.Contacts).WithOne()
             .HasForeignKey(x => x.TEntityId);
         builder.HasMany(p => p.Tags).WithOne()
-            .HasForeignKey(x => x.UserProfileId);
+            .HasForeignKey(x => x.UserGuid);
         builder.HasOne(p => p.Photo).WithOne();
         builder.HasMany(p => p.Offers).WithOne()
-            .HasForeignKey(x => x.UserProfileId);
+            .HasForeignKey(x => x.UserGuid);
     }
 }

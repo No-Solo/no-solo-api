@@ -1,6 +1,6 @@
 ﻿namespace NoSolo.Contracts.Dtos.User.Create;
 
-public class CreateUserOfferDto
+public class NewUserOfferDto
 {
     public string Preferences { get; set; }
 }

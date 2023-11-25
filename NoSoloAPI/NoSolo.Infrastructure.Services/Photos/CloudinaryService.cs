@@ -7,11 +7,11 @@ using NoSolo.Infrastructure.Services.Photos.Settings;
 
 namespace NoSolo.Infrastructure.Services.Photos;
 
-public class PhotoService : IPhotoService
+public class CloudinaryService : ICloudinaryService
 {
     private readonly Cloudinary _cloudinary;
     
-    public PhotoService(IOptions<CloudinarySettings> config)
+    public CloudinaryService(IOptions<CloudinarySettings> config)
     {
         var account = new Account
         (

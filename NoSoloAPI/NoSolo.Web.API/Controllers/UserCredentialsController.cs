@@ -9,7 +9,7 @@ using NoSolo.Web.API.Extensions;
 namespace NoSolo.Web.API.Controllers;
 
 [AllowAnonymous]
-[Microsoft.AspNetCore.Components.Route("api/user-credentials")]
+[Route("api/user-credentials")]
 public class UserCredentialsController : BaseApiController
 {
     private readonly IUserCredentialsService _userCredentialsService;

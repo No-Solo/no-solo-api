@@ -3,7 +3,7 @@ using NoSolo.Core.Enums;
 
 namespace NoSolo.Core.Entities.Organization;
 
-public class OrganizationUser : BaseEntity
+public class Member : BaseEntity
 {
     public RoleEnum Role { get; set; }
 

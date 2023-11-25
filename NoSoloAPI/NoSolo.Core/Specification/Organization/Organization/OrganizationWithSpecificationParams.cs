@@ -1,4 +1,5 @@
-﻿using NoSolo.Core.Specification.BaseSpecification;
+﻿using NoSolo.Core.Enums;
+using NoSolo.Core.Specification.BaseSpecification;
 
 namespace NoSolo.Core.Specification.Organization.Organization;
 
@@ -8,15 +9,11 @@ public class OrganizationWithSpecificationParams : BaseSpecification<Entities.Or
         : base(x => string.IsNullOrEmpty(organizationParams.Search) || x.Name.Contains(organizationParams.Search))
     {
         AddOrderBy(x => x.Id);
-        
-        if (organizationParams.WithContacts)
-            AddInclude(x => x.Contacts);
-        if (organizationParams.WithOffers)
-            AddInclude(x => x.Offers);
-        if (organizationParams.WithPhotos)
-            AddInclude(x => x.Photos);
-        if (organizationParams.WithMembers)
-            AddInclude(x => x.OrganizationUsers);
+
+        foreach (var include in organizationParams.Includes)
+        {
+            ParseInclude(include);
+        }
         
         if (!string.IsNullOrEmpty(organizationParams.SortByAlphabetical))
         {
@@ -51,5 +48,24 @@ public class OrganizationWithSpecificationParams : BaseSpecification<Entities.Or
         }
         
         ApplyPaging(organizationParams.PageSize * (organizationParams.PageNumber -1), organizationParams.PageSize);
+    }
+
+    private void ParseInclude(OrganizationIncludeEnum include)
+    {
+        switch (include)
+        {
+            case OrganizationIncludeEnum.Contacts:
+                AddInclude(c => c.Contacts);
+                break;
+            case OrganizationIncludeEnum.Members:
+                AddInclude(m => m.OrganizationUsers);
+                break;
+            case OrganizationIncludeEnum.Offers:
+                AddInclude(o => o.Offers);
+                break;
+            case OrganizationIncludeEnum.Photos:
+                AddInclude(p => p.Photos);
+                break;
+        }
     }
 }

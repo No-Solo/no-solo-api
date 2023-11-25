@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NoSolo.Abstractions.Repositories.Repositories;
+using NoSolo.Abstractions.Repositories.Utility;
 using NoSolo.Core.Entities.Auth;
 using NoSolo.Infrastructure.Data.Data;
+using NoSolo.Infrastructure.Data.DbContext;
 
 namespace NoSolo.Infrastructure.Repositories.Auth;
 
