@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NoSolo.Abstractions.Services.Organizations;
 using NoSolo.Abstractions.Services.Utility;
-using NoSolo.Contracts.Dtos.Organization.Update;
 using NoSolo.Contracts.Dtos.Organizations.Organizations;
 using NoSolo.Core.Enums;
 using NoSolo.Core.Specification.Organization.Organization;
@@ -36,6 +35,13 @@ public class OrganizationsController : BaseApiController
         return await _organizationService.Get(organizationId);
     }
 
+    [Authorize]
+    [HttpGet("my")]
+    public async Task<Pagination<OrganizationDto>> GetMy()
+    {
+        return await _organizationService.GetMy(User.GetUserId());
+    }
+    
     [Authorize]
     [HttpPost("create")]
     public async Task<ActionResult<OrganizationDto>> CreateOrganization(
