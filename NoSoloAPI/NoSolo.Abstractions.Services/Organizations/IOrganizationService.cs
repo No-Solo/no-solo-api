@@ -8,7 +8,7 @@ using NoSolo.Core.Specification.Organization.Organization;
 
 namespace NoSolo.Abstractions.Services.Organizations;
 
-public interface IOrganizaitonService
+public interface IOrganizationService
 {
     Task<OrganizationDto> Create(NewOrganizationDto organizationDto, string email);
     Task<OrganizationDto> AddMember(Guid organizationGuid, string email, string targetEmail);

@@ -2,9 +2,8 @@
 using NoSolo.Abstractions.Services.Users;
 using NoSolo.Core.Entities.Organization;
 using NoSolo.Core.Entities.User;
-using NoSolo.Core.Enums;
 
-namespace NoSolo.Infrastructure.Services.Users;
+namespace NoSolo.Infrastructure.Services.Utility;
 
 public class RecommendService : IRecommendService
 {
@@ -17,15 +16,15 @@ public class RecommendService : IRecommendService
 
     public async Task<IReadOnlyList<User>> RecommendUsersForOrganizationOfferByTags(List<string> tags)
     {
-        var userProfiles = await _unitOfWork.Repository<User>().ListAllAsync();
+        var users = await _unitOfWork.Repository<User>().ListAllAsync();
 
-        var targetUserProfiles = new List<User>();
+        var targetUsers = new List<User>();
 
-        foreach (var userProfile in userProfiles)
+        foreach (var user in users)
         {
             var isExist = false;
             
-            foreach (var tag in userProfile.Tags)
+            foreach (var tag in user.Tags)
             {
                 if (tag.Active)
                     if (tags.Contains(tag.Tag))
@@ -33,10 +32,10 @@ public class RecommendService : IRecommendService
             }
             
             if (isExist)
-                targetUserProfiles.Add(userProfile);
+                targetUsers.Add(user);
         }
 
-        return targetUserProfiles;
+        return targetUsers;
     }
 
     public async Task<IReadOnlyList<Organization>> RecommendOrganizationsForUserOfferByTags(List<string> tags)

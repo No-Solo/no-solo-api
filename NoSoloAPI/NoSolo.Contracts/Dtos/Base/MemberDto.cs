@@ -2,7 +2,7 @@
 
 namespace NoSolo.Contracts.Dtos.Base;
 
-public class OrganizationUserDto : BaseDto
+public class MemberDto : BaseDto
 {
     public RoleEnum Role { get; set; }
 }

@@ -9,7 +9,7 @@ using NoSolo.Core.Enums;
 using NoSolo.Core.Exceptions;
 using NoSolo.Core.Specification.Users.UserTag;
 
-namespace NoSolo.Infrastructure.Services.Users;
+namespace NoSolo.Infrastructure.Services.Tags;
 
 public class UserTagsService : IUserTagsService
 {
