@@ -1,5 +1,4 @@
 ﻿using NoSolo.Contracts.Dtos.Auth;
-using NoSolo.Contracts.Dtos.User;
 using NoSolo.Contracts.Dtos.Users;
 
 namespace NoSolo.Abstractions.Services.Users;
