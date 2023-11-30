@@ -3,11 +3,12 @@ using NoSolo.Abstractions.Services.Contacts;
 using NoSolo.Abstractions.Services.Memberships;
 using NoSolo.Abstractions.Services.Organizations;
 using NoSolo.Abstractions.Services.Utility;
+using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Base;
-using NoSolo.Contracts.Dtos.Base.Create;
+using NoSolo.Contracts.Dtos.Contacts;
 using NoSolo.Core.Enums;
 using NoSolo.Core.Exceptions;
-using NoSolo.Core.Specification.OrganizationContact;
+using NoSolo.Core.Specification.Organization.OrganizationContact;
 
 namespace NoSolo.Infrastructure.Services.Contacts;
 

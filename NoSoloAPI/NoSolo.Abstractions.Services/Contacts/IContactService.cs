@@ -1,10 +1,11 @@
 ﻿using NoSolo.Abstractions.Services.Utility;
+using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Base;
-using NoSolo.Contracts.Dtos.Base.Create;
+using NoSolo.Contracts.Dtos.Contacts;
 using NoSolo.Core.Entities.Base;
 using NoSolo.Core.Entities.Organization;
 using NoSolo.Core.Entities.User;
-using NoSolo.Core.Specification.OrganizationContact;
+using NoSolo.Core.Specification.Organization.OrganizationContact;
 using NoSolo.Core.Specification.Users.UserContact;
 
 namespace NoSolo.Abstractions.Services.Contacts;

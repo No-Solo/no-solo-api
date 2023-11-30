@@ -18,8 +18,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSolo.Infrastructure.Repos
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSolo.Contracts", "NoSolo.Contracts\NoSolo.Contracts.csproj", "{F57DCF42-70E5-4EC4-B938-B03221B72908}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSolo.Web.Presentation", "NoSolo.Web.Presentation\NoSolo.Web.Presentation.csproj", "{73B8D851-DBB2-47AD-ACE1-AC929A0BF872}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSolo.Services.Tests.Unit", "NoSolo.Services.Tests.Unit\NoSolo.Services.Tests.Unit.csproj", "{4D3879B6-9C4C-4506-A040-233640D63FC9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4AA71C1C-A3AE-4154-8C79-DFCA8317157D}"
@@ -66,10 +64,6 @@ Global
 		{F57DCF42-70E5-4EC4-B938-B03221B72908}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F57DCF42-70E5-4EC4-B938-B03221B72908}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F57DCF42-70E5-4EC4-B938-B03221B72908}.Release|Any CPU.Build.0 = Release|Any CPU
-		{73B8D851-DBB2-47AD-ACE1-AC929A0BF872}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{73B8D851-DBB2-47AD-ACE1-AC929A0BF872}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{73B8D851-DBB2-47AD-ACE1-AC929A0BF872}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{73B8D851-DBB2-47AD-ACE1-AC929A0BF872}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4D3879B6-9C4C-4506-A040-233640D63FC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4D3879B6-9C4C-4506-A040-233640D63FC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D3879B6-9C4C-4506-A040-233640D63FC9}.Release|Any CPU.ActiveCfg = Release|Any CPU

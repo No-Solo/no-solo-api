@@ -1,4 +1,4 @@
-﻿namespace NoSolo.Contracts.Dtos.Base.Create;
+﻿namespace NoSolo.Contracts.Dtos.Contacts;
 
 public class NewContactDto
 {

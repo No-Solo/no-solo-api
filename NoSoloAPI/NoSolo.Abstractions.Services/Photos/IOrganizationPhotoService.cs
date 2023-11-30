@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using NoSolo.Abstractions.Services.Utility;
+using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Organizations.Photos;
 
 namespace NoSolo.Abstractions.Services.Photos;

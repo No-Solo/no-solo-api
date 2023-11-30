@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using NoSolo.Contracts.Dtos.Base.Create;
+using NoSolo.Contracts.Dtos.Contacts;
 
 namespace NoSolo.Web.API.Middleware.Validation.Contacts;
 

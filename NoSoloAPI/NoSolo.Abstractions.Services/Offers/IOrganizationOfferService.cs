@@ -1,5 +1,5 @@
 ﻿using NoSolo.Abstractions.Services.Utility;
-using NoSolo.Contracts.Dtos.Organization;
+using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Organizations.Offers;
 using NoSolo.Core.Specification.Organization.OrganizationOffer;
 

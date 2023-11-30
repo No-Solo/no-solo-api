@@ -2,8 +2,9 @@
 using NoSolo.Abstractions.Services.Contacts;
 using NoSolo.Abstractions.Services.Users;
 using NoSolo.Abstractions.Services.Utility;
+using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Base;
-using NoSolo.Contracts.Dtos.Base.Create;
+using NoSolo.Contracts.Dtos.Contacts;
 using NoSolo.Core.Entities.User;
 using NoSolo.Core.Enums;
 using NoSolo.Core.Specification.Users.UserContact;

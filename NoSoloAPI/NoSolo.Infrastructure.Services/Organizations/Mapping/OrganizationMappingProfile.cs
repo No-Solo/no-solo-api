@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using NoSolo.Contracts.Dtos.Organization.Update;
 using NoSolo.Contracts.Dtos.Organizations.Organizations;
 using NoSolo.Core.Entities.Organization;
 

@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using NoSolo.Abstractions.Services.Contacts;
 using NoSolo.Abstractions.Services.Utility;
+using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Base;
-using NoSolo.Contracts.Dtos.Base.Create;
-using NoSolo.Core.Specification.OrganizationContact;
+using NoSolo.Contracts.Dtos.Contacts;
+using NoSolo.Core.Specification.Organization.OrganizationContact;
 using NoSolo.Core.Specification.Users.UserContact;
 using NoSolo.Web.API.Extensions;
 
