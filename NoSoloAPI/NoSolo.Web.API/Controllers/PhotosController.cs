@@ -69,7 +69,7 @@ public class PhotosController : BaseApiController
 
     [Authorize]
     [HttpPost("organization/{organizationId:guid}/add")]
-    public async Task<OrganizationPhotoDto> AddPhotoToOrganization(Guid organizationId, IFormFile file)
+    public async Task<OrganizationPhotoDto> AddPhotoToOrganization(IFormFile file, Guid organizationId)
     {
         return await _organizationPhotoService.Add(file, organizationId, User.GetEmail());
     }
