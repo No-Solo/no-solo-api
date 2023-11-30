@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NoSolo.Abstractions.Base;
 using NoSolo.Abstractions.Repositories.Base;
 using NoSolo.Abstractions.Services;
-using NoSolo.Infrastructure.Data.Data;
+using NoSolo.Core.Specification.BaseSpecification;
 using NoSolo.Infrastructure.Data.DbContext;
+using NoSolo.Infrastructure.Data.Specification;
 
 namespace NoSolo.Infrastructure.Repositories.Base;
 
-public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
+public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     private readonly DataBaseContext _dataBaseContext;
 
@@ -41,7 +41,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         _dataBaseContext.Set<T>().Attach(entity);
         _dataBaseContext.Entry(entity).State = EntityState.Modified;
     }
-    
+
     public async Task<T> GetEntityWithSpec(ISpecification<T> spec)
     {
         return await ApplySpecification(spec).FirstOrDefaultAsync();
@@ -65,5 +65,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     public void Delete(T entity)
     {
         _dataBaseContext.Set<T>().Remove(entity);
+    }
+
+    public void Save()
+    {
+        if (_dataBaseContext.ChangeTracker.HasChanges())
+            _dataBaseContext.SaveChanges();
     }
 }

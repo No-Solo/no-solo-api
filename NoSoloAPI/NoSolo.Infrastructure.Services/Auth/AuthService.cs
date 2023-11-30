@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using NoSolo.Abstractions.Repositories.Utility;
+using NoSolo.Abstractions.Repositories.Auth;
 using NoSolo.Abstractions.Services.Auth;
+using NoSolo.Abstractions.Services.Email;
 using NoSolo.Contracts.Dtos.Auth;
 using NoSolo.Core.Entities.User;
 using NoSolo.Core.Exceptions;
@@ -12,17 +13,20 @@ public class AuthService : IAuthService
     private readonly ITokenService _tokenService;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly UserManager<User> _userManager;
+    private readonly INotificationService _notificationService;
 
-    public AuthService(ITokenService tokenService, IRefreshTokenRepository refreshTokenRepository, UserManager<User> userManager)
+    public AuthService(ITokenService tokenService, IRefreshTokenRepository refreshTokenRepository,
+        UserManager<User> userManager, INotificationService notificationService)
     {
         _tokenService = tokenService;
         _refreshTokenRepository = refreshTokenRepository;
         _userManager = userManager;
+        _notificationService = notificationService;
     }
-    
-    public Task SendVerificationCode(string email)
+
+    public async Task SendVerificationCode(string email)
     {
-        throw new NotImplementedException();
+        await _notificationService.SendVerificationCode(email);
     }
 
     public async Task<TokensDto> RefreshToken(TokensDto expiredToken)

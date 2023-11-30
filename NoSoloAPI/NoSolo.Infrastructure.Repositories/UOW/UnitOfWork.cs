@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using NoSolo.Abstractions.Data.Data;
 using NoSolo.Abstractions.Repositories.Base;
-using NoSolo.Abstractions.Repositories.Utility;
 using NoSolo.Infrastructure.Data.DbContext;
-using NoSolo.Infrastructure.Repositories.Auth;
 using NoSolo.Infrastructure.Repositories.Base;
 
 namespace NoSolo.Infrastructure.Repositories.UOW;
@@ -12,20 +10,15 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly DataBaseContext _dataBaseContext;
 
-    private Hashtable _repositories;
+    private Hashtable _repositories = new Hashtable();
 
     public UnitOfWork(DataBaseContext dataBaseContext)
     {
         _dataBaseContext = dataBaseContext;
     }
-    
-    public IRefreshTokenRepository RefreshTokenRepository => new RefreshTokenRepository(_dataBaseContext);
 
     public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : class
     {
-        if (_repositories == null)
-            _repositories = new Hashtable();
-
         var type = typeof(TEntity).Name;
 
         if (!_repositories.ContainsKey(type))

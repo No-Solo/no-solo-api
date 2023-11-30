@@ -16,7 +16,7 @@ public class User : IdentityUser<Guid>, IBaseForContact
     public string About { get; set; }
     public string Description { get; set; }
     public string Location { get; set; }
-    
+
     public UserPhoto Photo { get; set; }
 
     public LocaleEnum Locale { get; set; } = LocaleEnum.English;
@@ -28,8 +28,10 @@ public class User : IdentityUser<Guid>, IBaseForContact
     public List<UserTag> Tags { get; set; } = new();
 
     public List<Request<User, OrganizationOffer>> RequestsFromUserProfileToOgranizationOffer { get; set; } = new();
-    
+
     public List<Member> OrganizationUsers { get; set; } = new();
 
     public List<RefreshToken> RefreshTokens { get; set; } = new();
+
+    public ICollection<UserRole> UserRoles { get; set; }
 }

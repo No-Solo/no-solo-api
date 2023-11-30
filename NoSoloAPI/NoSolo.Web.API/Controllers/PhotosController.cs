@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoSolo.Abstractions.Services.Photos;
-using NoSolo.Abstractions.Services.Users;
 using NoSolo.Abstractions.Services.Utility;
 using NoSolo.Contracts.Dtos.Organizations.Photos;
 using NoSolo.Contracts.Dtos.Users.Photo;

@@ -1,28 +1,26 @@
-﻿using Microsoft.Extensions.Configuration;
-using NoSolo.Abstractions.Services.Auth;
-using NoSolo.Abstractions.Services.Email;
+﻿using NoSolo.Abstractions.Services.Email;
 
 namespace NoSolo.Infrastructure.Services.Email;
 
 public class EmailNotificationService : INotificationService
 {
-    private readonly IEmailTokenService _emailTokenService;
+    private readonly IVerificationCodeService _verificationCodeService;
     private readonly IEmailService _emailService;
 
-    public EmailNotificationService(IEmailTokenService emailTokenService, IEmailService emailService)
+    public EmailNotificationService(IVerificationCodeService verificationCodeService, IEmailService emailService)
     {
-        _emailTokenService = emailTokenService;
+        _verificationCodeService = verificationCodeService;
         _emailService = emailService;
     }
-    
-    public Task SendPasswordResetLink(string userEmail)
+
+    public async Task SendPasswordResetLink(string userEmail)
     {
-        throw new NotImplementedException();
+        // var code = await _verificationCodeService.GeneratePasswordLink(userEmail);
     }
 
     public async Task SendVerificationCode(string userEmail)
     {
-        var emailToken = await _emailTokenService.Generate(userEmail);
-        await _emailService.SendEmail(userEmail, "Verify your email", $"Your verification code is {userEmail}");
+        var emailToken = await _verificationCodeService.GenerateVerificationEmailCode(userEmail);
+        await _emailService.SendEmail(userEmail, "Verify your email", $"Your verification code is {emailToken}");
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace NoSolo.Abstractions.Services;
+namespace NoSolo.Core.Specification.BaseSpecification;
 
 public interface ISpecification<T>
 {

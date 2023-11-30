@@ -11,62 +11,36 @@ namespace NoSolo.Infrastructure.Services.Photos;
 
 public class UserPhotoService : IUserPhotoService
 {
-    private readonly ICloudinaryService _cloudinaryService;
+    private readonly IPhotoService _photoService;
     private readonly IUserService _userService;
-    private readonly IMapper _mapper;
 
     private User? _user;
-    
-    public UserPhotoService(ICloudinaryService cloudinaryService, IUserService userService, IMapper mapper)
+
+    public UserPhotoService(IPhotoService photoService, IUserService userService)
     {
-        _cloudinaryService = cloudinaryService;
+        _photoService = photoService;
         _userService = userService;
-        _mapper = mapper;
         _user = null;
     }
-    
+
     public async Task<UserPhotoDto> Add(IFormFile file, string email)
     {
         _user ??= await _userService.GetUser(email, UserInclude.Photo);
 
-        if (_user.Photo is not null)
-            throw new PhotoException("You already have a photo");
-
-        var result = await _cloudinaryService.AddPhotoAsync(file);
-
-        if (result.Error is not null)
-            throw new BadRequestException(result.Error.Message);
-
-        var photo = new UserPhoto()
-        {
-            Url = result.SecureUrl.AbsoluteUri,
-            PublicId = result.PublicId,
-            User = _user,
-            UserGuid = _user.Id
-        };
-
-        _user.Photo = photo;
-        
-        return _mapper.Map<UserPhotoDto>(photo);
+        return await _photoService.Add(_user, file);
     }
 
     public async Task DeleteUserPhoto(string email)
     {
         _user ??= await _userService.GetUser(email, UserInclude.Photo);
-        
-        if (_user.Photo is null)
-            throw new PhotoException("You don't have a photo");
 
-        _user.Photo = null;
+        await _photoService.Delete(_user);
     }
 
     public async Task<UserPhotoDto> Get(string email)
     {
         _user ??= await _userService.GetUser(email, UserInclude.Photo);
 
-        if (_user.Photo is null)
-            throw new PhotoException("You don't have a photo");
-
-        return _mapper.Map<UserPhotoDto>(_user.Photo);
+        return await _photoService.GetMainDto(_user);
     }
 }

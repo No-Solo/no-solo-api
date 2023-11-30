@@ -1,8 +1,10 @@
 ﻿using System.Reflection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NoSolo.Core.Entities.Auth;
+using NoSolo.Core.Entities.FeedBack;
 using NoSolo.Core.Entities.Organization;
 using NoSolo.Core.Entities.User;
 
@@ -10,7 +12,7 @@ namespace NoSolo.Infrastructure.Data.DbContext;
 
 public class DataBaseContext : IdentityDbContext<User, UserRole, Guid>
 {
-    public DataBaseContext(DbContextOptions options) : base(options)
+    public DataBaseContext(DbContextOptions<DataBaseContext> options) : base(options)
     {
     }
 
@@ -26,12 +28,12 @@ public class DataBaseContext : IdentityDbContext<User, UserRole, Guid>
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        // User Profile
+        // User
         modelBuilder.Entity<User>()
             .HasOne(e => e.Photo)
             .WithOne(e => e.User)
             .HasForeignKey<UserPhoto>(e => e.UserGuid);
-        
+
         if (Database.ProviderName == "Npgsql.EntityFrameworkCore.PostgreSQL")
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
