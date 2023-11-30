@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using NoSolo.Core.Exceptions.BaseException;
 using NoSolo.Web.API.Errors;
 
 namespace NoSolo.Web.API.Middleware;
@@ -38,11 +39,15 @@ public class ExceptionMiddleware
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-        var response = _environment.IsDevelopment()
-            ? new ApiException(
-                (int)HttpStatusCode.InternalServerError, exception.Message,
-                exception.StackTrace)
-            : new ApiResponse((int)HttpStatusCode.InternalServerError);
+        var response = new ApiResponse((int)HttpStatusCode.InternalServerError);
+
+        if (_environment.IsDevelopment() && exception is BaseException customException &&
+            customException.StatusCode != 0)
+        {
+            response = new ApiException(customException.StatusCode, customException.Message,
+                customException.StackTrace);
+            context.Response.StatusCode = customException.StatusCode;
+        }
 
         var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 

@@ -14,13 +14,19 @@ public class AuthController : BaseApiController
 {
     private readonly IAuthService _authService;
     private readonly IUserCredentialsService _userCredentialsService;
-    
+
     public AuthController(IAuthService authService, IUserCredentialsService userCredentialsService)
     {
         _authService = authService;
         _userCredentialsService = userCredentialsService;
     }
-    
+
+    [HttpPost("send-code/{email}")]
+    public async Task ResendVerificationCode(string email)
+    {
+        await _authService.SendVerificationCode(email);
+    }
+
     [Authorize]
     [HttpPost("refresh-token")]
     public async Task<TokensDto> RefreshToken([FromBody] TokensDto tokenModel)

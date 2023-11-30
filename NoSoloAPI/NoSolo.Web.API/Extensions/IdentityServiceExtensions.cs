@@ -14,7 +14,7 @@ public static class IdentityServiceExtensions
         services.AddIdentity<User, UserRole>()
             .AddEntityFrameworkStores<DataBaseContext>()
             .AddDefaultTokenProviders();
-        
+
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -33,13 +33,14 @@ public static class IdentityServiceExtensions
                 ValidateIssuerSigningKey = true
             };
         });
-        
-        // services.AddAuthorization(options =>
-        // {
-        //     options.AddPolicy("HasProfile", policy => policy.AddRequirements(
-        //         new HasProfileRequirement()
-        //     ));
-        // });
+
+        services.AddAuthorization(options =>
+        {
+            // options.AddPolicy("HasProfile", policy => policy.AddRequirements(
+            //     new HasProfileRequirement()
+            // ));
+            options.AddPolicy("RequireAdministratorRole", policy => policy.RequireRole("Admin"));
+        });
 
         return services;
     }

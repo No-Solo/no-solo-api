@@ -18,8 +18,8 @@ public class ApiResponse
         {
             400 => "A bad request, you have made",
             401 => "Authorized, you are not",
-            404 => "Resource found, it was not",
-            500 => "Errors are the path to the dark side",
+            404 => "Not Found",
+            500 => "Internal server error",
             403 => "You don`t have access",
             _ => null
         };
