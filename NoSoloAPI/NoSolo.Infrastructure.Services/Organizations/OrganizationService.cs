@@ -15,7 +15,7 @@ using NoSolo.Core.Specification.Organization.Organization;
 
 namespace NoSolo.Infrastructure.Services.Organizations;
 
-public class OrganizationService : IOrganizaitonService
+public class OrganizationService : IOrganizationService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -37,7 +37,7 @@ public class OrganizationService : IOrganizaitonService
 
     public async Task<OrganizationDto> Create(NewOrganizationDto organizationDto, string email)
     {
-        _user ??= await _userService.GetUser(email, UserInclude.Membership );
+        _user ??= await _userService.GetUser(email, UserInclude.Membership);
 
         var organization = new Organization()
         {
@@ -56,6 +56,10 @@ public class OrganizationService : IOrganizaitonService
             Organization = organization,
             OrganizationId = organization.Id
         };
+
+        _unitOfWork.Repository<Member>().AddAsync(member);
+        
+        await _unitOfWork.Complete();
 
         return _mapper.Map<OrganizationDto>(organization);
     }
@@ -83,6 +87,9 @@ public class OrganizationService : IOrganizaitonService
             OrganizationId = organization.Id
         };
 
+        _unitOfWork.Repository<Member>().AddAsync(member);
+        await _unitOfWork.Complete();
+
         return _mapper.Map<OrganizationDto>(organization);
     }
 
@@ -103,6 +110,7 @@ public class OrganizationService : IOrganizaitonService
             throw new NotAccessException();
 
         _unitOfWork.Repository<Member>().Delete(removingMember);
+        await _unitOfWork.Complete();
     }
 
     public async Task UpdateRoleForMember(Guid organizationGuid, string email, string targetEmail, RoleEnum newRole)
@@ -117,7 +125,7 @@ public class OrganizationService : IOrganizaitonService
 
         var uMember = await _memberService.GetMember(targetEmail, organizationGuid);
         var member = await _memberService.GetMember(email, organizationGuid);
-        
+
         if (!await _memberService.More(member.Role, uMember.Role))
             throw new NotAccessException();
 
@@ -125,6 +133,10 @@ public class OrganizationService : IOrganizaitonService
             member.Role = RoleEnum.Administrator;
 
         uMember.Role = newRole;
+
+        if (newRole == RoleEnum.None)
+            await RemoveMember(organizationGuid, email, targetEmail);
+        await _unitOfWork.Complete();
     }
 
     public async Task<OrganizationDto> Get(Guid organizationGuid)
@@ -155,6 +167,7 @@ public class OrganizationService : IOrganizaitonService
         var organization = await Get(organizationDto.Id, OrganizationIncludeEnum.Members);
 
         _mapper.Map(organizationDto, organization);
+        await _unitOfWork.Complete();
 
         return _mapper.Map<OrganizationDto>(organization);
     }
@@ -167,6 +180,7 @@ public class OrganizationService : IOrganizaitonService
         var organization = await Get(organizationGuid, OrganizationIncludeEnum.Members);
 
         _unitOfWork.Repository<Organization>().Delete(organization);
+        await _unitOfWork.Complete();
     }
 
     public async Task<Pagination<OrganizationDto>> Get(OrganizationParams organizationParams)

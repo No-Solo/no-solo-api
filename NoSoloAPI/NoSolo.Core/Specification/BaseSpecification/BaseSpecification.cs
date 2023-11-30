@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using NoSolo.Abstractions.Services;
 
 namespace NoSolo.Core.Specification.BaseSpecification;
 

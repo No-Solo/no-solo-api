@@ -17,18 +17,18 @@ public class ContactsController : BaseApiController
     private readonly IUserContactService _userContactService;
     private readonly IOrganizationContactService _organizationContactService;
 
-    public ContactsController(IUserContactService userContactService, IOrganizationContactService organizationContactService)
+    public ContactsController(IUserContactService userContactService,
+        IOrganizationContactService organizationContactService)
     {
         _userContactService = userContactService;
         _organizationContactService = organizationContactService;
     }
 
     [AllowAnonymous]
-    [HttpGet("user/{userGuid:guid}")]
-    public async Task<Pagination<ContactDto>> GetUserContacts([FromQuery] UserContactParams userContactParams,
-        Guid userGuid)
+    [HttpGet("user")]
+    public async Task<Pagination<ContactDto>> GetUserContacts([FromQuery] UserContactParams userContactParams)
     {
-        return await _userContactService.Get(userContactParams, userGuid);
+        return await _userContactService.Get(userContactParams, userContactParams.UserGuid);
     }
 
     [Authorize]

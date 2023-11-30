@@ -1,5 +1,7 @@
-﻿using NoSolo.Abstractions.Data.Data;
+﻿using AutoMapper;
+using NoSolo.Abstractions.Repositories.Base;
 using NoSolo.Abstractions.Services.Users;
+using NoSolo.Contracts.Dtos.Users;
 using NoSolo.Core.Entities.User;
 using NoSolo.Core.Enums;
 using NoSolo.Core.Exceptions;
@@ -9,11 +11,24 @@ namespace NoSolo.Infrastructure.Services.Users;
 
 public class UserService : IUserService
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IGenericRepository<User> _userRepository;
+    private readonly IMapper _mapper;
 
-    public UserService(IUnitOfWork unitOfWork)
+    public UserService(IGenericRepository<User> userRepository, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _userRepository = userRepository;
+        _mapper = mapper;
+    }
+
+    public async Task<UserDto> Get(string email)
+    {
+        var user = await GetUser(email, new List<UserInclude>()
+        {
+            UserInclude.Contacts, UserInclude.Membership, UserInclude.Offers, UserInclude.Photo,
+            UserInclude.Requests, UserInclude.Tags
+        });
+
+        return _mapper.Map<UserDto>(user);
     }
 
     public async Task<User> GetUser(string email, List<UserInclude> includes)
@@ -24,11 +39,7 @@ public class UserService : IUserService
             Includes = includes
         };
 
-        var user = await GetUserBySpecification(userParams);
-        if (user is null)
-            throw new EntityNotFound("The user is not found");
-
-        return user;
+        return await GetUserBySpecification(userParams);
     }
 
     public async Task<User> GetUser(string email, UserInclude include)
@@ -38,18 +49,33 @@ public class UserService : IUserService
             Email = email,
             Includes = new List<UserInclude>() { include }
         };
-        
-        var user = await GetUserBySpecification(userParams);
-        if (user is null)
-            throw new EntityNotFound("The user is not found");
 
-        return user;
+        return await GetUserBySpecification(userParams);
+    }
+
+    public async Task<UserDto> Update(UpdateUserDto updateUserDto, string email)
+    {
+        var user = await GetUser(email,
+            new List<UserInclude>()
+            {
+                UserInclude.Contacts, UserInclude.Membership, UserInclude.Offers, UserInclude.Photo,
+                UserInclude.Requests, UserInclude.Tags
+            });
+
+        _mapper.Map(updateUserDto, user);
+        _userRepository.Save();
+
+        return _mapper.Map<UserDto>(user);
     }
 
     private async Task<User> GetUserBySpecification(UserParams userParams)
     {
         var spec = new UserWithSpecificationParams(userParams);
 
-        return await _unitOfWork.Repository<User>().GetEntityWithSpec(spec);
+        var user = await _userRepository.GetEntityWithSpec(spec);
+        if (user is null)
+            throw new EntityNotFound("The user is not found");
+
+        return user;
     }
 }

@@ -2,6 +2,7 @@
 using NoSolo.Abstractions.Services.Memberships;
 using NoSolo.Abstractions.Services.Users;
 using NoSolo.Core.Entities.Organization;
+using NoSolo.Core.Entities.User;
 using NoSolo.Core.Enums;
 using NoSolo.Core.Exceptions;
 
@@ -42,7 +43,7 @@ public class MemberService : IMemberService
     public async Task<bool> MemberHasRoles(List<RoleEnum> roles, Guid organizationGuid, string email)
     {
         var member = await GetMember(email, organizationGuid);
-        
+
         foreach (var role in roles)
         {
             if (member.Role == role)
@@ -55,7 +56,7 @@ public class MemberService : IMemberService
     public async Task<bool> MemberHasRole(RoleEnum role, Guid organizationGuid, string email)
     {
         var member = await GetMember(email, organizationGuid);
-        
+
         if (member.Role == role)
             return true;
 
@@ -66,7 +67,7 @@ public class MemberService : IMemberService
     {
         if (first > second)
             return true;
-        
+
         return false;
     }
 

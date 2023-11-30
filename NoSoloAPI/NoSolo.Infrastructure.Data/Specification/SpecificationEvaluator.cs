@@ -1,12 +1,10 @@
-﻿using NoSolo.Core.Entities;
-using NoSolo.Core.Specification;
-using Microsoft.EntityFrameworkCore;
-using NoSolo.Abstractions.Base;
+﻿using Microsoft.EntityFrameworkCore;
 using NoSolo.Abstractions.Services;
+using NoSolo.Core.Specification.BaseSpecification;
 
-namespace NoSolo.Infrastructure.Data.Data;
+namespace NoSolo.Infrastructure.Data.Specification;
 
-public class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
+public class SpecificationEvaluator<TEntity> where TEntity : class
 {
     public static IQueryable<TEntity> GetQuery(IQueryable<TEntity> inputQuery, ISpecification<TEntity> specification)
     {

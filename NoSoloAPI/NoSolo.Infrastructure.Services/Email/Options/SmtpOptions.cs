@@ -6,7 +6,7 @@ public class SmtpOptions
 {
     public string HostAddress { get; set; } = string.Empty;
 
-    public int Port { get; set; }
+    public int Port { get; set; } = 587;
 
     public string Username { get; set; } = string.Empty;
 
