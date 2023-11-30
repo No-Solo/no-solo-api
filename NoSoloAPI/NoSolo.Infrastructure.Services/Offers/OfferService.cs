@@ -47,6 +47,8 @@ public class OfferService : IOfferService
         var userOffer = new UserOffer()
         {
             Preferences = userOfferDto.Preferences,
+            Name = userOfferDto.Name,
+            Tags = userOfferDto.Tags,
             User = user,
             UserGuid = user.Id
         };
