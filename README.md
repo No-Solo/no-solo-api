@@ -7,4 +7,10 @@
 
 ### Database structure
 
-### Entities Table
+#### Main database diagram
+
+<img src="src/img/NoSoloDatabaseDiagram.png">
+
+#### Feed back database diagram
+
+<img src="src/img/FeedBackDatabaseDiagram.png">
