@@ -1,5 +1,4 @@
-﻿using NoSolo.Abstractions.Base;
-using NoSolo.Core.Entities.Base;
+﻿using NoSolo.Core.Entities.Base;
 using NoSolo.Core.Entities.User;
 
 namespace NoSolo.Core.Entities.Organization;
@@ -7,7 +6,7 @@ namespace NoSolo.Core.Entities.Organization;
 public class Organization : BaseEntity, IBaseForContact
 {
     public string Name { get; set; }
-    public string PhotoUrl { get; set; }
+    public string? PhotoUrl { get; set; }
     public string Description { get; set; }
     public int? NumberOfEmployees { get; set; }
     public string? Address { get; set; }

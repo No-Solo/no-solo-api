@@ -1,5 +1,6 @@
 ﻿using NoSolo.Abstractions.Data.Data;
 using NoSolo.Abstractions.Services.Users;
+using NoSolo.Abstractions.Services.Utility;
 using NoSolo.Core.Entities.Organization;
 using NoSolo.Core.Entities.User;
 
@@ -63,9 +64,4 @@ public class RecommendService : IRecommendService
         
         return targetOrganization;
     }
-
-    // private IReadOnlyList<TSource> Get<TSource>(IReadOnlyList<TSource> items)
-    // {
-    //     
-    // }
 }

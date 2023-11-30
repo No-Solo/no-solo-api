@@ -4,8 +4,7 @@ using NoSolo.Abstractions.Services.Memberships;
 using NoSolo.Abstractions.Services.Organizations;
 using NoSolo.Abstractions.Services.Users;
 using NoSolo.Abstractions.Services.Utility;
-using NoSolo.Contracts.Dtos.Organization;
-using NoSolo.Contracts.Dtos.Organization.Update;
+using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Organizations.Organizations;
 using NoSolo.Core.Entities.Organization;
 using NoSolo.Core.Entities.User;
@@ -48,95 +47,47 @@ public class OrganizationService : IOrganizationService
             WebSiteUrl = organizationDto.WebSiteUrl
         };
 
-        var member = new Member
-        {
-            Role = RoleEnum.Owner,
-            User = _user,
-            UserId = _user.Id,
-            Organization = organization,
-            OrganizationId = organization.Id
-        };
-
-        _unitOfWork.Repository<Member>().AddAsync(member);
-        
-        await _unitOfWork.Complete();
+        await _memberService.CreateMember(organization, _user, RoleEnum.Owner);
 
         return _mapper.Map<OrganizationDto>(organization);
     }
 
     public async Task<OrganizationDto> AddMember(Guid organizationId, string email, string targetEmail)
     {
-        if (!await _memberService.MemberHasRoles(
-                new List<RoleEnum>() { RoleEnum.Owner, RoleEnum.Administrator, RoleEnum.Moderator }, organizationId,
-                email))
-            throw new NotAccessException();
-
         var organization = await Get(organizationId, OrganizationIncludeEnum.Members);
 
         var user = await _userService.GetUser(targetEmail, UserInclude.Membership);
 
-        if (!await _memberService.MemberHasRole(RoleEnum.None, organizationId, targetEmail))
-            throw new BadRequestException("The user is already in the organization");
-
-        var member = new Member()
-        {
-            Role = RoleEnum.Member,
-            User = user,
-            UserId = user.Id,
-            Organization = organization,
-            OrganizationId = organization.Id
-        };
-
-        _unitOfWork.Repository<Member>().AddAsync(member);
-        await _unitOfWork.Complete();
+        await _memberService.AddMember(organization, user, RoleEnum.Member);
 
         return _mapper.Map<OrganizationDto>(organization);
     }
 
     public async Task RemoveMember(Guid organizationGuid, string email, string targetEmail)
     {
-        if (!await _memberService.MemberHasRoles(
-                new List<RoleEnum>() { RoleEnum.Owner, RoleEnum.Administrator, RoleEnum.Moderator }, organizationGuid,
-                email))
-            throw new NotAccessException();
-
-        if (await _memberService.MemberHasRole(RoleEnum.None, organizationGuid, targetEmail))
-            throw new BadRequestException("The organization hasn't this user");
-
-        var removingMember = await _memberService.GetMember(targetEmail, organizationGuid);
-        var member = await _memberService.GetMember(email, organizationGuid);
-
-        if (!await _memberService.More(member.Role, removingMember.Role))
-            throw new NotAccessException();
-
-        _unitOfWork.Repository<Member>().Delete(removingMember);
-        await _unitOfWork.Complete();
+        await _memberService.Delete(email, targetEmail, organizationGuid);
     }
 
     public async Task UpdateRoleForMember(Guid organizationGuid, string email, string targetEmail, RoleEnum newRole)
     {
-        if (!await _memberService.MemberHasRoles(
-                new List<RoleEnum>() { RoleEnum.Administrator, RoleEnum.Moderator, RoleEnum.Owner }, organizationGuid,
-                email))
-            throw new NotAccessException();
+        await _memberService.UpdateRoleForMember(email, targetEmail, organizationGuid, newRole);
+    }
 
-        if (await _memberService.MemberHasRole(RoleEnum.None, organizationGuid, targetEmail))
-            throw new NotAccessException();
-
-        var uMember = await _memberService.GetMember(targetEmail, organizationGuid);
-        var member = await _memberService.GetMember(email, organizationGuid);
-
-        if (!await _memberService.More(member.Role, uMember.Role))
-            throw new NotAccessException();
-
-        if (member.Role == RoleEnum.Owner && newRole == RoleEnum.Owner)
-            member.Role = RoleEnum.Administrator;
-
-        uMember.Role = newRole;
-
-        if (newRole == RoleEnum.None)
-            await RemoveMember(organizationGuid, email, targetEmail);
-        await _unitOfWork.Complete();
+    public async Task<Pagination<OrganizationDto>> GetMy(Guid userGuid)
+    {
+        var organizationParams = new OrganizationParams()
+        {
+            Includes = new List<OrganizationIncludeEnum>()
+            {
+                OrganizationIncludeEnum.Contacts,
+                OrganizationIncludeEnum.Members,
+                OrganizationIncludeEnum.Offers,
+                OrganizationIncludeEnum.Photos
+            },
+            UserGuid = userGuid
+        };
+        
+        return await Get(organizationParams);
     }
 
     public async Task<OrganizationDto> Get(Guid organizationGuid)
@@ -167,6 +118,8 @@ public class OrganizationService : IOrganizationService
         var organization = await Get(organizationDto.Id, OrganizationIncludeEnum.Members);
 
         _mapper.Map(organizationDto, organization);
+        organization.LastUpdated = DateTime.UtcNow;
+        
         await _unitOfWork.Complete();
 
         return _mapper.Map<OrganizationDto>(organization);
@@ -208,11 +161,7 @@ public class OrganizationService : IOrganizationService
             Includes = new List<OrganizationIncludeEnum>() { include }
         };
 
-        var organization = await GetOrganizationByParams(organizationParams);
-        if (organization is null)
-            throw new EntityNotFound("The organization is not found");
-
-        return organization;
+        return await GetOrganizationByParams(organizationParams);
     }
 
     public async Task<Organization> Get(Guid organizationGuid, List<OrganizationIncludeEnum> includes)
@@ -223,17 +172,17 @@ public class OrganizationService : IOrganizationService
             Includes = includes
         };
 
-        var organization = await GetOrganizationByParams(organizationParams);
-        if (organization is null)
-            throw new EntityNotFound("The organization is not found");
-
-        return organization;
+        return await GetOrganizationByParams(organizationParams);
     }
 
     private async Task<Organization> GetOrganizationByParams(OrganizationParams organizationParams)
     {
         var spec = new OrganizationWithSpecificationParams(organizationParams);
 
-        return await _unitOfWork.Repository<Organization>().GetEntityWithSpec(spec);
+        var organization = await _unitOfWork.Repository<Organization>().GetEntityWithSpec(spec);
+        if (organization is null)
+            throw new EntityNotFound("The organization is not found");
+
+        return organization;
     }
 }

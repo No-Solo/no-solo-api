@@ -1,6 +1,6 @@
 ﻿using NoSolo.Contracts.Dtos.Base;
 
-namespace NoSolo.Contracts.Dtos.User;
+namespace NoSolo.Contracts.Dtos.Users.Offers;
 
 public class UserOfferDto : BaseDto
 {

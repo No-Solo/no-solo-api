@@ -1,7 +1,6 @@
 ﻿using NoSolo.Core.Specification.BaseSpecification;
-using NoSolo.Core.Specification.Users.UserOffer;
 
-namespace NoSolo.Core.Specification.User.UserOffer;
+namespace NoSolo.Core.Specification.Users.UserOffer;
 
 public class UserOfferWithSpecificationParams : BaseSpecification<Entities.User.UserOffer>
 {

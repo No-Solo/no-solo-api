@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using NoSolo.Abstractions.Base;
 using NoSolo.Core.Entities.Auth;
 using NoSolo.Core.Entities.Base;
 using NoSolo.Core.Entities.Organization;
@@ -17,7 +16,7 @@ public class User : IdentityUser<Guid>, IBaseForContact
     public string Description { get; set; }
     public string Location { get; set; }
 
-    public UserPhoto Photo { get; set; }
+    public UserPhoto? Photo { get; set; } = null;
 
     public LocaleEnum Locale { get; set; } = LocaleEnum.English;
     public GenderEnum Gender { get; set; }

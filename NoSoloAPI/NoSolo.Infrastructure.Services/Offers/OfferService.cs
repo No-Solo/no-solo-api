@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
 using NoSolo.Abstractions.Repositories.Base;
 using NoSolo.Abstractions.Services.Offers;
-using NoSolo.Abstractions.Services.Utility;
+using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Organizations.Offers;
-using NoSolo.Contracts.Dtos.User;
-using NoSolo.Contracts.Dtos.User.Create;
+using NoSolo.Contracts.Dtos.Users.Offers;
 using NoSolo.Core.Entities.Organization;
 using NoSolo.Core.Entities.User;
 using NoSolo.Core.Exceptions;
 using NoSolo.Core.Specification.Organization.OrganizationOffer;
-using NoSolo.Core.Specification.User.UserOffer;
 using NoSolo.Core.Specification.Users.UserOffer;
 
 namespace NoSolo.Infrastructure.Services.Offers;

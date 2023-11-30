@@ -4,10 +4,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using NoSolo.Abstractions.Data.Data;
 using NoSolo.Abstractions.Services.Auth;
+using NoSolo.Abstractions.Services.Email;
 using NoSolo.Abstractions.Services.Users;
 using NoSolo.Contracts.Dtos.Auth;
 using NoSolo.Contracts.Dtos.Users;
-using NoSolo.Core.Entities.Auth;
 using NoSolo.Core.Entities.User;
 using NoSolo.Core.Enums;
 using NoSolo.Core.Exceptions;
@@ -22,17 +22,19 @@ public class UserCredentialsService : IUserCredentialsService
     private readonly UserManager<User> _userManager;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRefreshTokenService _refreshTokenService;
+    private readonly INotificationService _notificationService;
 
     private User? _user;
 
     public UserCredentialsService(IMapper mapper, ITokenService tokenService,
-        UserManager<User> userManager, IUnitOfWork unitOfWork, IRefreshTokenService refreshTokenService)
+        UserManager<User> userManager, IUnitOfWork unitOfWork, IRefreshTokenService refreshTokenService, INotificationService notificationService)
     {
         _mapper = mapper;
         _tokenService = tokenService;
         _userManager = userManager;
         _unitOfWork = unitOfWork;
         _refreshTokenService = refreshTokenService;
+        _notificationService = notificationService;
 
         _user = null;
     }
@@ -82,6 +84,8 @@ public class UserCredentialsService : IUserCredentialsService
 
         _user = await GetUserByEmailWithAllIncludes(signUpDto.Email);
 
+        await _notificationService.SendVerificationCode(signUpDto.Email);
+        
         return _mapper.Map<UserDto>(_user);
     }
 

@@ -1,5 +1,4 @@
-﻿using NoSolo.Abstractions.Base;
-using NoSolo.Core.Enums;
+﻿using NoSolo.Core.Enums;
 using NoSolo.Core.Specification.BaseSpecification;
 
 namespace NoSolo.Core.Specification.Organization.Organization;
@@ -7,6 +6,7 @@ namespace NoSolo.Core.Specification.Organization.Organization;
 public class OrganizationParams : BasicParams
 {
     public Guid? OrganizationGuid { get; set; }
+    public Guid? UserGuid { get; set; }
     
     public List<OrganizationIncludeEnum>? Includes { get; set; }
     

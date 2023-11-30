@@ -1,7 +1,8 @@
 ﻿using NoSolo.Abstractions.Services.Utility;
+using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Base;
-using NoSolo.Contracts.Dtos.Base.Create;
-using NoSolo.Core.Specification.OrganizationContact;
+using NoSolo.Contracts.Dtos.Contacts;
+using NoSolo.Core.Specification.Organization.OrganizationContact;
 
 namespace NoSolo.Abstractions.Services.Contacts;
 

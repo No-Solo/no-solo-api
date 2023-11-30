@@ -6,14 +6,17 @@ namespace NoSolo.Core.Specification.Organization.Organization;
 public class OrganizationWithSpecificationParams : BaseSpecification<Entities.Organization.Organization>
 {
     public OrganizationWithSpecificationParams(OrganizationParams organizationParams)
-        : base(x => string.IsNullOrEmpty(organizationParams.Search) || x.Name.Contains(organizationParams.Search))
+        : base(x => string.IsNullOrEmpty(organizationParams.Search) || x.Name.Contains(organizationParams.Search) &&
+            (organizationParams.UserGuid.HasValue || x.OrganizationUsers.Exists(x => x.UserId == organizationParams.UserGuid)) &&
+            (organizationParams.OrganizationGuid.HasValue || x.Id == organizationParams.OrganizationGuid))
     {
         AddOrderBy(x => x.Id);
 
-        foreach (var include in organizationParams.Includes)
-        {
-            ParseInclude(include);
-        }
+        if (organizationParams.Includes is not null && organizationParams.Includes.Count > 0)
+            foreach (var include in organizationParams.Includes)
+            {
+                ParseInclude(include);
+            }
         
         if (!string.IsNullOrEmpty(organizationParams.SortByAlphabetical))
         {
@@ -46,8 +49,8 @@ public class OrganizationWithSpecificationParams : BaseSpecification<Entities.Or
                     break;
             }
         }
-        
-        ApplyPaging(organizationParams.PageSize * (organizationParams.PageNumber -1), organizationParams.PageSize);
+
+        ApplyPaging(organizationParams.PageSize * (organizationParams.PageNumber - 1), organizationParams.PageSize);
     }
 
     private void ParseInclude(OrganizationIncludeEnum include)

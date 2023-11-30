@@ -1,6 +1,6 @@
 ﻿using NoSolo.Core.Specification.BaseSpecification;
 
-namespace NoSolo.Core.Specification.OrganizationContact;
+namespace NoSolo.Core.Specification.Organization.OrganizationContact;
 
 public class OrganizationContactParams : BasicParams
 {

@@ -1,9 +1,8 @@
-﻿using NoSolo.Core.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NoSolo.Core.Entities.User;
 
-namespace NoSolo.Infrastructure.Data.Data.Config.User;
+namespace NoSolo.Infrastructure.Data.Config.User;
 
 public class UserPhotoConfiguration : IEntityTypeConfiguration<UserPhoto>
 {

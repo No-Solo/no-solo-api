@@ -1,4 +1,4 @@
-﻿namespace NoSolo.Contracts.Dtos.User.Create;
+﻿namespace NoSolo.Contracts.Dtos.Users.Offers;
 
 public class NewUserOfferDto
 {

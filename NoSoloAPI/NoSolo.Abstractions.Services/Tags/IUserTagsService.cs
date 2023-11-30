@@ -1,4 +1,5 @@
 ﻿using NoSolo.Abstractions.Services.Utility;
+using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Users.Tags;
 using NoSolo.Core.Specification.Users.UserTag;
 
