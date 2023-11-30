@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using NoSolo.Abstractions.Repositories.Base;
 using NoSolo.Abstractions.Services.Photos;
 using NoSolo.Abstractions.Services.Utility;
+using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Organizations.Photos;
 using NoSolo.Contracts.Dtos.Users.Photo;
 using NoSolo.Core.Entities.Organization;
@@ -54,9 +55,12 @@ public class PhotoService : IPhotoService
 
     public async Task<UserPhotoDto> Add(User user, IFormFile file)
     {
-        if (user.Photo is not null)
-            throw new PhotoException("You already have a photo");
-
+        if (user.Photo is not null && user.Photo.PublicId is not null)
+        {
+            await _cloudinaryService.DeletePhotoAsync(user.Photo.PublicId);
+            user.Photo = null;
+        }
+        
         var result = await _cloudinaryService.AddPhotoAsync(file);
 
         if (result.Error is not null)
@@ -86,7 +90,7 @@ public class PhotoService : IPhotoService
     public async Task<UserPhotoDto> GetMainDto(User user)
     {
         if (user.Photo is null)
-            throw new PhotoException("You don't have a photo");
+            throw new PhotoException(404,"You don't have a photo");
 
         return _mapper.Map<UserPhotoDto>(user.Photo);
     }

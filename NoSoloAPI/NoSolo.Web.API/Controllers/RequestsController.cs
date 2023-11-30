@@ -8,7 +8,7 @@ using NoSolo.Core.Enums;
 namespace NoSolo.Web.API.Controllers;
 
 [Authorize]
-[Microsoft.AspNetCore.Components.Route("api/requests")]
+[Route("api/requests")]
 public class RequestsController : BaseApiController
 {
     private readonly IUserRequestService _userRequestService;

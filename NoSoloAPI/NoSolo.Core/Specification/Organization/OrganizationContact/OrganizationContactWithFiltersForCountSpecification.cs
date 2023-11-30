@@ -1,7 +1,6 @@
 ﻿using NoSolo.Core.Entities;
 using NoSolo.Core.Entities.Base;
 using NoSolo.Core.Specification.BaseSpecification;
-using NoSolo.Core.Specification.OrganizationContact;
 
 namespace NoSolo.Core.Specification.Organization.OrganizationContact;
 

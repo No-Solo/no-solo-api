@@ -1,5 +1,4 @@
 ﻿using NoSolo.Core.Entities.Organization;
-using NoSolo.Abstractions.Base;
 
 namespace NoSolo.Core.Entities.Base;
 

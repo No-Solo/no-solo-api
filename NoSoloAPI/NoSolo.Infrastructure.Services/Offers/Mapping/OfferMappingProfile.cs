@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using NoSolo.Contracts.Dtos.Organizations.Offers;
-using NoSolo.Contracts.Dtos.User;
-using NoSolo.Contracts.Dtos.User.Create;
+using NoSolo.Contracts.Dtos.Users.Offers;
 using NoSolo.Core.Entities.Organization;
 using NoSolo.Core.Entities.User;
 

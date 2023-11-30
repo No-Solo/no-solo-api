@@ -2,6 +2,7 @@
 using NoSolo.Abstractions.Services.Offers;
 using NoSolo.Abstractions.Services.Organizations;
 using NoSolo.Abstractions.Services.Utility;
+using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Organizations.Offers;
 using NoSolo.Core.Enums;
 using NoSolo.Core.Exceptions;

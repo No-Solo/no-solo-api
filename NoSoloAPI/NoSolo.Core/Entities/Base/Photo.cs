@@ -1,6 +1,4 @@
-﻿using NoSolo.Abstractions.Base;
-
-namespace NoSolo.Core.Entities.Base;
+﻿namespace NoSolo.Core.Entities.Base;
 
 public class Photo : BaseEntity
 {

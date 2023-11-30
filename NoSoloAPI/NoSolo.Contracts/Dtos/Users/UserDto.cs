@@ -1,5 +1,5 @@
 ﻿using NoSolo.Contracts.Dtos.Base;
-using NoSolo.Contracts.Dtos.User;
+using NoSolo.Contracts.Dtos.Users.Offers;
 using NoSolo.Contracts.Dtos.Users.Photo;
 using NoSolo.Contracts.Dtos.Users.Requests;
 using NoSolo.Contracts.Dtos.Users.Tags;

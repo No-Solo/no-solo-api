@@ -1,6 +1,5 @@
 ﻿using NoSolo.Abstractions.Services.Utility;
-using NoSolo.Contracts.Dtos.Organization;
-using NoSolo.Contracts.Dtos.Organization.Update;
+using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Organizations.Organizations;
 using NoSolo.Core.Entities.Organization;
 using NoSolo.Core.Enums;
@@ -14,7 +13,8 @@ public interface IOrganizationService
     Task<OrganizationDto> AddMember(Guid organizationGuid, string email, string targetEmail);
     Task RemoveMember(Guid organizationGuid, string email, string targetEmail);
     Task UpdateRoleForMember(Guid organizationGuid, string email, string targetEmail, RoleEnum newRole);
-    
+
+    Task<Pagination<OrganizationDto>> GetMy(Guid memberGuid);
     Task<Pagination<OrganizationDto>> Get(OrganizationParams organizationParams);
     Task<Organization> Get(Guid organizationGuid, OrganizationIncludeEnum include);
     Task<Organization> Get(Guid organizationGuid, List<OrganizationIncludeEnum> includes);

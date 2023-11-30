@@ -1,4 +1,4 @@
-﻿namespace NoSolo.Abstractions.Services.Utility;
+﻿namespace NoSolo.Abstractions.Services.Utility.Pagination;
 
 public class Pagination<T> where T : class
 {

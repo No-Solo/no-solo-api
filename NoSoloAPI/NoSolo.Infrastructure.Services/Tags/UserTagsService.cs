@@ -3,6 +3,7 @@ using NoSolo.Abstractions.Data.Data;
 using NoSolo.Abstractions.Services.Tags;
 using NoSolo.Abstractions.Services.Users;
 using NoSolo.Abstractions.Services.Utility;
+using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Users.Tags;
 using NoSolo.Core.Entities.User;
 using NoSolo.Core.Enums;

@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using NoSolo.Abstractions.Services.Photos;
 using NoSolo.Abstractions.Services.Users;
 using NoSolo.Contracts.Dtos.Users.Photo;
 using NoSolo.Core.Entities.User;
 using NoSolo.Core.Enums;
-using NoSolo.Core.Exceptions;
 
 namespace NoSolo.Infrastructure.Services.Photos;
 

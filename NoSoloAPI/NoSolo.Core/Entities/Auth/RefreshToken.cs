@@ -1,4 +1,4 @@
-﻿using NoSolo.Abstractions.Base;
+﻿using NoSolo.Core.Entities.Base;
 
 namespace NoSolo.Core.Entities.Auth;
 

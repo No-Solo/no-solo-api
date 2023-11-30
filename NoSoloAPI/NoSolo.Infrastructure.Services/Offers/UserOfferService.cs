@@ -1,8 +1,7 @@
 ﻿using NoSolo.Abstractions.Services.Offers;
 using NoSolo.Abstractions.Services.Users;
-using NoSolo.Abstractions.Services.Utility;
-using NoSolo.Contracts.Dtos.User;
-using NoSolo.Contracts.Dtos.User.Create;
+using NoSolo.Abstractions.Services.Utility.Pagination;
+using NoSolo.Contracts.Dtos.Users.Offers;
 using NoSolo.Core.Entities.User;
 using NoSolo.Core.Enums;
 using NoSolo.Core.Specification.Users.UserOffer;

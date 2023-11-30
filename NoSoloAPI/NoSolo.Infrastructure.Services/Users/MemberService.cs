@@ -1,4 +1,4 @@
-﻿using NoSolo.Abstractions.Data.Data;
+﻿using NoSolo.Abstractions.Repositories.Base;
 using NoSolo.Abstractions.Services.Memberships;
 using NoSolo.Abstractions.Services.Users;
 using NoSolo.Core.Entities.Organization;
@@ -10,13 +10,41 @@ namespace NoSolo.Infrastructure.Services.Users;
 
 public class MemberService : IMemberService
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IUserService _userService;
+    private readonly IGenericRepository<Member> _genericRepository;
 
-    public MemberService(IUnitOfWork unitOfWork, IUserService userService)
+    public MemberService(IUserService userService, IGenericRepository<Member> genericRepository)
     {
-        _unitOfWork = unitOfWork;
         _userService = userService;
+        _genericRepository = genericRepository;
+    }
+
+    public async Task CreateMember(Organization organization, User user, RoleEnum role)
+    {
+        var member = new Member
+        {
+            Role = role,
+            User = user,
+            UserId = user.Id,
+            Organization = organization,
+            OrganizationId = organization.Id
+        };
+
+        _genericRepository.AddAsync(member);
+        _genericRepository.Save();
+    }
+
+    public async Task AddMember(Organization organization, User user, RoleEnum role)
+    {
+        if (!await MemberHasRoles(
+                new List<RoleEnum>() { RoleEnum.Owner, RoleEnum.Administrator, RoleEnum.Moderator }, organization.Id,
+                user.Email!))
+            throw new NotAccessException();
+
+        if (!await MemberHasRole(RoleEnum.None, organization.Id, user.Email!))
+            throw new BadRequestException("The user is already in the organization");
+
+        await CreateMember(organization, user, role);
     }
 
     public RoleEnum ParseRole(string role)
@@ -79,5 +107,51 @@ public class MemberService : IMemberService
             throw new EntityNotFound("The membership is not found");
 
         return member;
+    }
+
+    public async Task UpdateRoleForMember(string email, string targetEmail, Guid organizationGuid, RoleEnum newRole)
+    {
+        if (!await MemberHasRoles(
+                new List<RoleEnum>() { RoleEnum.Administrator, RoleEnum.Moderator, RoleEnum.Owner }, organizationGuid,
+                email))
+            throw new NotAccessException();
+
+        if (await MemberHasRole(RoleEnum.None, organizationGuid, targetEmail))
+            throw new NotAccessException();
+
+        var uMember = await GetMember(targetEmail, organizationGuid);
+        var member = await GetMember(email, organizationGuid);
+
+        if (!await More(member.Role, uMember.Role))
+            throw new NotAccessException();
+
+        if (member.Role == RoleEnum.Owner && newRole == RoleEnum.Owner)
+            member.Role = RoleEnum.Administrator;
+
+        uMember.Role = newRole;
+
+        if (newRole == RoleEnum.None)
+            await Delete(email, targetEmail, organizationGuid);
+        _genericRepository.Save();
+    }
+
+    public async Task Delete(string email, string targetEmail, Guid organizationGuid)
+    {
+        if (!await MemberHasRoles(
+                new List<RoleEnum>() { RoleEnum.Owner, RoleEnum.Administrator, RoleEnum.Moderator }, organizationGuid,
+                email))
+            throw new NotAccessException();
+
+        if (await MemberHasRole(RoleEnum.None, organizationGuid, targetEmail))
+            throw new BadRequestException("The organization hasn't this user");
+
+        var removingMember = await GetMember(targetEmail, organizationGuid);
+        var member = await GetMember(email, organizationGuid);
+
+        if (!await More(member.Role, removingMember.Role))
+            throw new NotAccessException();
+
+        _genericRepository.Delete(removingMember);
+        _genericRepository.Save();
     }
 }

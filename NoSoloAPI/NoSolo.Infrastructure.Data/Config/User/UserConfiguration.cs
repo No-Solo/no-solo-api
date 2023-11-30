@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace NoSolo.Infrastructure.Data.Data.Config.User;
+namespace NoSolo.Infrastructure.Data.Config.User;
 
 public class UserConfiguration : IEntityTypeConfiguration<Core.Entities.User.User>
 {

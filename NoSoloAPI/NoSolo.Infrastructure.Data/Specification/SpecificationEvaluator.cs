@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NoSolo.Abstractions.Services;
 using NoSolo.Core.Specification.BaseSpecification;
 
 namespace NoSolo.Infrastructure.Data.Specification;
