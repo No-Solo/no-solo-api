@@ -7,9 +7,8 @@ public class OrganizationOfferParams : BasicParams
     public Guid? OrganizationId { get; set; }
     public string? SortByAlphabetical { get; set; }
     public string? SortByDate { get; set; }
-    
-    // search by tags
-    //
+
+    public List<string>? Tags { get; set; }
     
     private string _search;
     public string? Search

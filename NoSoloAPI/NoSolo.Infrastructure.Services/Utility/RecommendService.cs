@@ -1,67 +1,87 @@
-﻿using NoSolo.Abstractions.Data.Data;
+﻿using AutoMapper;
+using NoSolo.Abstractions.Data.Data;
 using NoSolo.Abstractions.Services.Users;
 using NoSolo.Abstractions.Services.Utility;
+using NoSolo.Abstractions.Services.Utility.Pagination;
+using NoSolo.Contracts.Dtos.Organizations.Offers;
+using NoSolo.Contracts.Dtos.Users.Offers;
 using NoSolo.Core.Entities.Organization;
 using NoSolo.Core.Entities.User;
+using NoSolo.Core.Specification.Organization.OrganizationOffer;
+using NoSolo.Core.Specification.Recommendation;
+using NoSolo.Core.Specification.Users.UserOffer;
 
 namespace NoSolo.Infrastructure.Services.Utility;
 
 public class RecommendService : IRecommendService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public RecommendService(IUnitOfWork unitOfWork)
+    public RecommendService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
-    public async Task<IReadOnlyList<User>> RecommendUsersForOrganizationOfferByTags(List<string> tags)
+    public async Task<Pagination<UserOfferDto>> RecommendUsersForOrganizationOfferByTags(
+        UserOfferParams userOfferParams)
     {
-        var users = await _unitOfWork.Repository<User>().ListAllAsync();
+        if (userOfferParams.Tags is null)
+            return null!;
 
-        var targetUsers = new List<User>();
+        var usersOffers = await _unitOfWork.Repository<UserOffer>().ListAllAsync();
 
-        foreach (var user in users)
+        var targetOffers = new List<UserOffer>();
+
+        foreach (var offer in usersOffers)
         {
             var isExist = false;
-            
-            foreach (var tag in user.Tags)
+
+            foreach (var tag in offer.Tags)
             {
-                if (tag.Active)
-                    if (tags.Contains(tag.Tag))
-                        isExist = true;
+                if (userOfferParams.Tags.Contains(tag))
+                    isExist = true;
             }
-            
+
             if (isExist)
-                targetUsers.Add(user);
+                targetOffers.Add(offer);
         }
 
-        return targetUsers;
+        var data = _mapper.Map<IReadOnlyList<UserOffer>, IReadOnlyList<UserOfferDto>>(targetOffers);
+
+        return new Pagination<UserOfferDto>(userOfferParams.PageNumber, userOfferParams.PageSize, targetOffers.Count,
+            data);
     }
 
-    public async Task<IReadOnlyList<Organization>> RecommendOrganizationsForUserOfferByTags(List<string> tags)
+    public async Task<Pagination<OrganizationOfferDto>> RecommendOrganizationsForUserOfferByTags(
+        OrganizationOfferParams organizationOfferParams)
     {
-        var organizations = await _unitOfWork.Repository<Organization>().ListAllAsync();
+        if (organizationOfferParams.Tags is null)
+            return null!;
 
-        var targetOrganization = new List<Organization>();
+        var organizationsOffers = await _unitOfWork.Repository<OrganizationOffer>().ListAllAsync();
 
-        foreach (var organization in organizations)
+        var targetOffers = new List<OrganizationOffer>();
+
+        foreach (var offer in organizationsOffers)
         {
             var isExist = false;
-            
-            foreach (var offer in organization.Offers)
+
+            foreach (var tag in offer.Tags)
             {
-                foreach (var tag in offer.Tags)
-                {
-                    if (tags.Contains(tag))
-                        isExist = true;
-                }
+                if (organizationOfferParams.Tags.Contains(tag))
+                    isExist = true;
             }
-            
+
             if (isExist)
-                targetOrganization.Add(organization);
+                targetOffers.Add(offer);
         }
-        
-        return targetOrganization;
+
+        var data = _mapper.Map<IReadOnlyList<OrganizationOffer>, IReadOnlyList<OrganizationOfferDto>>(targetOffers);
+
+        return new Pagination<OrganizationOfferDto>(organizationOfferParams.PageNumber,
+            organizationOfferParams.PageSize, targetOffers.Count,
+            data);
     }
 }

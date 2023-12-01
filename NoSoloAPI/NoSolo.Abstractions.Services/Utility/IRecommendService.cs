@@ -1,10 +1,13 @@
-﻿using NoSolo.Core.Entities.Organization;
-using NoSolo.Core.Entities.User;
+﻿using NoSolo.Abstractions.Services.Utility.Pagination;
+using NoSolo.Contracts.Dtos.Organizations.Offers;
+using NoSolo.Contracts.Dtos.Users.Offers;
+using NoSolo.Core.Specification.Organization.OrganizationOffer;
+using NoSolo.Core.Specification.Users.UserOffer;
 
 namespace NoSolo.Abstractions.Services.Utility;
 
 public interface IRecommendService
 {
-    Task<IReadOnlyList<User>> RecommendUsersForOrganizationOfferByTags(List<string> tags);
-    Task<IReadOnlyList<Organization>> RecommendOrganizationsForUserOfferByTags(List<string> tags);
+    Task<Pagination<UserOfferDto>> RecommendUsersForOrganizationOfferByTags(UserOfferParams userOfferParams);
+    Task<Pagination<OrganizationOfferDto>> RecommendOrganizationsForUserOfferByTags(OrganizationOfferParams organizationOfferParams);
 }
