@@ -21,6 +21,6 @@ public class EmailNotificationService : INotificationService
     public async Task SendVerificationCode(string userEmail)
     {
         var emailToken = await _verificationCodeService.GenerateVerificationEmailCode(userEmail);
-        await _emailService.SendEmail(userEmail, "Verify your email", $"Your verification code is {emailToken}");
+        await _emailService.SendEmailAsync(userEmail, "Verify your email", $"Your verification code is {emailToken}");
     }
 }
