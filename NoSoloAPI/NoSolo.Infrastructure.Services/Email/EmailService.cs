@@ -1,8 +1,10 @@
-﻿using System.Net;
-using System.Net.Mail;
+﻿
+
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.Extensions.Options;
+using MimeKit;
 using NoSolo.Abstractions.Services.Email;
-using NoSolo.Core.Exceptions;
 using NoSolo.Infrastructure.Services.Email.Options;
 
 namespace NoSolo.Infrastructure.Services.Email;
@@ -16,56 +18,23 @@ public class EmailService : IEmailService
         _options = options.Value;
     }
 
-    public async Task SendEmail(string to, string subject, string message)
+    public async Task SendEmailAsync(string email, string subject, string messageText)
     {
-        // var email = new MimeMessage();
-        // email.Sender = MailboxAddress.Parse(_options.SenderEmail);
-        // if (!string.IsNullOrEmpty(_options.SenderName))
-        // {
-        //     email.Sender.Name = _options.SenderName;
-        // }
-        // email.From.Add(email.Sender);
-        // email.To.Add(MailboxAddress.Parse(to));
-        // email.Subject = subject;
-        // email.Body = new TextPart(TextFormat.Html) { Text = message };
-
-        var mailMessage = new MailMessage()
+        var message = new MimeMessage();
+        message.From.Add(new MailboxAddress(null, _options.SenderEmail));
+        message.To.Add(new MailboxAddress(null, email));
+        message.Subject = subject;
+        var bodyBuilder = new BodyBuilder
         {
-            From = new MailAddress(_options.SenderEmail),
-            To =
-            {
-                new MailAddress(to)
-            },
-            Subject = subject,
-            IsBodyHtml = true,
-            Body = message
+            HtmlBody = messageText
         };
+        message.Body = bodyBuilder.ToMessageBody();
 
-        // using (var smtp = new SmtpClient())
-        // {
-        //     smtp.Connect(_options.HostAddress, _options.Port, _options.SecureSocketOptions);
-        //     smtp.Authenticate(_options.Username, _options.Password);
-        //     await smtp.SendAsync(email);
-        //     smtp.Disconnect(true);
-        // }
+        using var client = new SmtpClient();
+        await client.ConnectAsync(_options.HostAddress, _options.Port, SecureSocketOptions.StartTls);
+        await client.AuthenticateAsync(_options.SenderEmail, _options.Password);
 
-        var client = new SmtpClient()
-        {
-            Credentials = new NetworkCredential(_options.SenderEmail, _options.Password),
-            Host = _options.HostAddress,
-            Port = _options.Port,
-            EnableSsl = true
-        };
-
-        try
-        {
-            client.Send(mailMessage);
-            client.Dispose();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-            throw new EmailConfirmException("Failed to send mail for confirm email");
-        }
+        await client.SendAsync(message);
+        await client.DisconnectAsync(true);
     }
 }

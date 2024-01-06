@@ -31,12 +31,13 @@ public class EmailNotificationService : INotificationService
     public async Task SendVerificationCode(string userEmail)
     {
         var emailToken = await _verificationCodeService.GenerateVerificationEmailCode(userEmail);
+        
         var link = _configuration["VerificationCodeLink"];
         
         var param = new Dictionary<string, string>() { { "email", userEmail }, { "code", emailToken } };
 
         var url = new Uri(QueryHelpers.AddQueryString(link, param));
         
-        await _emailService.SendEmail(userEmail, "Verify your email", $"Your verification code is {url}");
+        await _emailService.SendEmailAsync(userEmail, "Verify your email", $"Your verification code is {url}");
     }
 }
