@@ -12,6 +12,7 @@ public class OfferMappingProfile : Profile
     {
         CreateMap<UserOffer, UserOfferDto>();
         CreateMap<NewUserOfferDto, UserOffer>();
+        CreateMap<UserOfferDto, UserOffer>();
         
         CreateMap<OrganizationOffer, OrganizationOfferDto>();
         CreateMap<OrganizationOfferDto, OrganizationOffer>();

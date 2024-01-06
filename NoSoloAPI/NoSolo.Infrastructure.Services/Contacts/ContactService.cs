@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using NoSolo.Abstractions.Repositories.Base;
 using NoSolo.Abstractions.Services.Contacts;
-using NoSolo.Abstractions.Services.Utility;
 using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Base;
 using NoSolo.Contracts.Dtos.Contacts;
@@ -28,7 +27,7 @@ public class ContactService : IContactService
         _mapper = mapper;
     }
 
-    public async Task<ContactDto> Add(Organization organization, NewContactDto contactDto)
+    public ContactDto Add(Organization organization, NewContactDto contactDto)
     {
         var contact = new Contact<Organization>
         {
@@ -46,7 +45,7 @@ public class ContactService : IContactService
         return _mapper.Map<ContactDto>(contact);
     }
 
-    public async Task<ContactDto> Add(User user, NewContactDto contactDto)
+    public ContactDto Add(User user, NewContactDto contactDto)
     {
         var contact = new Contact<User>
         {
@@ -63,7 +62,7 @@ public class ContactService : IContactService
         return _mapper.Map<ContactDto>(contact);
     }
 
-    public async Task<Contact<Organization>> Get(Organization organization, Guid contactGuid)
+    public Contact<Organization> Get(Organization organization, Guid contactGuid)
     {
         var contact = organization.Contacts.SingleOrDefault(c => c.Id == contactGuid);
         if (contact is null)
@@ -72,7 +71,7 @@ public class ContactService : IContactService
         return contact;
     }
 
-    public async Task<ContactDto> GetDto(Organization organization, Guid contactGuid)
+    public ContactDto GetDto(Organization organization, Guid contactGuid)
     {
         return _mapper.Map<ContactDto>(Get(organization, contactGuid));
     }
@@ -110,7 +109,7 @@ public class ContactService : IContactService
         return new Pagination<ContactDto>(userContactParams.PageNumber, userContactParams.PageSize, totalItems, data);
     }
 
-    public async Task<Contact<User>> Get(User user, Guid contactGuid)
+    public Contact<User> Get(User user, Guid contactGuid)
     {
         var contact = user.Contacts.SingleOrDefault(c => c.Id == contactGuid);
         if (contact is null)
@@ -119,14 +118,14 @@ public class ContactService : IContactService
         return contact;
     }
 
-    public async Task<ContactDto> GetDto(User user, Guid contactGuid)
+    public ContactDto GetDto(User user, Guid contactGuid)
     {
         return _mapper.Map<ContactDto>(Get(user, contactGuid));
     }
 
-    public async Task<ContactDto> Update(Organization organization, ContactDto contactDto)
+    public ContactDto Update(Organization organization, ContactDto contactDto)
     {
-        var contact = await Get(organization, contactDto.Id);
+        var contact = Get(organization, contactDto.Id);
 
         _mapper.Map(contactDto, contact);
         _organizationContactRepository.Save();
@@ -134,7 +133,7 @@ public class ContactService : IContactService
         return _mapper.Map<ContactDto>(contact);
     }
 
-    public async Task<ContactDto> Update(User user, ContactDto contactDto)
+    public ContactDto Update(User user, ContactDto contactDto)
     {
         var contact = user.Contacts.FirstOrDefault(c => c.Id == contactDto.Id);
         if (contact is null)
@@ -147,18 +146,18 @@ public class ContactService : IContactService
         return _mapper.Map<ContactDto>(contact);
     }
 
-    public async Task Delete(Organization organization, Guid contactGuid)
+    public void Delete(Organization organization, Guid contactGuid)
     {
-        var contact = await Get(organization, contactGuid);
+        var contact = Get(organization, contactGuid);
 
         _organizationContactRepository.Delete(contact);
 
         _organizationContactRepository.Save();
     }
 
-    public async Task Delete(User user, Guid contactGuid)
+    public void Delete(User user, Guid contactGuid)
     {
-        var contact = await Get(user, contactGuid);
+        var contact = Get(user, contactGuid);
 
         _userContactRepository.Delete(contact);
 

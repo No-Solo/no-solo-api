@@ -35,14 +35,11 @@ public class OrganizationContactService : IOrganizationContactService
         var organization =
             await _organizationService.Get(organizationGuid, OrganizationIncludeEnum.Contacts);
 
-        return await _contactService.Add(organization, contactDto);
+        return _contactService.Add(organization, contactDto);
     }
 
-    public async Task<Pagination<ContactDto>> Get(OrganizationContactParams organizationContactParams,
-        Guid organizationGuid)
+    public async Task<Pagination<ContactDto>> Get(OrganizationContactParams organizationContactParams)
     {
-        organizationContactParams.OrganizationId = organizationGuid;
-
         return await _contactService.Get(organizationContactParams);
     }
 
@@ -51,7 +48,7 @@ public class OrganizationContactService : IOrganizationContactService
         var organization =
             await _organizationService.Get(organizationGuid, OrganizationIncludeEnum.Contacts);
 
-        return await _contactService.GetDto(organization, contactGuid);
+        return _contactService.GetDto(organization, contactGuid);
     }
 
     public async Task<ContactDto> Update(ContactDto contactDto, Guid organizationGuid, string email)
@@ -63,7 +60,7 @@ public class OrganizationContactService : IOrganizationContactService
                 organizationGuid, email))
             throw new NotAccessException();
 
-        return await _contactService.Update(organization, contactDto);
+        return _contactService.Update(organization, contactDto);
     }
 
     public async Task Delete(Guid contactGuid, Guid organizationGuid, string email)
@@ -75,6 +72,6 @@ public class OrganizationContactService : IOrganizationContactService
                 organizationGuid, email))
             throw new NotAccessException();
 
-        await _contactService.Delete(organization, contactGuid);
+        _contactService.Delete(organization, contactGuid);
     }
 }
