@@ -2,14 +2,19 @@ using NoSolo.Web.API.Extensions;
 using NoSolo.Web.API.Middleware;
 using NoSolo.Infrastructure.Data.Data;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using NoSolo.Infrastructure.Data.DbContext;
+using NoSolo.Web.API.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddMemoryCache();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services
+    .AddControllers(options => { options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true; })
+    .AddNewtonsoftJson(options => { options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore; });
+
 builder.Services.AddAplicationService(builder.Configuration);
 
 var app = builder.Build();
@@ -23,6 +28,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
+    ConsoleHelper.ShowInfo("DefaultConnectionString", builder);
+    ConsoleHelper.ShowInfo("FeedBackConnectionString", builder);
 }
 
 app.UseStaticFiles();
