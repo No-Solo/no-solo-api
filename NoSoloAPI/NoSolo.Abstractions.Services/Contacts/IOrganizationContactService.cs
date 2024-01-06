@@ -10,7 +10,7 @@ public interface IOrganizationContactService
 {
     Task<ContactDto> Add(NewContactDto contactDto, Guid organizationGuid, string email);
     
-    Task<Pagination<ContactDto>> Get(OrganizationContactParams organizationContactParams, Guid organizationGuid);
+    Task<Pagination<ContactDto>> Get(OrganizationContactParams organizationContactParams);
     Task<ContactDto> Get(Guid contactGuid, Guid organizationGuid);
 
     Task<ContactDto> Update(ContactDto contactDto, Guid organizationGuid, string email);

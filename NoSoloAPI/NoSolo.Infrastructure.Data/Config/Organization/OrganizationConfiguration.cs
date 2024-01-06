@@ -10,11 +10,5 @@ public class OrganizationConfiguration : IEntityTypeConfiguration<NoSolo.Core.En
         builder.Property(p => p.Id).IsRequired();
         builder.Property(p => p.Name).IsRequired().HasMaxLength(100);
         builder.Property(p => p.Created).IsRequired();
-        builder.HasMany(p => p.Offers).WithOne()
-            .HasForeignKey(x => x.OrganizationId);
-        builder.HasMany(p => p.Contacts).WithOne()
-            .HasForeignKey(x => x.TEntityId);
-        builder.HasMany(p => p.Photos).WithOne()
-            .HasForeignKey(x => x.OrganizationId);
     }
 }

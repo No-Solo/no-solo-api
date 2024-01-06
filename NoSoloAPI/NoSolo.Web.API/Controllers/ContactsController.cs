@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoSolo.Abstractions.Services.Contacts;
-using NoSolo.Abstractions.Services.Utility;
 using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Base;
 using NoSolo.Contracts.Dtos.Contacts;
@@ -70,11 +69,11 @@ public class ContactsController : BaseApiController
 
 
     [AllowAnonymous]
-    [HttpGet("organization/{organizationId:guid}")]
+    [HttpGet("organization/")]
     public async Task<Pagination<ContactDto>> GetOrganizationContacts(
-        [FromQuery] OrganizationContactParams organizationContactParams, Guid organizationId)
+        [FromQuery] OrganizationContactParams organizationContactParams)
     {
-        return await _organizationContactService.Get(organizationContactParams, organizationId);
+        return await _organizationContactService.Get(organizationContactParams);
     }
 
     [AllowAnonymous]

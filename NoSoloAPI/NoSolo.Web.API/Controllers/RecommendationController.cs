@@ -1,8 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NoSolo.Abstractions.Services.Users;
 using NoSolo.Abstractions.Services.Utility;
+using NoSolo.Abstractions.Services.Utility.Pagination;
+using NoSolo.Contracts.Dtos.Organizations.Offers;
+using NoSolo.Contracts.Dtos.Users.Offers;
 using NoSolo.Core.Entities.Organization;
 using NoSolo.Core.Entities.User;
+using NoSolo.Core.Specification.Organization.OrganizationOffer;
+using NoSolo.Core.Specification.Users.UserOffer;
 
 namespace NoSolo.Web.API.Controllers;
 
@@ -16,14 +21,14 @@ public class RecommendationController : BaseApiController
     }
 
     [HttpGet("users")]
-    public async Task<IReadOnlyList<User>> GetRecommendedUsersForOrganizationOfferByTags(List<string> tags)
+    public async Task<Pagination<UserOfferDto>> GetRecommendedUsersForOrganizationOfferByTags([FromQuery] UserOfferParams userOfferParams)
     {
-        return await _recommendService.RecommendUsersForOrganizationOfferByTags(tags);
+        return await _recommendService.RecommendUsersForOrganizationOfferByTags(userOfferParams);
     }
     
-    [HttpGet("organization")]
-    public async Task<IReadOnlyList<Organization>> GetRecommendedOrganizationsForUserOfferByTags(List<string> tags)
+    [HttpGet("organizations")]
+    public async Task<Pagination<OrganizationOfferDto>> GetRecommendedOrganizationsForUserOfferByTags([FromQuery] OrganizationOfferParams organizationOfferParams)
     {
-        return await _recommendService.RecommendOrganizationsForUserOfferByTags(tags);
+        return await _recommendService.RecommendOrganizationsForUserOfferByTags(organizationOfferParams);
     }
 }

@@ -16,12 +16,6 @@ public class UserProfileConfiguration : IEntityTypeConfiguration<Core.Entities.U
         builder.Property(p => p.LastName).HasMaxLength(50);
         builder.Property(p => p.Gender).IsRequired();
         builder.Property(p => p.Locale).IsRequired();
-        builder.HasMany(p => p.Contacts).WithOne()
-            .HasForeignKey(x => x.TEntityId);
-        builder.HasMany(p => p.Tags).WithOne()
-            .HasForeignKey(x => x.UserGuid);
         builder.HasOne(p => p.Photo).WithOne();
-        builder.HasMany(p => p.Offers).WithOne()
-            .HasForeignKey(x => x.UserGuid);
     }
 }
