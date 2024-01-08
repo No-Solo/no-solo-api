@@ -1,7 +1,7 @@
 # NoSolo API
 
 ### Tech Stack
-- .NET 6.0
+- .NET 7.0
 - EntityFramework Core, Mapper (Dependency Injection)
 - PostgreSQL, Redis
 
