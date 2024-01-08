@@ -26,12 +26,11 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    
     ConsoleHelper.ShowInfo("DefaultConnectionString", builder);
     ConsoleHelper.ShowInfo("FeedBackConnectionString", builder);
 }
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseStaticFiles();
 
