@@ -5,8 +5,18 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NoSolo.Infrastructure.Data.DbContext;
 using NoSolo.Web.API.Helpers;
+using Serilog;
+using Serilog.Formatting.Json;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.ConfigureLogging(logging =>
+{
+    logging.AddSerilog(new LoggerConfiguration()
+        .Enrich.FromLogContext()
+        .WriteTo.File(new JsonFormatter(), "Logs/log-Serilog-jsonFile.log")
+        .CreateLogger());
+});
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
