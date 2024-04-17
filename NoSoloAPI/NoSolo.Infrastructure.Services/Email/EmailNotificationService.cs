@@ -25,6 +25,7 @@ public class EmailNotificationService : INotificationService
         var param = new Dictionary<string, string>() { { "email", userEmail }, { "code", code } };
 
         var url = new Uri(QueryHelpers.AddQueryString(link, param));
+        
         await _emailService.SendEmailAsync(userEmail, "Follow the link to reset your password", $"Follow the link to reset your password: {url}");
     }
 
