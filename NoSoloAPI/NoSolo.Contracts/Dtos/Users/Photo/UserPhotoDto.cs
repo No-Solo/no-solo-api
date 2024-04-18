@@ -2,8 +2,8 @@
 
 namespace NoSolo.Contracts.Dtos.Users.Photo;
 
-public class UserPhotoDto : BaseDto
+public record UserPhotoDto : BaseDto<Guid>
 {
-    public string Url { get; set; }
+    public required string Url { get; init; }
     public string? PublicId { get; set; }
 }

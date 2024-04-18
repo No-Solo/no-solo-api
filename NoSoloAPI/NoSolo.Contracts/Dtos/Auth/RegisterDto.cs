@@ -2,11 +2,11 @@
 
 namespace NoSolo.Contracts.Dtos.Auth;
 
-public class RegisterDto
+public record RegisterDto
 {
-    [Required] public string UserName { get; set; }
+    [Required] public required string UserName { get; init; }
 
-    [Required] public string Password { get; set; }
+    [Required] public required string Password { get; init; }
 
-    [Required] [EmailAddress] public string Email { get; set; }
+    [Required] [EmailAddress] public required string Email { get; init; }
 }

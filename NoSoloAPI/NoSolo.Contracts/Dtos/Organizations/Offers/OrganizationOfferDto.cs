@@ -2,9 +2,9 @@
 
 namespace NoSolo.Contracts.Dtos.Organizations.Offers;
 
-public class OrganizationOfferDto : BaseDto
+public record OrganizationOfferDto : BaseDto<Guid>
 {
-    public string? Name { get; set; }
-    public string Description { get; set; }
-    public List<string> Tags { get; set; }
+    public required string Name { get; init; }
+    public required string Description { get; init; }
+    public List<string>? Tags { get; set; }
 }

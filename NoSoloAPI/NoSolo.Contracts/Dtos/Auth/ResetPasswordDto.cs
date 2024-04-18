@@ -1,8 +1,13 @@
-﻿namespace NoSolo.Contracts.Dtos.Auth;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class ResetPasswordDto
+namespace NoSolo.Contracts.Dtos.Auth;
+
+public record ResetPasswordDto
 {
-    public string Code { get; set; }
-    public string Password { get; set; }
-    public string Email { get; set; }
+    [Required]
+    public required string Code { get; init; }
+    [Required]
+    public required string Password { get; init; }
+    [Required]
+    public required string Email { get; init; }
 }

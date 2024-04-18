@@ -1,8 +1,10 @@
-﻿using NoSolo.Core.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using NoSolo.Core.Enums;
 
 namespace NoSolo.Contracts.Dtos.Base;
 
-public class MemberDto : BaseDto
+public record MemberDto : BaseDto<Guid>
 {
-    public RoleEnum Role { get; set; }
+    [Required]
+    public required RoleEnum Role { get; init; }
 }

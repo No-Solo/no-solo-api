@@ -2,8 +2,8 @@
 
 namespace NoSolo.Contracts.Dtos.Users.Tags;
 
-public class NewUserTagDto
+public record NewUserTagDto
 {
-    public string Tag { get; set; }
-    public bool Active { get; set; }
+    public required string Tag { get; set; }
+    public required bool Active { get; set; }
 }

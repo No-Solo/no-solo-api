@@ -1,10 +1,15 @@
-﻿namespace NoSolo.Contracts.Dtos.Organizations.Organizations;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class NewOrganizationDto
+namespace NoSolo.Contracts.Dtos.Organizations.Organizations;
+
+public record NewOrganizationDto
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
+    [MaxLength(128)]
+    [MinLength(3)]
+    public required string Name { get; set; }
+    [MaxLength(256)]
+    public required string Description { get; set; }
     public int? NumberOfEmployees { get; set; }
     public string? Address { get; set; }
-    public string? WebSiteUrl { get; set; }
+    public string? WebSiteUri { get; set; }
 }

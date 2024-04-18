@@ -7,33 +7,33 @@ using NoSolo.Core.Enums;
 
 namespace NoSolo.Contracts.Dtos.Users;
 
-public class UserDto : BaseDto
+public record UserDto : BaseDto<Guid>
 {
-    public string UserName { get; set; }
+    public required string UserName { get; init; }
 
-    public string Email { get; set; }
+    public required string Email { get; init; }
 
-    public string FirstName { get; set; }
+    public required string FirstName { get; init; }
     public string? MiddleName { get; set; }
-    public string LastName { get; set; }
+    public required string LastName { get; init; }
 
-    public string About { get; set; }
-    public string Description { get; set; }
-    public string Location { get; set; }
+    public required string About { get; init; }
+    public required string Description { get; init; }
+    public required string Location { get; init; }
 
-    public UserPhotoDto Photo { get; set; }
+    public UserPhotoDto? Photo { get; set; }
 
-    public LocaleEnum Locale { get; set; }
-    public GenderEnum Gender { get; set; }
-    public SponsorshipEnum Sponsorship { get; set; }
+    public required LocaleEnum Locale { get; init; }
+    public required GenderEnum Gender { get; init; }
+    public required SponsorshipEnum Sponsorship { get; init; }
 
-    public List<ContactDto> Contacts { get; set; }
-    public List<UserOfferDto> Offers { get; set; }
-    public List<UserTagDto> Tags { get; set; }
+    public List<ContactDto>? Contacts { get; set; }
+    public List<UserOfferDto>? Offers { get; set; }
+    public List<UserTagDto>? Tags { get; set; }
 
-    public List<MemberDto> Memberships { get; set; }
+    public List<MemberDto>? Memberships { get; set; }
 
-    public List<UserRequestDto> Requests { get; set; }
+    public List<UserRequestDto>? Requests { get; set; }
 
-    public bool EmailConfirmed { get; set; }
+    public required bool EmailConfirmed { get; init; }
 }

@@ -1,6 +1,9 @@
-﻿namespace NoSolo.Contracts.Dtos.Users.Tags;
+﻿using NoSolo.Contracts.Dtos.Base;
 
-public class UserTagDto : NewUserTagDto
+namespace NoSolo.Contracts.Dtos.Users.Tags;
+
+public record UserTagDto : BaseDto<Guid>
 {
-    public Guid Id { get; set; }
+    public required string Tag { get; init; }
+    public required bool Active { get; init; }
 }

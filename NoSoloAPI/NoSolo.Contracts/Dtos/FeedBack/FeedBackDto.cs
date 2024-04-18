@@ -2,10 +2,10 @@
 
 namespace NoSolo.Contracts.Dtos.FeedBack;
 
-public class FeedBackDto : BaseDto
+public record FeedBackDto : BaseDto<Guid>
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Email { get; set; }
-    public string FeedBackText { get; set; }
+    public required string FirstName { get; init; }
+    public required string LastName { get; init; }
+    public required string Email { get; init; }
+    public required string FeedBackText { get; init; }
 }

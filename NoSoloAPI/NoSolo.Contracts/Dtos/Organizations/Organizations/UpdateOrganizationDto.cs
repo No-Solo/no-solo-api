@@ -2,10 +2,10 @@
 
 namespace NoSolo.Contracts.Dtos.Organizations.Organizations;
 
-public class UpdateOrganizationDto : BaseDto
+public record UpdateOrganizationDto : BaseCreatedDto<Guid>
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
+    public required string Name { get; set; }
+    public required string Description { get; set; }
     public int? NumberOfEmployees { get; set; }
     public string? Address { get; set; }
     public string? WebSiteUrl { get; set; }

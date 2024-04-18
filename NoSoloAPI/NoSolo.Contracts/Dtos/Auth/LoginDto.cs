@@ -2,9 +2,9 @@
 
 namespace NoSolo.Contracts.Dtos.Auth;
 
-public class LoginDto
+public record LoginDto
 {
-    [Required] public string Login { get; set; }
+    [Required] public required string Login { get; init; }
 
-    [Required] public string Password { get; set; }
+    [Required] public required string Password { get; init; }
 }

@@ -1,8 +1,13 @@
-﻿namespace NoSolo.Contracts.Dtos.Base;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class ContactDto : BaseDto
+namespace NoSolo.Contracts.Dtos.Base;
+
+public record ContactDto : BaseDto<Guid>
 {
-    public string Type { get; set; }
-    public string Url { get; set; }
-    public string Text { get; set; }
+    [Required]
+    public required string Type { get; init; }
+    [Required]
+    public required string Url { get; init; }
+    [Required]
+    public required string Text { get; init; }
 }

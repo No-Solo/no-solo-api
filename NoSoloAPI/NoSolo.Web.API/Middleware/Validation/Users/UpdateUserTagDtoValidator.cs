@@ -15,7 +15,7 @@ public class UpdateUserTagDtoValidator : AbstractValidator<UpdateUserTagDto>
         RuleFor(u => u.Active)
             .NotEmpty();
 
-        RuleFor(u => u.Guid)
+        RuleFor(u => u.Id)
             .NotEmpty();
     }
 }

@@ -1,8 +1,15 @@
-﻿namespace NoSolo.Contracts.Dtos.Contacts;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace NoSolo.Contracts.Dtos.Contacts;
 
 public class UpdateContactDto
 {
-    public string Type { get; set; }
-    public string Url { get; set; }
-    public string Text { get; set; }
+    [Required]
+    public required string Type { get; init; }
+    
+    [Required]
+    public required string Url { get; init; }
+    
+    [Required]
+    public required string Text { get; init; }
 }

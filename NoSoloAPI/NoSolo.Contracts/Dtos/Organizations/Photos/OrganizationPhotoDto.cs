@@ -2,9 +2,9 @@
 
 namespace NoSolo.Contracts.Dtos.Organizations.Photos;
 
-public class OrganizationPhotoDto : BaseDto
+public record OrganizationPhotoDto : BaseDto<Guid>
 {
-    public bool IsMain { get; set; }
-    public string Url { get; set; }
-    public string? PublicId { get; set; }
+    public required bool IsMain { get; init; }
+    public required string Url { get; init; }
+    public string? PublicId { get; init; }
 }

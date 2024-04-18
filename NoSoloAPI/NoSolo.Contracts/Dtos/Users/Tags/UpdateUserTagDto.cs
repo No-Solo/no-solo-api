@@ -1,8 +1,9 @@
-﻿namespace NoSolo.Contracts.Dtos.Users.Tags;
+﻿using NoSolo.Contracts.Dtos.Base;
 
-public class UpdateUserTagDto
+namespace NoSolo.Contracts.Dtos.Users.Tags;
+
+public record UpdateUserTagDto : BaseDto<Guid>
 {
-    public Guid Guid { get; set; }
-    public string Tag { get; set; }
-    public bool Active { get; set; }
+    public required string Tag { get; set; }
+    public required bool Active { get; set; }
 }

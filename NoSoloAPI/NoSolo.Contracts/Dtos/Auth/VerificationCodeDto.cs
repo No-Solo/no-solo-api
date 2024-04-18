@@ -1,7 +1,11 @@
-﻿namespace NoSolo.Contracts.Dtos.Auth;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class VerificationCodeDto
+namespace NoSolo.Contracts.Dtos.Auth;
+
+public record VerificationCodeDto
 {
-    public string Email { get; set; }
-    public string VerificationCode { get; set; }
+    [Required]
+    public required string Email { get; init; }
+    [Required]
+    public required string VerificationCode { get; init; }
 }
