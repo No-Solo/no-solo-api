@@ -13,28 +13,28 @@ public class FeedBackRepositories : IFeedBackRepository
         _feedBackContext = feedBackContext;
     }
 
-    public async Task<IReadOnlyList<Core.Entities.FeedBack.FeedBack>> Get()
+    public async Task<IReadOnlyList<Core.Entities.FeedBack.FeedBackEntity>> Get()
     {
-        return await _feedBackContext.Set<Core.Entities.FeedBack.FeedBack>()
+        return await _feedBackContext.Set<Core.Entities.FeedBack.FeedBackEntity>()
             .ToListAsync();
     }
 
-    public async Task<Core.Entities.FeedBack.FeedBack> Get(Guid feedBackGuid)
+    public async Task<Core.Entities.FeedBack.FeedBackEntity> Get(Guid feedBackGuid)
     {
-        return await _feedBackContext.Set<Core.Entities.FeedBack.FeedBack>()
+        return await _feedBackContext.Set<Core.Entities.FeedBack.FeedBackEntity>()
             .FindAsync(feedBackGuid);
     }
 
-    public async Task Delete(Core.Entities.FeedBack.FeedBack feedBack)
+    public async Task Delete(Core.Entities.FeedBack.FeedBackEntity feedBackEntity)
     {
-        _feedBackContext.Set<Core.Entities.FeedBack.FeedBack>()
-            .Remove(feedBack);
+        _feedBackContext.Set<Core.Entities.FeedBack.FeedBackEntity>()
+            .Remove(feedBackEntity);
     }
 
-    public async void AddAsync(Core.Entities.FeedBack.FeedBack feedBack)
+    public async void AddAsync(Core.Entities.FeedBack.FeedBackEntity feedBackEntity)
     {
-        await _feedBackContext.Set<Core.Entities.FeedBack.FeedBack>()
-            .AddAsync(feedBack);
+        await _feedBackContext.Set<Core.Entities.FeedBack.FeedBackEntity>()
+            .AddAsync(feedBackEntity);
     }
 
     public void Save()

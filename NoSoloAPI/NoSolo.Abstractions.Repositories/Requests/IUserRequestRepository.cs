@@ -6,11 +6,11 @@ namespace NoSolo.Abstractions.Repositories.Requests;
 
 public interface IUserRequestRepository
 {
-    Task<Request<User, OrganizationOffer>> GetRequest(Guid requestGuid);
-    Task<IReadOnlyList<Request<User, OrganizationOffer>>> GetByUser(Guid userGuid);
-    Task<IReadOnlyList<Request<User, OrganizationOffer>>> GetByOrganizationOffer(Guid organizationOfferGuid);
-    Task<Request<User, OrganizationOffer>> Get(Guid userGuid, Guid organizationOfferGuid);
-    void Add(Request<User, OrganizationOffer> request);
-    void Delete(Request<User, OrganizationOffer> request);
+    Task<RequestEntity<UserEntity, OrganizationOfferEntity>> GetRequest(Guid requestGuid);
+    Task<IReadOnlyList<RequestEntity<UserEntity, OrganizationOfferEntity>>> GetByUser(Guid userGuid);
+    Task<IReadOnlyList<RequestEntity<UserEntity, OrganizationOfferEntity>>> GetByOrganizationOffer(Guid organizationOfferGuid);
+    Task<RequestEntity<UserEntity, OrganizationOfferEntity>> Get(Guid userGuid, Guid organizationOfferGuid);
+    void Add(RequestEntity<UserEntity, OrganizationOfferEntity> requestEntity);
+    void Delete(RequestEntity<UserEntity, OrganizationOfferEntity> requestEntity);
     void Save();
 }

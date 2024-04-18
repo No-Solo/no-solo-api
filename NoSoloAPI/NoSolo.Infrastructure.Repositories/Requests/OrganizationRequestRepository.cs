@@ -16,38 +16,38 @@ public class OrganizationRequestRepository : IOrganizationRequestRepository
         _dataBaseContext = dataBaseContext;
     }
 
-    public async Task<Request<Organization, UserOffer>> GetRequest(Guid requestGuid)
+    public async Task<RequestEntity<OrganizationEntity, UserOfferEntity>> GetRequest(Guid requestGuid)
     {
-        return await _dataBaseContext.Set<Request<Organization, UserOffer>>()
+        return await _dataBaseContext.Set<RequestEntity<OrganizationEntity, UserOfferEntity>>()
             .FindAsync(requestGuid);
     }
 
-    public async Task<IReadOnlyList<Request<Organization, UserOffer>>> GetByOrganization(Guid organizationGuid)
+    public async Task<IReadOnlyList<RequestEntity<OrganizationEntity, UserOfferEntity>>> GetByOrganization(Guid organizationGuid)
     {
-        return await _dataBaseContext.Set<Request<Organization, UserOffer>>()
+        return await _dataBaseContext.Set<RequestEntity<OrganizationEntity, UserOfferEntity>>()
             .Where(x => x.TEntityId == organizationGuid).AsNoTracking().IgnoreAutoIncludes().ToListAsync();
     }
 
-    public async Task<IReadOnlyList<Request<Organization, UserOffer>>> GetByUserOffer(Guid userOfferGuid)
+    public async Task<IReadOnlyList<RequestEntity<OrganizationEntity, UserOfferEntity>>> GetByUserOffer(Guid userOfferGuid)
     {
-        return await _dataBaseContext.Set<Request<Organization, UserOffer>>()
+        return await _dataBaseContext.Set<RequestEntity<OrganizationEntity, UserOfferEntity>>()
             .Where(x => x.UEntityId == userOfferGuid).AsNoTracking().IgnoreAutoIncludes().ToListAsync();
     }
     
-    public async Task<Request<Organization, UserOffer>> Get(Guid organizationGuid, Guid userOfferGuid)
+    public async Task<RequestEntity<OrganizationEntity, UserOfferEntity>> Get(Guid organizationGuid, Guid userOfferGuid)
     {
-        return await _dataBaseContext.Set<Request<Organization, UserOffer>>()
+        return await _dataBaseContext.Set<RequestEntity<OrganizationEntity, UserOfferEntity>>()
             .Where(x => x.TEntityId == organizationGuid && x.UEntityId == userOfferGuid).IgnoreAutoIncludes().SingleAsync();
     }
 
-    public void Add(Request<Organization, UserOffer> request)
+    public void Add(RequestEntity<OrganizationEntity, UserOfferEntity> requestEntity)
     {
-        _dataBaseContext.Set<Request<Organization, UserOffer>>().Add(request);
+        _dataBaseContext.Set<RequestEntity<OrganizationEntity, UserOfferEntity>>().Add(requestEntity);
     }
 
-    public void Delete(Request<Organization, UserOffer> request)
+    public void Delete(RequestEntity<OrganizationEntity, UserOfferEntity> requestEntity)
     {
-        _dataBaseContext.Set<Request<Organization, UserOffer>>().Remove(request);
+        _dataBaseContext.Set<RequestEntity<OrganizationEntity, UserOfferEntity>>().Remove(requestEntity);
     }
 
     public void Save()

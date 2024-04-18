@@ -2,10 +2,10 @@
 
 public interface IFeedBackRepository
 {
-    Task<IReadOnlyList<Core.Entities.FeedBack.FeedBack>> Get();
-    Task<Core.Entities.FeedBack.FeedBack> Get(Guid feedBackGuid);
-    Task Delete(Core.Entities.FeedBack.FeedBack feedBack);
+    Task<IReadOnlyList<Core.Entities.FeedBack.FeedBackEntity>> Get();
+    Task<Core.Entities.FeedBack.FeedBackEntity> Get(Guid feedBackGuid);
+    Task Delete(Core.Entities.FeedBack.FeedBackEntity feedBackEntity);
 
-    void AddAsync(Core.Entities.FeedBack.FeedBack feedBack);
+    void AddAsync(Core.Entities.FeedBack.FeedBackEntity feedBackEntity);
     void Save();
 }
