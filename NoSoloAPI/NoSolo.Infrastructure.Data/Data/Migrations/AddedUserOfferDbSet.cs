@@ -11,19 +11,19 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Request<Organization, UserOffer>_UserOffer_UEntityId",
-                table: "Request<Organization, UserOffer>");
+                name: "FK_Request<OrganizationEntity, UserOfferEntity>_UserOffer_UEntityId",
+                table: "RequestEntity<OrganizationEntity, UserOfferEntity>");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_UserOffer_UserProfiles_UserProfileId",
-                table: "UserOffer");
+                table: "UserOfferEntity");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_UserOffer",
-                table: "UserOffer");
+                table: "UserOfferEntity");
 
             migrationBuilder.RenameTable(
-                name: "UserOffer",
+                name: "UserOfferEntity",
                 newName: "UserOffers");
 
             migrationBuilder.RenameIndex(
@@ -37,8 +37,8 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                 column: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Request<Organization, UserOffer>_UserOffers_UEntityId",
-                table: "Request<Organization, UserOffer>",
+                name: "FK_Request<OrganizationEntity, UserOfferEntity>_UserOffers_UEntityId",
+                table: "RequestEntity<OrganizationEntity, UserOfferEntity>",
                 column: "UEntityId",
                 principalTable: "UserOffers",
                 principalColumn: "Id",
@@ -57,8 +57,8 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Request<Organization, UserOffer>_UserOffers_UEntityId",
-                table: "Request<Organization, UserOffer>");
+                name: "FK_Request<OrganizationEntity, UserOfferEntity>_UserOffers_UEntityId",
+                table: "RequestEntity<OrganizationEntity, UserOfferEntity>");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_UserOffers_UserProfiles_UserProfileId",
@@ -70,29 +70,29 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.RenameTable(
                 name: "UserOffers",
-                newName: "UserOffer");
+                newName: "UserOfferEntity");
 
             migrationBuilder.RenameIndex(
                 name: "IX_UserOffers_UserProfileId",
-                table: "UserOffer",
+                table: "UserOfferEntity",
                 newName: "IX_UserOffer_UserProfileId");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_UserOffer",
-                table: "UserOffer",
+                table: "UserOfferEntity",
                 column: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Request<Organization, UserOffer>_UserOffer_UEntityId",
-                table: "Request<Organization, UserOffer>",
+                name: "FK_Request<OrganizationEntity, UserOfferEntity>_UserOffer_UEntityId",
+                table: "RequestEntity<OrganizationEntity, UserOfferEntity>",
                 column: "UEntityId",
-                principalTable: "UserOffer",
+                principalTable: "UserOfferEntity",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_UserOffer_UserProfiles_UserProfileId",
-                table: "UserOffer",
+                table: "UserOfferEntity",
                 column: "UserProfileId",
                 principalTable: "UserProfiles",
                 principalColumn: "Id",

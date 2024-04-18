@@ -14,7 +14,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_OrganizationUser_Users_UserId",
-                table: "Member");
+                table: "MemberEntity");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_UserProfile_Users_UserId",
@@ -312,7 +312,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_OrganizationUser_AspNetUsers_UserId",
-                table: "Member",
+                table: "MemberEntity",
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
@@ -332,7 +332,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_OrganizationUser_AspNetUsers_UserId",
-                table: "Member");
+                table: "MemberEntity");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_UserProfile_AspNetUsers_UserId",
@@ -446,7 +446,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_OrganizationUser_Users_UserId",
-                table: "Member",
+                table: "MemberEntity",
                 column: "UserId",
                 principalTable: "Users",
                 principalColumn: "Id",

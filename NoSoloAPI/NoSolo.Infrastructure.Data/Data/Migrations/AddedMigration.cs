@@ -13,7 +13,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
         {
             migrationBuilder.AddColumn<DateTime>(
                 name: "Created",
-                table: "OrganizationOffer",
+                table: "OrganizationOfferEntity",
                 type: "timestamp with time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
@@ -24,7 +24,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "Created",
-                table: "OrganizationOffer");
+                table: "OrganizationOfferEntity");
         }
     }
 }

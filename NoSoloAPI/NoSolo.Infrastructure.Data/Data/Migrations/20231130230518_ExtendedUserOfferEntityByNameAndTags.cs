@@ -14,11 +14,11 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_OrganizationOffer_Organizations_OrganizationId1",
-                table: "OrganizationOffer");
+                table: "OrganizationOfferEntity");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_OrganizationPhoto_Organizations_OrganizationId1",
-                table: "OrganizationPhoto");
+                table: "OrganizationPhotoEntity");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_UserOffers_AspNetUsers_UserId",
@@ -83,7 +83,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "OrganizationId1",
-                table: "OrganizationPhoto",
+                table: "OrganizationPhotoEntity",
                 type: "uuid",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"),
@@ -93,7 +93,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AlterColumn<List<string>>(
                 name: "Tags",
-                table: "OrganizationOffer",
+                table: "OrganizationOfferEntity",
                 type: "text[]",
                 nullable: false,
                 oldClrType: typeof(List<string>),
@@ -102,7 +102,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "OrganizationId1",
-                table: "OrganizationOffer",
+                table: "OrganizationOfferEntity",
                 type: "uuid",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"),
@@ -124,7 +124,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_OrganizationOffer_Organizations_OrganizationId1",
-                table: "OrganizationOffer",
+                table: "OrganizationOfferEntity",
                 column: "OrganizationId1",
                 principalTable: "Organizations",
                 principalColumn: "Id",
@@ -132,7 +132,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_OrganizationPhoto_Organizations_OrganizationId1",
-                table: "OrganizationPhoto",
+                table: "OrganizationPhotoEntity",
                 column: "OrganizationId1",
                 principalTable: "Organizations",
                 principalColumn: "Id",
@@ -160,11 +160,11 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_OrganizationOffer_Organizations_OrganizationId1",
-                table: "OrganizationOffer");
+                table: "OrganizationOfferEntity");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_OrganizationPhoto_Organizations_OrganizationId1",
-                table: "OrganizationPhoto");
+                table: "OrganizationPhotoEntity");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_UserOffers_AspNetUsers_UserId",
@@ -216,7 +216,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "OrganizationId1",
-                table: "OrganizationPhoto",
+                table: "OrganizationPhotoEntity",
                 type: "uuid",
                 nullable: true,
                 oldClrType: typeof(Guid),
@@ -224,7 +224,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AlterColumn<List<string>>(
                 name: "Tags",
-                table: "OrganizationOffer",
+                table: "OrganizationOfferEntity",
                 type: "text[]",
                 nullable: true,
                 oldClrType: typeof(List<string>),
@@ -232,7 +232,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "OrganizationId1",
-                table: "OrganizationOffer",
+                table: "OrganizationOfferEntity",
                 type: "uuid",
                 nullable: true,
                 oldClrType: typeof(Guid),
@@ -250,14 +250,14 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_OrganizationOffer_Organizations_OrganizationId1",
-                table: "OrganizationOffer",
+                table: "OrganizationOfferEntity",
                 column: "OrganizationId1",
                 principalTable: "Organizations",
                 principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_OrganizationPhoto_Organizations_OrganizationId1",
-                table: "OrganizationPhoto",
+                table: "OrganizationPhotoEntity",
                 column: "OrganizationId1",
                 principalTable: "Organizations",
                 principalColumn: "Id");

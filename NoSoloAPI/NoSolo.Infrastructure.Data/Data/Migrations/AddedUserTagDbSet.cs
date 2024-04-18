@@ -12,19 +12,19 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_Contact<UserProfile>_UserProfile_TEntityId",
-                table: "Contact<UserProfile>");
+                table: "ContactEntity<UserProfile>");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Request<UserProfile, OrganizationOffer>_UserProfile_TEntity~",
-                table: "Request<UserProfile, OrganizationOffer>");
+                name: "FK_Request<UserProfile, OrganizationOfferEntity>_UserProfile_TEntity~",
+                table: "RequestEntity<UserProfile, OrganizationOfferEntity>");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_UserOffer_UserProfile_UserProfileId",
-                table: "UserOffer");
+                table: "UserOfferEntity");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_UserPhoto_UserProfile_UserProfileId",
-                table: "UserPhoto");
+                table: "UserPhotoEntity");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_UserProfile_AspNetUsers_UserId",
@@ -32,18 +32,18 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.DropForeignKey(
                 name: "FK_UserTag_UserProfile_UserProfileId",
-                table: "UserTag");
+                table: "UserTagEntity");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_UserTag",
-                table: "UserTag");
+                table: "UserTagEntity");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_UserProfile",
                 table: "UserProfile");
 
             migrationBuilder.RenameTable(
-                name: "UserTag",
+                name: "UserTagEntity",
                 newName: "UserTags");
 
             migrationBuilder.RenameTable(
@@ -72,15 +72,15 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Contact<UserProfile>_UserProfiles_TEntityId",
-                table: "Contact<UserProfile>",
+                table: "ContactEntity<UserProfile>",
                 column: "TEntityId",
                 principalTable: "UserProfiles",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Request<UserProfile, OrganizationOffer>_UserProfiles_TEntit~",
-                table: "Request<UserProfile, OrganizationOffer>",
+                name: "FK_Request<UserProfile, OrganizationOfferEntity>_UserProfiles_TEntit~",
+                table: "RequestEntity<UserProfile, OrganizationOfferEntity>",
                 column: "TEntityId",
                 principalTable: "UserProfiles",
                 principalColumn: "Id",
@@ -88,7 +88,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_UserOffer_UserProfiles_UserProfileId",
-                table: "UserOffer",
+                table: "UserOfferEntity",
                 column: "UserProfileId",
                 principalTable: "UserProfiles",
                 principalColumn: "Id",
@@ -96,7 +96,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_UserPhoto_UserProfiles_UserProfileId",
-                table: "UserPhoto",
+                table: "UserPhotoEntity",
                 column: "UserProfileId",
                 principalTable: "UserProfiles",
                 principalColumn: "Id",
@@ -124,19 +124,19 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_Contact<UserProfile>_UserProfiles_TEntityId",
-                table: "Contact<UserProfile>");
+                table: "ContactEntity<UserProfile>");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Request<UserProfile, OrganizationOffer>_UserProfiles_TEntit~",
-                table: "Request<UserProfile, OrganizationOffer>");
+                name: "FK_Request<UserProfile, OrganizationOfferEntity>_UserProfiles_TEntit~",
+                table: "RequestEntity<UserProfile, OrganizationOfferEntity>");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_UserOffer_UserProfiles_UserProfileId",
-                table: "UserOffer");
+                table: "UserOfferEntity");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_UserPhoto_UserProfiles_UserProfileId",
-                table: "UserPhoto");
+                table: "UserPhotoEntity");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_UserProfiles_AspNetUsers_UserId",
@@ -156,7 +156,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.RenameTable(
                 name: "UserTags",
-                newName: "UserTag");
+                newName: "UserTagEntity");
 
             migrationBuilder.RenameTable(
                 name: "UserProfiles",
@@ -164,7 +164,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.RenameIndex(
                 name: "IX_UserTags_UserProfileId",
-                table: "UserTag",
+                table: "UserTagEntity",
                 newName: "IX_UserTag_UserProfileId");
 
             migrationBuilder.RenameIndex(
@@ -174,7 +174,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_UserTag",
-                table: "UserTag",
+                table: "UserTagEntity",
                 column: "Id");
 
             migrationBuilder.AddPrimaryKey(
@@ -184,15 +184,15 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Contact<UserProfile>_UserProfile_TEntityId",
-                table: "Contact<UserProfile>",
+                table: "ContactEntity<UserProfile>",
                 column: "TEntityId",
                 principalTable: "UserProfile",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Request<UserProfile, OrganizationOffer>_UserProfile_TEntity~",
-                table: "Request<UserProfile, OrganizationOffer>",
+                name: "FK_Request<UserProfile, OrganizationOfferEntity>_UserProfile_TEntity~",
+                table: "RequestEntity<UserProfile, OrganizationOfferEntity>",
                 column: "TEntityId",
                 principalTable: "UserProfile",
                 principalColumn: "Id",
@@ -200,7 +200,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_UserOffer_UserProfile_UserProfileId",
-                table: "UserOffer",
+                table: "UserOfferEntity",
                 column: "UserProfileId",
                 principalTable: "UserProfile",
                 principalColumn: "Id",
@@ -208,7 +208,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_UserPhoto_UserProfile_UserProfileId",
-                table: "UserPhoto",
+                table: "UserPhotoEntity",
                 column: "UserProfileId",
                 principalTable: "UserProfile",
                 principalColumn: "Id",
@@ -224,7 +224,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_UserTag_UserProfile_UserProfileId",
-                table: "UserTag",
+                table: "UserTagEntity",
                 column: "UserProfileId",
                 principalTable: "UserProfile",
                 principalColumn: "Id",

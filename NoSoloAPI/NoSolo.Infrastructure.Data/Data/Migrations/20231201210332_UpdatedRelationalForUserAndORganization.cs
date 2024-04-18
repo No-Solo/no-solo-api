@@ -12,20 +12,20 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Contact<Organization>_Organizations_TEntityId1",
-                table: "Contact<Organization>");
+                name: "FK_Contact<OrganizationEntity>_Organizations_TEntityId1",
+                table: "ContactEntity<OrganizationEntity>");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Contact<User>_AspNetUsers_TEntityId1",
-                table: "Contact<User>");
+                name: "FK_Contact<UserEntity>_AspNetUsers_TEntityId1",
+                table: "ContactEntity<UserEntity>");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_OrganizationOffer_Organizations_OrganizationId1",
-                table: "OrganizationOffer");
+                table: "OrganizationOfferEntity");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_OrganizationPhoto_Organizations_OrganizationId1",
-                table: "OrganizationPhoto");
+                table: "OrganizationPhotoEntity");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_UserOffers_AspNetUsers_UserGuid",
@@ -45,35 +45,35 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.DropIndex(
                 name: "IX_OrganizationPhoto_OrganizationId1",
-                table: "OrganizationPhoto");
+                table: "OrganizationPhotoEntity");
 
             migrationBuilder.DropIndex(
                 name: "IX_OrganizationOffer_OrganizationId1",
-                table: "OrganizationOffer");
+                table: "OrganizationOfferEntity");
 
             migrationBuilder.DropIndex(
-                name: "IX_Contact<User>_TEntityId1",
-                table: "Contact<User>");
+                name: "IX_Contact<UserEntity>_TEntityId1",
+                table: "ContactEntity<UserEntity>");
 
             migrationBuilder.DropIndex(
-                name: "IX_Contact<Organization>_TEntityId1",
-                table: "Contact<Organization>");
+                name: "IX_Contact<OrganizationEntity>_TEntityId1",
+                table: "ContactEntity<OrganizationEntity>");
 
             migrationBuilder.DropColumn(
                 name: "OrganizationId1",
-                table: "OrganizationPhoto");
+                table: "OrganizationPhotoEntity");
 
             migrationBuilder.DropColumn(
                 name: "OrganizationId1",
-                table: "OrganizationOffer");
+                table: "OrganizationOfferEntity");
 
             migrationBuilder.DropColumn(
                 name: "TEntityId1",
-                table: "Contact<User>");
+                table: "ContactEntity<UserEntity>");
 
             migrationBuilder.DropColumn(
                 name: "TEntityId1",
-                table: "Contact<Organization>");
+                table: "ContactEntity<OrganizationEntity>");
         }
 
         /// <inheritdoc />
@@ -81,27 +81,27 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
         {
             migrationBuilder.AddColumn<Guid>(
                 name: "OrganizationId1",
-                table: "OrganizationPhoto",
+                table: "OrganizationPhotoEntity",
                 type: "uuid",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.AddColumn<Guid>(
                 name: "OrganizationId1",
-                table: "OrganizationOffer",
+                table: "OrganizationOfferEntity",
                 type: "uuid",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.AddColumn<Guid>(
                 name: "TEntityId1",
-                table: "Contact<User>",
+                table: "ContactEntity<UserEntity>",
                 type: "uuid",
                 nullable: true);
 
             migrationBuilder.AddColumn<Guid>(
                 name: "TEntityId1",
-                table: "Contact<Organization>",
+                table: "ContactEntity<OrganizationEntity>",
                 type: "uuid",
                 nullable: true);
 
@@ -117,41 +117,41 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrganizationPhoto_OrganizationId1",
-                table: "OrganizationPhoto",
+                table: "OrganizationPhotoEntity",
                 column: "OrganizationId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrganizationOffer_OrganizationId1",
-                table: "OrganizationOffer",
+                table: "OrganizationOfferEntity",
                 column: "OrganizationId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contact<User>_TEntityId1",
-                table: "Contact<User>",
+                name: "IX_Contact<UserEntity>_TEntityId1",
+                table: "ContactEntity<UserEntity>",
                 column: "TEntityId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contact<Organization>_TEntityId1",
-                table: "Contact<Organization>",
+                name: "IX_Contact<OrganizationEntity>_TEntityId1",
+                table: "ContactEntity<OrganizationEntity>",
                 column: "TEntityId1");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Contact<Organization>_Organizations_TEntityId1",
-                table: "Contact<Organization>",
+                name: "FK_Contact<OrganizationEntity>_Organizations_TEntityId1",
+                table: "ContactEntity<OrganizationEntity>",
                 column: "TEntityId1",
                 principalTable: "Organizations",
                 principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Contact<User>_AspNetUsers_TEntityId1",
-                table: "Contact<User>",
+                name: "FK_Contact<UserEntity>_AspNetUsers_TEntityId1",
+                table: "ContactEntity<UserEntity>",
                 column: "TEntityId1",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_OrganizationOffer_Organizations_OrganizationId1",
-                table: "OrganizationOffer",
+                table: "OrganizationOfferEntity",
                 column: "OrganizationId1",
                 principalTable: "Organizations",
                 principalColumn: "Id",
@@ -159,7 +159,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_OrganizationPhoto_Organizations_OrganizationId1",
-                table: "OrganizationPhoto",
+                table: "OrganizationPhotoEntity",
                 column: "OrganizationId1",
                 principalTable: "Organizations",
                 principalColumn: "Id",

@@ -25,7 +25,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("NoSolo.Core.Entities.Contact<NoSolo.Core.Entities.Organization>", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.ContactEntity<NoSolo.Core.Entities.OrganizationEntity>", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -47,10 +47,10 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
                     b.HasIndex("TEntityId");
 
-                    b.ToTable("Contact<Organization>");
+                    b.ToTable("ContactEntity<OrganizationEntity>");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.Contact<NoSolo.Core.Entities.UserProfile>", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.ContactEntity<NoSolo.Core.Entities.UserProfile>", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -72,10 +72,10 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
                     b.HasIndex("TEntityId");
 
-                    b.ToTable("Contact<UserProfile>");
+                    b.ToTable("ContactEntity<UserProfile>");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.Organization", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.OrganizationEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -95,7 +95,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                     b.ToTable("Organizations");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.OrganizationOffer", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.OrganizationOfferEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -120,10 +120,10 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
                     b.HasIndex("OrganizationId");
 
-                    b.ToTable("OrganizationOffer");
+                    b.ToTable("OrganizationOfferEntity");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.OrganizationPhoto", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.OrganizationPhotoEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -145,7 +145,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
                     b.HasIndex("OrganizationId");
 
-                    b.ToTable("OrganizationPhoto");
+                    b.ToTable("OrganizationPhotoEntity");
                 });
 
             modelBuilder.Entity("NoSolo.Core.Entities.OrganizationUser", b =>
@@ -220,7 +220,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.Request<NoSolo.Core.Entities.Organization, NoSolo.Core.Entities.UserOffer>", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.RequestEntity<NoSolo.Core.Entities.OrganizationEntity, NoSolo.Core.Entities.UserOfferEntity>", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -241,10 +241,10 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
                     b.HasIndex("UEntityId");
 
-                    b.ToTable("Request<Organization, UserOffer>");
+                    b.ToTable("RequestEntity<OrganizationEntity, UserOfferEntity>");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.Request<NoSolo.Core.Entities.UserProfile, NoSolo.Core.Entities.OrganizationOffer>", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.RequestEntity<NoSolo.Core.Entities.UserProfile, NoSolo.Core.Entities.OrganizationOfferEntity>", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -265,10 +265,10 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
                     b.HasIndex("UEntityId");
 
-                    b.ToTable("Request<UserProfile, OrganizationOffer>");
+                    b.ToTable("RequestEntity<UserProfile, OrganizationOfferEntity>");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.User", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -333,7 +333,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.UserOffer", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.UserOfferEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -355,7 +355,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                     b.ToTable("UserOffers");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.UserPhoto", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.UserPhotoEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -375,7 +375,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                     b.HasIndex("UserProfileId")
                         .IsUnique();
 
-                    b.ToTable("UserPhoto");
+                    b.ToTable("UserPhotoEntity");
                 });
 
             modelBuilder.Entity("NoSolo.Core.Entities.UserProfile", b =>
@@ -419,7 +419,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                     b.ToTable("UserProfiles");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.UserRole", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.UserRoleEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -446,7 +446,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.UserTag", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.UserTagEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -574,9 +574,9 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.Contact<NoSolo.Core.Entities.Organization>", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.ContactEntity<NoSolo.Core.Entities.OrganizationEntity>", b =>
                 {
-                    b.HasOne("NoSolo.Core.Entities.Organization", "TEntity")
+                    b.HasOne("NoSolo.Core.Entities.OrganizationEntity", "TEntity")
                         .WithMany("Contacts")
                         .HasForeignKey("TEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -585,7 +585,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                     b.Navigation("TEntity");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.Contact<NoSolo.Core.Entities.UserProfile>", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.ContactEntity<NoSolo.Core.Entities.UserProfile>", b =>
                 {
                     b.HasOne("NoSolo.Core.Entities.UserProfile", "TEntity")
                         .WithMany("Contacts")
@@ -596,78 +596,78 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                     b.Navigation("TEntity");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.OrganizationOffer", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.OrganizationOfferEntity", b =>
                 {
-                    b.HasOne("NoSolo.Core.Entities.Organization", "Organization")
+                    b.HasOne("NoSolo.Core.Entities.OrganizationEntity", "OrganizationEntity")
                         .WithMany("Offers")
                         .HasForeignKey("OrganizationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Organization");
+                    b.Navigation("OrganizationEntity");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.OrganizationPhoto", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.OrganizationPhotoEntity", b =>
                 {
-                    b.HasOne("NoSolo.Core.Entities.Organization", "Organization")
+                    b.HasOne("NoSolo.Core.Entities.OrganizationEntity", "OrganizationEntity")
                         .WithMany("Photos")
                         .HasForeignKey("OrganizationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Organization");
+                    b.Navigation("OrganizationEntity");
                 });
 
             modelBuilder.Entity("NoSolo.Core.Entities.OrganizationUser", b =>
                 {
-                    b.HasOne("NoSolo.Core.Entities.Organization", "Organization")
+                    b.HasOne("NoSolo.Core.Entities.OrganizationEntity", "OrganizationEntity")
                         .WithMany("OrganizationUsers")
                         .HasForeignKey("OrganizationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NoSolo.Core.Entities.User", "User")
+                    b.HasOne("NoSolo.Core.Entities.UserEntity", "UserEntity")
                         .WithMany("OrganizationUsers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Organization");
+                    b.Navigation("OrganizationEntity");
 
-                    b.Navigation("User");
+                    b.Navigation("UserEntity");
                 });
 
             modelBuilder.Entity("NoSolo.Core.Entities.Project", b =>
                 {
-                    b.HasOne("NoSolo.Core.Entities.Organization", "Organization")
+                    b.HasOne("NoSolo.Core.Entities.OrganizationEntity", "OrganizationEntity")
                         .WithOne("Project")
                         .HasForeignKey("NoSolo.Core.Entities.Project", "OrganizationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Organization");
+                    b.Navigation("OrganizationEntity");
                 });
 
             modelBuilder.Entity("NoSolo.Core.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("NoSolo.Core.Entities.User", "User")
+                    b.HasOne("NoSolo.Core.Entities.UserEntity", "UserEntity")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("UserEntity");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.Request<NoSolo.Core.Entities.Organization, NoSolo.Core.Entities.UserOffer>", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.RequestEntity<NoSolo.Core.Entities.OrganizationEntity, NoSolo.Core.Entities.UserOfferEntity>", b =>
                 {
-                    b.HasOne("NoSolo.Core.Entities.Organization", "TEntity")
+                    b.HasOne("NoSolo.Core.Entities.OrganizationEntity", "TEntity")
                         .WithMany("RequestsFromOrganizationToUserOffer")
                         .HasForeignKey("TEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NoSolo.Core.Entities.UserOffer", "UEntity")
+                    b.HasOne("NoSolo.Core.Entities.UserOfferEntity", "UEntity")
                         .WithMany()
                         .HasForeignKey("UEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -678,7 +678,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                     b.Navigation("UEntity");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.Request<NoSolo.Core.Entities.UserProfile, NoSolo.Core.Entities.OrganizationOffer>", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.RequestEntity<NoSolo.Core.Entities.UserProfile, NoSolo.Core.Entities.OrganizationOfferEntity>", b =>
                 {
                     b.HasOne("NoSolo.Core.Entities.UserProfile", "TEntity")
                         .WithMany("RequestsFromUserProfileToOgranizationOffer")
@@ -686,7 +686,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NoSolo.Core.Entities.OrganizationOffer", "UEntity")
+                    b.HasOne("NoSolo.Core.Entities.OrganizationOfferEntity", "UEntity")
                         .WithMany()
                         .HasForeignKey("UEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -697,7 +697,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                     b.Navigation("UEntity");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.UserOffer", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.UserOfferEntity", b =>
                 {
                     b.HasOne("NoSolo.Core.Entities.UserProfile", "UserProfile")
                         .WithMany("Offers")
@@ -708,11 +708,11 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                     b.Navigation("UserProfile");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.UserPhoto", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.UserPhotoEntity", b =>
                 {
                     b.HasOne("NoSolo.Core.Entities.UserProfile", "UserProfile")
-                        .WithOne("Photo")
-                        .HasForeignKey("NoSolo.Core.Entities.UserPhoto", "UserProfileId")
+                        .WithOne("PhotoEntity")
+                        .HasForeignKey("NoSolo.Core.Entities.UserPhotoEntity", "UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -721,16 +721,16 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             modelBuilder.Entity("NoSolo.Core.Entities.UserProfile", b =>
                 {
-                    b.HasOne("NoSolo.Core.Entities.User", "User")
+                    b.HasOne("NoSolo.Core.Entities.UserEntity", "UserEntity")
                         .WithOne("UserProfile")
                         .HasForeignKey("NoSolo.Core.Entities.UserProfile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("UserEntity");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.UserTag", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.UserTagEntity", b =>
                 {
                     b.HasOne("NoSolo.Core.Entities.UserProfile", "UserProfile")
                         .WithMany("Tags")
@@ -743,7 +743,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("NoSolo.Core.Entities.UserRole", null)
+                    b.HasOne("NoSolo.Core.Entities.UserRoleEntity", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -752,7 +752,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("NoSolo.Core.Entities.User", null)
+                    b.HasOne("NoSolo.Core.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -761,7 +761,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("NoSolo.Core.Entities.User", null)
+                    b.HasOne("NoSolo.Core.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -770,13 +770,13 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("NoSolo.Core.Entities.UserRole", null)
+                    b.HasOne("NoSolo.Core.Entities.UserRoleEntity", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NoSolo.Core.Entities.User", null)
+                    b.HasOne("NoSolo.Core.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -785,14 +785,14 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("NoSolo.Core.Entities.User", null)
+                    b.HasOne("NoSolo.Core.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.Organization", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.OrganizationEntity", b =>
                 {
                     b.Navigation("Contacts");
 
@@ -807,7 +807,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                     b.Navigation("RequestsFromOrganizationToUserOffer");
                 });
 
-            modelBuilder.Entity("NoSolo.Core.Entities.User", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.UserEntity", b =>
                 {
                     b.Navigation("OrganizationUsers");
 
@@ -822,7 +822,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
 
                     b.Navigation("Offers");
 
-                    b.Navigation("Photo");
+                    b.Navigation("PhotoEntity");
 
                     b.Navigation("RequestsFromUserProfileToOgranizationOffer");
 

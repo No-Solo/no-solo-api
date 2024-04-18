@@ -19,7 +19,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.CreateTable(
-                name: "Contact<Organization>",
+                name: "ContactEntity<OrganizationEntity>",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -30,9 +30,9 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Contact<Organization>", x => x.Id);
+                    table.PrimaryKey("PK_Contact<OrganizationEntity>", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Contact<Organization>_Organizations_TEntityId",
+                        name: "FK_Contact<OrganizationEntity>_Organizations_TEntityId",
                         column: x => x.TEntityId,
                         principalTable: "Organizations",
                         principalColumn: "Id",
@@ -40,8 +40,8 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contact<Organization>_TEntityId",
-                table: "Contact<Organization>",
+                name: "IX_Contact<OrganizationEntity>_TEntityId",
+                table: "ContactEntity<OrganizationEntity>",
                 column: "TEntityId");
         }
 
@@ -49,7 +49,7 @@ namespace NoSolo.Infrastructure.Data.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Contact<Organization>");
+                name: "ContactEntity<OrganizationEntity>");
 
             migrationBuilder.DropColumn(
                 name: "Created",
