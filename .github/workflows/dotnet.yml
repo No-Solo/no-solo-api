@@ -91,11 +91,12 @@ jobs:
           mkdir -p ~/.sonar/scanner
           dotnet tool update dotnet-sonarscanner --tool-path ~/.sonar/scanner
 
-      # - name: Install JetBrains dotCover
-      #   run: dotnet tool install --global JetBrains.dotCover.CommandLineTools --version 2024.1.0
+      - name: Install JetBrains dotCover
+        run: dotnet tool install --global JetBrains.dotCover.CommandLineTools --version 2024.1.0
 
       - name: Build and Analyze
         run: |
           ~/.sonar/scanner/dotnet-sonarscanner begin /k:"No-Solo_no-solo-api" /o:"no-solo" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"  /d:sonar.cs.dotcover.reportsPaths=dotCover.Output.html
           dotnet build NoSoloAPI
+          dotnet-dotCover cover-dotnet --AttributeFilters="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" --Filters="-:*.Tests" --Output=dotCover.Output.html --ReportType=HTML -- test "NoSoloAPI"
           ~/.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
