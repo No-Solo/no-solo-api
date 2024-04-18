@@ -5,5 +5,5 @@ namespace NoSolo.Abstractions.Services.Auth;
 
 public interface IRefreshTokenService
 {
-    Task<RefreshToken> GenerateRefreshToken(User user);
+    Task<RefreshToken> GenerateRefreshToken(UserEntity userEntity);
 }

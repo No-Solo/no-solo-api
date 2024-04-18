@@ -3,9 +3,9 @@ using NoSolo.Core.Enums;
 
 namespace NoSolo.Contracts.Dtos.Organizations.Requests;
 
-public class OrganizationRequestDto : BaseDto
+public record OrganizationRequestDto : BaseDto<Guid>
 {
-    public Guid OrganizationGuid { get; set; }
-    public StatusEnum Status { get; set; }
-    public Guid UserOfferGuid { get; set; }
+    public required Guid OrganizationGuid { get; set; }
+    public required StatusEnum Status { get; set; }
+    public required Guid UserOfferGuid { get; set; }
 }

@@ -8,14 +8,14 @@ public class Seed
 {
     public static async Task SeedRoles(IServiceProvider serviceProvider)
     {
-        // var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-        var roleManager = serviceProvider.GetRequiredService<RoleManager<UserRole>>();
+        // var userManager = serviceProvider.GetRequiredService<UserManager<UserEntity>>();
+        var roleManager = serviceProvider.GetRequiredService<RoleManager<UserRoleEntity>>();
 
-        var roles = new List<UserRole>
+        var roles = new List<UserRoleEntity>
         {
-            new UserRole { Name = "RegisteredUser" },
-            new UserRole { Name = "Admin" },
-            new UserRole { Name = "Moderator" },
+            new UserRoleEntity { Name = "RegisteredUser" },
+            new UserRoleEntity { Name = "Admin" },
+            new UserRoleEntity { Name = "Moderator" },
         };
 
         foreach (var role in roles)
@@ -27,7 +27,7 @@ public class Seed
             }
         }
 
-        // var admin = new User()
+        // var admin = new UserEntity()
         // {
         //     UserName = "Temp123",
         //     Email = "kirillnester5@gmail.com"

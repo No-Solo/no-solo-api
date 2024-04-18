@@ -22,7 +22,7 @@ namespace NoSolo.Infrastructure.Data.FeedBack.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("NoSolo.Core.Entities.FeedBack.FeedBack", b =>
+            modelBuilder.Entity("NoSolo.Core.Entities.FeedBackEntity.FeedBackEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

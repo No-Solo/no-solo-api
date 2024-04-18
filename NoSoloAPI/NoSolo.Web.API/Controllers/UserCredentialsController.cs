@@ -8,7 +8,7 @@ using NoSolo.Web.API.Extensions;
 namespace NoSolo.Web.API.Controllers;
 
 [AllowAnonymous]
-[Route("api/user-credentials")]
+[Route("api/userEntity-credentials")]
 public class UserCredentialsController : BaseApiController
 {
     private readonly IUserCredentialsService _userCredentialsService;

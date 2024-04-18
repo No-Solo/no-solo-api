@@ -4,9 +4,9 @@ using NoSolo.Core.Entities.User;
 
 namespace NoSolo.Infrastructure.Data.Config.User;
 
-public class UserTagConfiguration : IEntityTypeConfiguration<UserTag>
+public class UserTagConfiguration : IEntityTypeConfiguration<UserTagEntity>
 {
-    public void Configure(EntityTypeBuilder<UserTag> builder)
+    public void Configure(EntityTypeBuilder<UserTagEntity> builder)
     {
         builder.Property(p => p.Id).IsRequired();
         builder.Property(p => p.Active).IsRequired();

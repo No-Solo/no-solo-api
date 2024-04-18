@@ -2,9 +2,9 @@
 
 namespace NoSolo.Contracts.Dtos.Auth;
 
-public class TokensDto
+public record TokensDto
 {
-    [Required] public string AccessToken { get; set; }
+    [Required] public required string AccessToken { get; set; }
 
-    [Required] public string RefreshToken { get; set; }
+    [Required] public required string RefreshToken { get; set; }
 }
