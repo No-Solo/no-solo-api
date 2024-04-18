@@ -2,7 +2,7 @@
 
 namespace NoSolo.Core.Entities.User;
 
-public class UserRole : IdentityRole<Guid>
+public class UserRoleEntity : IdentityRole<Guid>
 {
     
 }

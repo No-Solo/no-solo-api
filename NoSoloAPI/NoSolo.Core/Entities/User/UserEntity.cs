@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Collections.ObjectModel;
+using Microsoft.AspNetCore.Identity;
 using NoSolo.Core.Entities.Auth;
 using NoSolo.Core.Entities.Base;
 using NoSolo.Core.Entities.Organization;
@@ -6,7 +7,7 @@ using NoSolo.Core.Enums;
 
 namespace NoSolo.Core.Entities.User;
 
-public class User : IdentityUser<Guid>, IBaseForContact
+public class UserEntity : IdentityUser<Guid>, IBaseForContact
 {
     public string FirstName { get; set; }
     public string? MiddleName { get; set; }
@@ -16,21 +17,21 @@ public class User : IdentityUser<Guid>, IBaseForContact
     public string Description { get; set; }
     public string Location { get; set; }
 
-    public UserPhoto? Photo { get; set; } = null;
+    public UserPhotoEntity? Photo { get; set; } = null;
 
     public LocaleEnum Locale { get; set; } = LocaleEnum.English;
     public GenderEnum Gender { get; set; }
     public SponsorshipEnum Sponsorship { get; set; } = SponsorshipEnum.Zero;
 
-    public List<Contact<User>> Contacts { get; set; } = new();
-    public List<UserOffer> Offers { get; set; } = new();
-    public List<UserTag> Tags { get; set; } = new();
+    public List<ContactEntity<UserEntity>> Contacts { get; set; } = new();
+    public List<UserOfferEntity> Offers { get; set; } = new();
+    public List<UserTagEntity> Tags { get; set; } = new();
 
-    public List<Request<User, OrganizationOffer>> RequestsFromUserProfileToOgranizationOffer { get; set; } = new();
+    public List<RequestEntity<UserEntity, OrganizationOfferEntity>> RequestsFromUserProfileToOgranizationOffer { get; set; } = new();
 
-    public List<Member> OrganizationUsers { get; set; } = new();
+    public List<MemberEntity> OrganizationUsers { get; set; } = new();
 
     public List<RefreshToken> RefreshTokens { get; set; } = new();
 
-    public ICollection<UserRole> UserRoles { get; set; }
+    public Collection<UserRoleEntity> UserRoles { get; set; } = new();
 }

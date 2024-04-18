@@ -1,21 +1,25 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
 namespace NoSolo.Core.Entities.Base;
 
-public class BaseEntity
+public abstract class BaseEntity<TKey>
 {
-    [JsonProperty("id")]
-    [Key] public Guid Id { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public TKey Id { get; set; } = default!;
 }
 
-public class BaseCreatedEntity : BaseEntity
+public class BaseCreatedEntity<TKey> : BaseEntity<TKey>
 {
     [JsonProperty("deleted")]
-    public bool Deleted { get; set; }
+    [Required]
+    public required bool Deleted { get; set; }
 
+    [Required]
     [JsonProperty("datecreated")]
-    public DateTime? DateCreated { get; set; }
+    public required DateTime DateCreated { get; set; }
 
     [JsonProperty("datedeleted")]
     public DateTime? DateDeleted { get; set; }
