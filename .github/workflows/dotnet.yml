@@ -97,5 +97,5 @@ jobs:
       - name: Build and Analyze
         run: |
           ~/.sonar/scanner/dotnet-sonarscanner begin /k:"No-Solo_no-solo-api" /o:"no-solo" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"  /d:sonar.cs.dotcover.reportsPaths=dotCover.Output.html
-          dotnet build --no-restore NoSoloAPI
+          dotnet build NoSoloAPI
           ~/.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
