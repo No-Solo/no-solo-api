@@ -95,7 +95,6 @@ jobs:
         run: dotnet tool install --global JetBrains.dotCover.CommandLineTools --version 2024.1.0
 
       - name: Build and Analyze
-        shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"No-Solo_no-solo-api" /o:"no-solo" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build --no-restore NoSoloApi 
