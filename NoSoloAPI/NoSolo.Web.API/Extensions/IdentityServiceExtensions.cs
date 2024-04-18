@@ -11,7 +11,7 @@ public static class IdentityServiceExtensions
 {
     public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentity<User, UserRole>()
+        services.AddIdentity<UserEntity, UserRoleEntity>()
             .AddEntityFrameworkStores<DataBaseContext>()
             .AddDefaultTokenProviders();
 

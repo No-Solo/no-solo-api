@@ -22,30 +22,30 @@ public class PhotosController : BaseApiController
         _organizationPhotoService = organizationPhotoService;
     }
 
-    #region User
+    #region UserEntity
 
     [Authorize]
-    [HttpGet("user/my")]
+    [HttpGet("userEntity/my")]
     public async Task<UserPhotoDto> GetUserProfilePhoto()
     {
         return await _userPhotoService.Get(User.GetEmail());
     }
 
-    [HttpGet("user/{email}")]
+    [HttpGet("userEntity/{email}")]
     public async Task<UserPhotoDto> GetUserProfilePhoto(string email)
     {
         return await _userPhotoService.Get(email);
     }
 
     [Authorize]
-    [HttpPost("user/my/add")]
+    [HttpPost("userEntity/my/add")]
     public async Task<UserPhotoDto> AddPhotoToUserProfile(IFormFile file)
     {
         return await _userPhotoService.Add(file, User.GetEmail());
     }
 
     [Authorize]
-    [HttpDelete("user/my/delete")]
+    [HttpDelete("userEntity/my/delete")]
     public async Task DeletePhoto()
     {
         await _userPhotoService.DeleteUserPhoto(User.GetEmail());
@@ -53,15 +53,15 @@ public class PhotosController : BaseApiController
 
     #endregion
 
-    #region Organization
+    #region OrganizationEntity
 
-    [HttpGet("organization/{organizationId:guid}/main")]
+    [HttpGet("organizationEntity/{organizationId:guid}/main")]
     public async Task<OrganizationPhotoDto> GetMainOrganizationPhoto(Guid organizationId)
     {
         return await _organizationPhotoService.GetMain(organizationId);
     }
 
-    [HttpGet("organization/{organizationId:guid}/all")]
+    [HttpGet("organizationEntity/{organizationId:guid}/all")]
     public async Task<Pagination<OrganizationPhotoDto>> GetOrganizationPhotosWithParams(
         Guid organizationId)
     {
@@ -69,21 +69,21 @@ public class PhotosController : BaseApiController
     }
 
     [Authorize]
-    [HttpPost("organization/{organizationId:guid}/add")]
+    [HttpPost("organizationEntity/{organizationId:guid}/add")]
     public async Task<OrganizationPhotoDto> AddPhotoToOrganization(IFormFile file, Guid organizationId)
     {
         return await _organizationPhotoService.Add(file, organizationId, User.GetEmail());
     }
 
     [Authorize]
-    [HttpPut("organization/{organizationId:guid}/set-main-photo/{photoId}")]
+    [HttpPut("organizationEntity/{organizationId:guid}/set-main-photo/{photoId}")]
     public async Task<ActionResult<OrganizationPhotoDto>> SetMainPhoto(Guid organizationId, Guid photoId)
     {
         return await _organizationPhotoService.SetMainPhoto(photoId, organizationId, User.GetEmail());
     }
 
     [Authorize]
-    [HttpDelete("organization/{organizationId:guid}/delete/{photoId}")]
+    [HttpDelete("organizationEntity/{organizationId:guid}/delete/{photoId}")]
     public async Task DeletePhoto(Guid organizationId, Guid photoId)
     {
         await _organizationPhotoService.Delete(photoId, organizationId, User.GetEmail());

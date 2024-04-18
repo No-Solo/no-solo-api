@@ -10,7 +10,7 @@ using NoSolo.Web.API.Extensions;
 namespace NoSolo.Web.API.Controllers;
 
 [AllowAnonymous]
-[Route("api/user/tags")]
+[Route("api/userEntity/tags")]
 public class UserTagsController : BaseApiController
 {
     private readonly IUserTagsService _userTagsService;
@@ -30,7 +30,7 @@ public class UserTagsController : BaseApiController
         return await _userTagsService.Get(userTagParams);
     }
 
-    [HttpGet("user/{userGuid:guid}")]
+    [HttpGet("userEntity/{userGuid:guid}")]
     public async Task<Pagination<UserTagDto>> GetAllUserProfileTagsByUserId(Guid userGuid,
         [FromQuery] UserTagParams userTagParams)
     {

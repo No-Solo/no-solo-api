@@ -23,9 +23,9 @@ public class OffersController : BaseApiController
         _organizationOfferService = organizationOfferService;
     }
 
-    #region User Offers
+    #region UserEntity Offers
 
-    [HttpGet("user")]
+    [HttpGet("userEntity")]
     public async Task<ActionResult<Pagination<UserOfferDto>>> GetAllOffers([FromQuery] UserOfferParams userOfferParams)
     {
         return await _userOfferService.Get(userOfferParams);
@@ -38,28 +38,28 @@ public class OffersController : BaseApiController
     }
 
     [Authorize]
-    [HttpGet("user/my")]
+    [HttpGet("userEntity/my")]
     public async Task<ActionResult<Pagination<UserOfferDto>>> GetUserOffers([FromQuery] UserOfferParams userOfferParams)
     {
         return await _userOfferService.Get(userOfferParams, User.GetUserId());
     }
 
     [Authorize]
-    [HttpPost("user/my/add")]
+    [HttpPost("userEntity/my/add")]
     public async Task<UserOfferDto> AddUserOffer(NewUserOfferDto userOfferDto)
     {
         return await _userOfferService.Add(userOfferDto, User.GetEmail());
     }
 
     [Authorize]
-    [HttpPut("user/my/update")]
+    [HttpPut("userEntity/my/update")]
     public async Task<UserOfferDto> UpdateUserOffer(UserOfferDto userOfferDto)
     {
         return await _userOfferService.Update(userOfferDto, User.GetEmail());
     }
 
     [Authorize]
-    [HttpDelete("user/my/delete/{offerId:guid}")]
+    [HttpDelete("userEntity/my/delete/{offerId:guid}")]
     public async Task DeleteUserOffer(Guid offerId)
     {
         await _userOfferService.Delete(offerId, User.GetEmail());
@@ -67,9 +67,9 @@ public class OffersController : BaseApiController
 
     #endregion
 
-    #region Organization Offers
+    #region OrganizationEntity Offers
 
-    [HttpGet("organization/{organizationId:guid}")]
+    [HttpGet("organizationEntity/{organizationId:guid}")]
     public async Task<ActionResult<Pagination<OrganizationOfferDto>>> GetOrganizationOffersWithParams(
         Guid organizationId,
         [FromQuery] OrganizationOfferParams organizationOfferParams)
@@ -77,7 +77,7 @@ public class OffersController : BaseApiController
         return await _organizationOfferService.Get(organizationOfferParams, organizationId);
     }
 
-    [HttpGet("organization")]
+    [HttpGet("organizationEntity")]
     public async Task<ActionResult<Pagination<OrganizationOfferDto>>> GetOffersWithParams(
         [FromQuery] OrganizationOfferParams organizationOfferParams)
     {
@@ -85,7 +85,7 @@ public class OffersController : BaseApiController
     }
 
     [Authorize]
-    [HttpPost("organization/{organizationId:guid}/add")]
+    [HttpPost("organizationEntity/{organizationId:guid}/add")]
     public async Task<OrganizationOfferDto> CreateOrganizationOffer(Guid organizationId,
         [FromBody] NewOrganizationOfferDto organizationOfferDto)
     {
@@ -93,7 +93,7 @@ public class OffersController : BaseApiController
     }
 
     [Authorize]
-    [HttpPut("organization/{organizationId:guid}/update")]
+    [HttpPut("organizationEntity/{organizationId:guid}/update")]
     public async Task<OrganizationOfferDto> UpdateOrganizationOffer(Guid organizationId,
         [FromBody] OrganizationOfferDto organizationOfferDto)
     {
@@ -101,7 +101,7 @@ public class OffersController : BaseApiController
     }
 
     [Authorize]
-    [HttpDelete("organization/{organizationId:guid}/delete/{offerId:guid}")]
+    [HttpDelete("organizationEntity/{organizationId:guid}/delete/{offerId:guid}")]
     public async Task DeleteOffer(Guid organizationId, Guid offerId)
     {
         await _organizationOfferService.Delete(offerId, organizationId, User.GetEmail());

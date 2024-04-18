@@ -7,7 +7,7 @@ using NoSolo.Web.API.Extensions;
 namespace NoSolo.Web.API.Controllers;
 
 [AllowAnonymous]
-[Route("api/user-info")]
+[Route("api/userEntity-info")]
 public class UserInfoController : BaseApiController
 {
     private readonly IUserService _userService;
