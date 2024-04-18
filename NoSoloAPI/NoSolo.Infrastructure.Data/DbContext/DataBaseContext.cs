@@ -10,17 +10,17 @@ using NoSolo.Core.Entities.User;
 
 namespace NoSolo.Infrastructure.Data.DbContext;
 
-public class DataBaseContext : IdentityDbContext<User, UserRole, Guid>
+public class DataBaseContext : IdentityDbContext<UserEntity, UserRoleEntity, Guid>
 {
     public DataBaseContext(DbContextOptions<DataBaseContext> options) : base(options)
     {
     }
 
-    public DbSet<User> Users { get; set; }
+    public DbSet<UserEntity> Users { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
-    public DbSet<UserTag> UserTags { get; set; }
-    public DbSet<UserOffer> UserOffers { get; set; }
-    public DbSet<Organization> Organizations { get; set; }
+    public DbSet<UserTagEntity> UserTags { get; set; }
+    public DbSet<UserOfferEntity> UserOffers { get; set; }
+    public DbSet<OrganizationEntity> Organizations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -28,11 +28,11 @@ public class DataBaseContext : IdentityDbContext<User, UserRole, Guid>
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        // User
-        modelBuilder.Entity<User>()
+        // UserEntity
+        modelBuilder.Entity<UserEntity>()
             .HasOne(e => e.Photo)
             .WithOne(e => e.User)
-            .HasForeignKey<UserPhoto>(e => e.UserGuid);
+            .HasForeignKey<UserPhotoEntity>(e => e.UserGuid);
 
         if (Database.ProviderName == "Npgsql.EntityFrameworkCore.PostgreSQL")
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())

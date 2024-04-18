@@ -9,5 +9,5 @@ public class FeedBackContext : Microsoft.EntityFrameworkCore.DbContext
         
     }
     
-    public DbSet<Core.Entities.FeedBack.FeedBack> FeedBacks { get; set; }
+    public DbSet<Core.Entities.FeedBack.FeedBackEntity> FeedBacks { get; set; }
 }
