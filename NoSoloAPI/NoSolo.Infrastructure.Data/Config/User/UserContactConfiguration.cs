@@ -4,9 +4,9 @@ using NoSolo.Core.Entities.Base;
 
 namespace NoSolo.Infrastructure.Data.Config.User;
 
-public class UserContactConfiguration : IEntityTypeConfiguration<Contact<Core.Entities.User.User>>
+public class UserContactConfiguration : IEntityTypeConfiguration<ContactEntity<Core.Entities.User.UserEntity>>
 {
-    public void Configure(EntityTypeBuilder<Contact<Core.Entities.User.User>> builder)
+    public void Configure(EntityTypeBuilder<ContactEntity<Core.Entities.User.UserEntity>> builder)
     {
         builder.Property(p => p.Id).IsRequired();
         builder.Property(p => p.Type).IsRequired().HasMaxLength(50);

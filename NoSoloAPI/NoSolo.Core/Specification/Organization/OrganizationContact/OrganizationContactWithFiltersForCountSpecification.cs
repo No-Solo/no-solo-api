@@ -4,7 +4,7 @@ using NoSolo.Core.Specification.BaseSpecification;
 
 namespace NoSolo.Core.Specification.Organization.OrganizationContact;
 
-public class OrganizationContactWithFiltersForCountSpecification : BaseSpecification<Contact<Entities.Organization.Organization>>
+public class OrganizationContactWithFiltersForCountSpecification : BaseSpecification<ContactEntity<Entities.Organization.OrganizationEntity>>
 {
     public OrganizationContactWithFiltersForCountSpecification(OrganizationContactParams organizationContactParams)
         : base(x => (string.IsNullOrEmpty(organizationContactParams.Search) || x.Text.ToLower().Contains(organizationContactParams.Search)

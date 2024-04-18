@@ -11,7 +11,7 @@ public class RequestMappingProfile : Profile
 {
     public RequestMappingProfile()
     {
-        CreateMap<Request<Organization, UserOffer>, OrganizationRequestDto>();
-        CreateMap<Request<User, OrganizationOffer>, UserRequestDto>();
+        CreateMap<RequestEntity<OrganizationEntity, UserOfferEntity>, OrganizationRequestDto>();
+        CreateMap<RequestEntity<UserEntity, OrganizationOfferEntity>, UserRequestDto>();
     }
 }

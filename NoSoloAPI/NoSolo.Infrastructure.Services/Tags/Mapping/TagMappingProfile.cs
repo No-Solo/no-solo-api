@@ -8,8 +8,8 @@ public class TagMappingProfile : Profile
 {
     public TagMappingProfile()
     {
-        CreateMap<NewUserTagDto, UserTag>();
-        CreateMap<UserTag, UserTagDto>();
-        CreateMap<UserTagDto, UserTag>();
+        CreateMap<NewUserTagDto, UserTagEntity>();
+        CreateMap<UserTagEntity, UserTagDto>();
+        CreateMap<UserTagDto, UserTagEntity>();
     }
 }

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace NoSolo.Infrastructure.Data.Config.User;
 
-public class UserConfiguration : IEntityTypeConfiguration<Core.Entities.User.User>
+public class UserConfiguration : IEntityTypeConfiguration<Core.Entities.User.UserEntity>
 {
-    public void Configure(EntityTypeBuilder<Core.Entities.User.User> builder)
+    public void Configure(EntityTypeBuilder<Core.Entities.User.UserEntity> builder)
     {
         builder.Property(p => p.Id).IsRequired();
         builder.Property(x => x.UserName).IsRequired().HasMaxLength(50);

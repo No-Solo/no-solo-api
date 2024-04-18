@@ -2,7 +2,7 @@
 
 namespace NoSolo.Core.Specification.Users.UserTag;
 
-public class UserTagWithSpecificationParams : BaseSpecification<Entities.User.UserTag>
+public class UserTagWithSpecificationParams : BaseSpecification<Entities.User.UserTagEntity>
 {
     public UserTagWithSpecificationParams(UserTagParams userTagParams)
         : base(x => (string.IsNullOrEmpty(userTagParams.Search) || x.Tag.ToLower().Contains(userTagParams.Search))

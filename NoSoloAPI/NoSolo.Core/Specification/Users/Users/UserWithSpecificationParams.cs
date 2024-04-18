@@ -3,10 +3,10 @@ using NoSolo.Core.Specification.BaseSpecification;
 
 namespace NoSolo.Core.Specification.Users.Users;
 
-public class UserWithSpecificationParams : BaseSpecification<Entities.User.User>
+public class UserWithSpecificationParams : BaseSpecification<Entities.User.UserEntity>
 {
     public UserWithSpecificationParams(UserParams userParams) : base(x =>
-        (string.IsNullOrEmpty(userParams.Email)) || x.Email.ToLower().Contains(userParams.Email))
+        (string.IsNullOrEmpty(userParams.Email)) || x.Email!.ToLower().Contains(userParams.Email))
     {
         foreach (var include in userParams.Includes)
         {
@@ -31,7 +31,7 @@ public class UserWithSpecificationParams : BaseSpecification<Entities.User.User>
                 AddInclude(t => t.Tags);
                 break;
             case UserInclude.Photo:
-                AddInclude(p => p.Photo);
+                AddInclude(p => p.Photo!);
                 break;
             case UserInclude.Requests:
                 AddInclude(r => r.RequestsFromUserProfileToOgranizationOffer);

@@ -4,9 +4,9 @@ using NoSolo.Core.Entities.Organization;
 
 namespace NoSolo.Infrastructure.Data.Config.Organization;
 
-public class OrganizationPhotoConfiguration : IEntityTypeConfiguration<OrganizationPhoto>
+public class OrganizationPhotoConfiguration : IEntityTypeConfiguration<OrganizationPhotoEntity>
 {
-    public void Configure(EntityTypeBuilder<OrganizationPhoto> builder)
+    public void Configure(EntityTypeBuilder<OrganizationPhotoEntity> builder)
     {
         builder.Property(p => p.Id).IsRequired();
         builder.Property(p => p.Url).IsRequired();

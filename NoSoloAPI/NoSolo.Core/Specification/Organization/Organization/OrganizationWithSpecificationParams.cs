@@ -3,11 +3,11 @@ using NoSolo.Core.Specification.BaseSpecification;
 
 namespace NoSolo.Core.Specification.Organization.Organization;
 
-public class OrganizationWithSpecificationParams : BaseSpecification<Entities.Organization.Organization>
+public class OrganizationWithSpecificationParams : BaseSpecification<Entities.Organization.OrganizationEntity>
 {
     public OrganizationWithSpecificationParams(OrganizationParams organizationParams)
         : base(x => string.IsNullOrEmpty(organizationParams.Search) || x.Name.Contains(organizationParams.Search) &&
-            (organizationParams.UserGuid.HasValue || x.OrganizationUsers.Exists(x => x.UserId == organizationParams.UserGuid)) &&
+            (organizationParams.UserGuid.HasValue || x.OrganizationUsers.Exists(entity => entity.UserId == organizationParams.UserGuid)) &&
             (organizationParams.OrganizationGuid.HasValue || x.Id == organizationParams.OrganizationGuid))
     {
         AddOrderBy(x => x.Id);
@@ -29,7 +29,7 @@ public class OrganizationWithSpecificationParams : BaseSpecification<Entities.Or
                     AddOrderByDescending(p => p.Name);
                     break;
                 default:
-                    AddOrderBy(p => p.Created);
+                    AddOrderBy(p => p.DateCreated);
                     break;
             }
         }
@@ -39,13 +39,13 @@ public class OrganizationWithSpecificationParams : BaseSpecification<Entities.Or
             switch (organizationParams.SortByDate)
             {
                 case "dateAsc":
-                    AddOrderBy(p => p.Created);
+                    AddOrderBy(p => p.DateCreated);
                     break;
                 case "dateDesc":
-                    AddOrderByDescending(p => p.Created);
+                    AddOrderByDescending(p => p.DateCreated);
                     break;
                 default:
-                    AddOrderBy(p => p.Created);
+                    AddOrderBy(p => p.DateCreated);
                     break;
             }
         }

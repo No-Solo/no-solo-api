@@ -4,7 +4,7 @@ using NoSolo.Core.Specification.BaseSpecification;
 
 namespace NoSolo.Core.Specification.Organization.OrganizationPhotoParams;
 
-public class OrganizationPhotoWithSpecificationParams : BaseSpecification<OrganizationPhoto>
+public class OrganizationPhotoWithSpecificationParams : BaseSpecification<OrganizationPhotoEntity>
 {
     public OrganizationPhotoWithSpecificationParams(OrganizationPhotoParams organizationPhotoParams)
         : base(x => (organizationPhotoParams.OrganizationGuid.HasValue || x.OrganizationId == organizationPhotoParams.OrganizationGuid))

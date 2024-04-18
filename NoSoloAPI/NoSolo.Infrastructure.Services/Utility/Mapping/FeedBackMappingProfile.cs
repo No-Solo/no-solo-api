@@ -8,7 +8,7 @@ public class FeedBackMappingProfile : Profile
 {
     public FeedBackMappingProfile()
     {
-        CreateMap<NewFeedBackDto, FeedBack>();
-        CreateMap<FeedBack, FeedBackDto>();
+        CreateMap<NewFeedBackDto, FeedBackEntity>();
+        CreateMap<FeedBackEntity, FeedBackDto>();
     }
 }

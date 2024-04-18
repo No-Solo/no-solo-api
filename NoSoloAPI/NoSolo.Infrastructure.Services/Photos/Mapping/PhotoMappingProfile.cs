@@ -10,8 +10,8 @@ public class PhotoMappingProfile : Profile
 {
     public PhotoMappingProfile()
     {
-        CreateMap<UserPhoto, UserPhotoDto>();
+        CreateMap<UserPhotoEntity, UserPhotoDto>();
         
-        CreateMap<OrganizationPhoto, OrganizationPhotoDto>();
+        CreateMap<OrganizationPhotoEntity, OrganizationPhotoDto>();
     }
 }

@@ -9,12 +9,12 @@ public class OrganizationMappingProfile : Profile
     public OrganizationMappingProfile()
     {
         // Organizations
-        CreateMap<Organization, OrganizationDto>()
+        CreateMap<OrganizationEntity, OrganizationDto>()
             .ForMember(dest => dest.PhotoUrl,
                 opt => opt
                     .MapFrom(src => src.Photos
                         .FirstOrDefault(x => x.IsMain).Url));
-        CreateMap<NewOrganizationDto, Organization>();
-        CreateMap<UpdateOrganizationDto, Organization>();
+        CreateMap<NewOrganizationDto, OrganizationEntity>();
+        CreateMap<UpdateOrganizationDto, OrganizationEntity>();
     }
 }

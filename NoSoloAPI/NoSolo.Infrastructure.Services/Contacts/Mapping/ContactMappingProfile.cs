@@ -10,10 +10,10 @@ public class ContactMappingProfile : Profile
 {
     public ContactMappingProfile()
     {
-        CreateMap<Contact<Organization>, ContactDto>();
-        CreateMap<ContactDto, Contact<Organization>>();
+        CreateMap<ContactEntity<OrganizationEntity>, ContactDto>();
+        CreateMap<ContactDto, ContactEntity<OrganizationEntity>>();
         
-        CreateMap<Contact<User>, ContactDto>();
-        CreateMap<ContactDto, Contact<User>>();
+        CreateMap<ContactEntity<UserEntity>, ContactDto>();
+        CreateMap<ContactDto, ContactEntity<UserEntity>>();
     }
 }

@@ -10,11 +10,11 @@ public class OfferMappingProfile : Profile
 {
     public OfferMappingProfile()
     {
-        CreateMap<UserOffer, UserOfferDto>();
-        CreateMap<NewUserOfferDto, UserOffer>();
-        CreateMap<UserOfferDto, UserOffer>();
+        CreateMap<UserOfferEntity, UserOfferDto>();
+        CreateMap<NewUserOfferDto, UserOfferEntity>();
+        CreateMap<UserOfferDto, UserOfferEntity>();
         
-        CreateMap<OrganizationOffer, OrganizationOfferDto>();
-        CreateMap<OrganizationOfferDto, OrganizationOffer>();
+        CreateMap<OrganizationOfferEntity, OrganizationOfferDto>();
+        CreateMap<OrganizationOfferDto, OrganizationOfferEntity>();
     }
 }

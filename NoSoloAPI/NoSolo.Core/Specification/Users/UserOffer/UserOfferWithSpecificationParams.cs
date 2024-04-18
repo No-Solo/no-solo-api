@@ -2,7 +2,7 @@
 
 namespace NoSolo.Core.Specification.Users.UserOffer;
 
-public class UserOfferWithSpecificationParams : BaseSpecification<Entities.User.UserOffer>
+public class UserOfferWithSpecificationParams : BaseSpecification<Entities.User.UserOfferEntity>
 {
     public UserOfferWithSpecificationParams(UserOfferParams userOfferParams)
         : base(x => (string.IsNullOrEmpty(userOfferParams.Search) || x.Preferences.ToLower().Contains(userOfferParams.Search))

@@ -4,9 +4,9 @@ using NoSolo.Core.Entities.User;
 
 namespace NoSolo.Infrastructure.Data.Config.User;
 
-public class UserPhotoConfiguration : IEntityTypeConfiguration<UserPhoto>
+public class UserPhotoConfiguration : IEntityTypeConfiguration<UserPhotoEntity>
 {
-    public void Configure(EntityTypeBuilder<UserPhoto> builder)
+    public void Configure(EntityTypeBuilder<UserPhotoEntity> builder)
     {
         builder.Property(p => p.Id).IsRequired();
         builder.Property(p => p.Url).IsRequired();

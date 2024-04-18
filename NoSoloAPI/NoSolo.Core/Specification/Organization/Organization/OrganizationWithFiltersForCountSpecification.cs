@@ -2,7 +2,7 @@
 
 namespace NoSolo.Core.Specification.Organization.Organization;
 
-public class OrganizationWithFiltersForCountSpecification : BaseSpecification<Entities.Organization.Organization>
+public class OrganizationWithFiltersForCountSpecification : BaseSpecification<Entities.Organization.OrganizationEntity>
 {
     public OrganizationWithFiltersForCountSpecification(OrganizationParams organizationParams)
         : base(x => string.IsNullOrEmpty(organizationParams.Search) || x.Name.Contains(organizationParams.Search) &&

@@ -4,9 +4,9 @@ using NoSolo.Core.Entities.Organization;
 
 namespace NoSolo.Infrastructure.Data.Config.Organization;
 
-public class OrganizationOfferConfiguration : IEntityTypeConfiguration<OrganizationOffer>
+public class OrganizationOfferConfiguration : IEntityTypeConfiguration<OrganizationOfferEntity>
 {
-    public void Configure(EntityTypeBuilder<OrganizationOffer> builder)
+    public void Configure(EntityTypeBuilder<OrganizationOfferEntity> builder)
     {
         builder.Property(p => p.Name).IsRequired().HasMaxLength(100);
         builder.Property(p => p.Description).IsRequired().HasMaxLength(500);
