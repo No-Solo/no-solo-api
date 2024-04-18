@@ -16,14 +16,14 @@ public class RefreshTokenService : IRefreshTokenService
         _refreshTokenRepository = refreshTokenRepository;
     }
     
-    public async Task<RefreshToken> GenerateRefreshToken(User user)
+    public async Task<RefreshToken> GenerateRefreshToken(UserEntity userEntity)
     {
         var refreshToken = new RefreshToken
         {
             TokenHash = await _tokenService.GenerateRefreshToken(),
             CreatedDate = DateTime.UtcNow,
             ExpiryDate = DateTime.UtcNow.AddDays(30),
-            User = user
+            UserEntity = userEntity
         };
 
         _refreshTokenRepository.AddAsync(refreshToken);

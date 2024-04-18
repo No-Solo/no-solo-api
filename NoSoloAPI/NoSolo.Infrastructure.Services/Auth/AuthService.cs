@@ -12,11 +12,11 @@ public class AuthService : IAuthService
 {
     private readonly ITokenService _tokenService;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<UserEntity> _userManager;
     private readonly INotificationService _notificationService;
 
     public AuthService(ITokenService tokenService, IRefreshTokenRepository refreshTokenRepository,
-        UserManager<User> userManager, INotificationService notificationService)
+        UserManager<UserEntity> userManager, INotificationService notificationService)
     {
         _tokenService = tokenService;
         _refreshTokenRepository = refreshTokenRepository;
@@ -34,7 +34,7 @@ public class AuthService : IAuthService
         var principals = _tokenService.GetPrincipalFromExpiredToken(expiredToken.AccessToken);
         var user = await _userManager.FindByNameAsync(principals.Identity.Name);
         if (user is null)
-            throw new InvalidCredentialsException("Invalid user");
+            throw new InvalidCredentialsException("Invalid userEntity");
 
         var refreshToken = await _refreshTokenRepository.GetActiveByUserId(user.Id);
         if (refreshToken is null)

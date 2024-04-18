@@ -9,9 +9,9 @@ namespace NoSolo.Infrastructure.Services.Email;
 
 public class EmailTokenService : IEmailTokenService
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<UserEntity> _userManager;
 
-    public EmailTokenService(UserManager<User> userManager)
+    public EmailTokenService(UserManager<UserEntity> userManager)
     {
         _userManager = userManager;
     }
@@ -20,7 +20,7 @@ public class EmailTokenService : IEmailTokenService
     {
         var user = await _userManager.FindByEmailAsync(userEmail);
         if (user is null)
-            throw new InvalidCredentialsException("Invalid user's email");
+            throw new InvalidCredentialsException("Invalid userEntity's email");
 
         var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 

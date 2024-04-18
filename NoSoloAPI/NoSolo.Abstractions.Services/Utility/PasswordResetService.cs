@@ -6,9 +6,9 @@ namespace NoSolo.Abstractions.Services.Utility;
 
 public class PasswordResetService : IPasswordResetService
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<UserEntity> _userManager;
 
-    public PasswordResetService(UserManager<User> userManager)
+    public PasswordResetService(UserManager<UserEntity> userManager)
     {
         _userManager = userManager;
     }

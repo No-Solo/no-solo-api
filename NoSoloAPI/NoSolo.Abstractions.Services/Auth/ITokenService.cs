@@ -5,7 +5,7 @@ namespace NoSolo.Abstractions.Services.Auth;
 
 public interface ITokenService
 {
-    Task<string> GenerateAccessToken(User user);
+    Task<string> GenerateAccessToken(UserEntity userEntity);
     Task<string> GenerateRefreshToken();
     ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
 }

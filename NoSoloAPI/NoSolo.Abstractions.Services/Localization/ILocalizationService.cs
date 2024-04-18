@@ -19,12 +19,12 @@
     public static class LocalizationReservedKeys
     {
         public static string RecordNotFound = "record-not-found";
-        public static string AccessDeniedWasCreatedByAnother = "access-denied-record-was-created-by-another-user";
+        public static string AccessDeniedWasCreatedByAnother = "access-denied-record-was-created-by-another-userEntity";
         public static string AccessDeniedOneSingleTeam = "access-denied-you-cannot-delete-the-one-single-team";
         public static string AccessDeniedReservedKey = "access-denied-key-reserved";
         public static string AccessDeniedLicenses = "access-denied-licences";
         public static string AccessDeniedWasSensetiveValues = "access-denied-sensetive-values";
-        public static string AccessDeniedIncorrectOrganization = "access-denied-incorect-organization";
+        public static string AccessDeniedIncorrectOrganization = "access-denied-incorect-organizationEntity";
         public static string AccessDeniedIncorrectTeam = "access-denied-incorect-team";
         public static string AccessDenied = "access-denied";
         public static string IdCannotBeEmpty = "id-cannot-empty";
@@ -34,10 +34,10 @@
         public static string InvalidPassword = "invalid-password";
         public static string InvalidConfirmPassword = "invalid-confirm-password";
         public static string PasswordDoesntMatch = "password-doesnt-match";
-        public static string UserAlreadyExists = "user-already-exists";
+        public static string UserAlreadyExists = "userEntity-already-exists";
         public static string InvalidInvitationCode = "invalid-invitation-code";
-        public static string InvalidOrganization = "invalid-organization";
-        public static string InvalidOrganizationType = "invalid-organization-type";
+        public static string InvalidOrganization = "invalid-organizationEntity";
+        public static string InvalidOrganizationType = "invalid-organizationEntity-type";
         public static string SignUpProblem = "sign-up-problem";
         public static string SignInProblem = "sign-in-problem";
         public static string InvalidRefreshToken = "invalid-refreshtoken";

@@ -13,27 +13,27 @@ namespace NoSolo.Infrastructure.Services.Auth;
 public class TokenService : ITokenService
 {
     private readonly IConfiguration _configuration;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<UserEntity> _userManager;
 
-    public TokenService(IConfiguration configuration, UserManager<User> userManager)
+    public TokenService(IConfiguration configuration, UserManager<UserEntity> userManager)
     {
         _configuration = configuration;
         _userManager = userManager;
     }
 
-    public async Task<string> GenerateAccessToken(User user)
+    public async Task<string> GenerateAccessToken(UserEntity userEntity)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
 
         var claims = new List<Claim>
         {
-            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new(ClaimTypes.Name, user.UserName),
-            new(ClaimTypes.Email, user.Email),
+            new(ClaimTypes.NameIdentifier, userEntity.Id.ToString()),
+            new(ClaimTypes.Name, userEntity.UserName),
+            new(ClaimTypes.Email, userEntity.Email),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
-        var roles = await _userManager.GetRolesAsync(user);
+        var roles = await _userManager.GetRolesAsync(userEntity);
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         var claimsIdentity = new ClaimsIdentity(claims);

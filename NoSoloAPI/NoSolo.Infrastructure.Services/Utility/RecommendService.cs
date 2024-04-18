@@ -30,9 +30,9 @@ public class RecommendService : IRecommendService
         if (userOfferParams.Tags is null)
             return null!;
 
-        var usersOffers = await _unitOfWork.Repository<UserOffer>().ListAllAsync();
+        var usersOffers = await _unitOfWork.Repository<UserOfferEntity>().ListAllAsync();
 
-        var targetOffers = new List<UserOffer>();
+        var targetOffers = new List<UserOfferEntity>();
 
         foreach (var offer in usersOffers)
         {
@@ -48,7 +48,7 @@ public class RecommendService : IRecommendService
                 targetOffers.Add(offer);
         }
 
-        var data = _mapper.Map<IReadOnlyList<UserOffer>, IReadOnlyList<UserOfferDto>>(targetOffers);
+        var data = _mapper.Map<IReadOnlyList<UserOfferEntity>, IReadOnlyList<UserOfferDto>>(targetOffers);
 
         return new Pagination<UserOfferDto>(userOfferParams.PageNumber, userOfferParams.PageSize, targetOffers.Count,
             data);
@@ -60,9 +60,9 @@ public class RecommendService : IRecommendService
         if (organizationOfferParams.Tags is null)
             return null!;
 
-        var organizationsOffers = await _unitOfWork.Repository<OrganizationOffer>().ListAllAsync();
+        var organizationsOffers = await _unitOfWork.Repository<OrganizationOfferEntity>().ListAllAsync();
 
-        var targetOffers = new List<OrganizationOffer>();
+        var targetOffers = new List<OrganizationOfferEntity>();
 
         foreach (var offer in organizationsOffers)
         {
@@ -78,7 +78,7 @@ public class RecommendService : IRecommendService
                 targetOffers.Add(offer);
         }
 
-        var data = _mapper.Map<IReadOnlyList<OrganizationOffer>, IReadOnlyList<OrganizationOfferDto>>(targetOffers);
+        var data = _mapper.Map<IReadOnlyList<OrganizationOfferEntity>, IReadOnlyList<OrganizationOfferDto>>(targetOffers);
 
         return new Pagination<OrganizationOfferDto>(organizationOfferParams.PageNumber,
             organizationOfferParams.PageSize, targetOffers.Count,

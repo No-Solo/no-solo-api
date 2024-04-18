@@ -12,7 +12,7 @@ public class UserPhotoService : IUserPhotoService
     private readonly IPhotoService _photoService;
     private readonly IUserService _userService;
 
-    private User? _user;
+    private UserEntity? _user;
 
     public UserPhotoService(IPhotoService photoService, IUserService userService)
     {

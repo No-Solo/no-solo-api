@@ -22,7 +22,7 @@ public class UserRequestService : IUserRequestService
     
     public async Task<UserRequestDto> Send(Guid userGuid, Guid organizationOfferGuid)
     {
-        var request = new Request<User, OrganizationOffer>()
+        var request = new RequestEntity<UserEntity, OrganizationOfferEntity>()
         {
             TEntityId = userGuid,
             Status = StatusEnum.Waiting,
@@ -81,7 +81,7 @@ public class UserRequestService : IUserRequestService
         _userRequestRepository.Save();
     }
     
-    private async Task<Request<User, OrganizationOffer>> GetRequest(Guid userGuid, Guid organizationOfferGuid)
+    private async Task<RequestEntity<UserEntity, OrganizationOfferEntity>> GetRequest(Guid userGuid, Guid organizationOfferGuid)
     {
         return await _userRequestRepository.Get(userGuid, organizationOfferGuid);
     }

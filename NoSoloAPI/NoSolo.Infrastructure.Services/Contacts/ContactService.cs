@@ -15,27 +15,27 @@ namespace NoSolo.Infrastructure.Services.Contacts;
 
 public class ContactService : IContactService
 {
-    private readonly IGenericRepository<Contact<Organization>> _organizationContactRepository;
-    private readonly IGenericRepository<Contact<User>> _userContactRepository;
+    private readonly IGenericRepository<ContactEntity<OrganizationEntity>> _organizationContactRepository;
+    private readonly IGenericRepository<ContactEntity<UserEntity>> _userContactRepository;
     private readonly IMapper _mapper;
 
-    public ContactService(IGenericRepository<Contact<Organization>> organizationContactRepository,
-        IGenericRepository<Contact<User>> userContactRepository, IMapper mapper)
+    public ContactService(IGenericRepository<ContactEntity<OrganizationEntity>> organizationContactRepository,
+        IGenericRepository<ContactEntity<UserEntity>> userContactRepository, IMapper mapper)
     {
         _organizationContactRepository = organizationContactRepository;
         _userContactRepository = userContactRepository;
         _mapper = mapper;
     }
 
-    public ContactDto Add(Organization organization, NewContactDto contactDto)
+    public ContactDto Add(OrganizationEntity organizationEntity, NewContactDto contactDto)
     {
-        var contact = new Contact<Organization>
+        var contact = new ContactEntity<OrganizationEntity>
         {
             Type = contactDto.Type,
             Text = contactDto.Text,
             Url = contactDto.Url,
-            TEntity = organization,
-            TEntityId = organization.Id
+            TEntity = organizationEntity,
+            TEntityId = organizationEntity.Id
         };
 
         _organizationContactRepository.AddAsync(contact);
@@ -45,15 +45,15 @@ public class ContactService : IContactService
         return _mapper.Map<ContactDto>(contact);
     }
 
-    public ContactDto Add(User user, NewContactDto contactDto)
+    public ContactDto Add(UserEntity userEntity, NewContactDto contactDto)
     {
-        var contact = new Contact<User>
+        var contact = new ContactEntity<UserEntity>
         {
             Type = contactDto.Type,
             Text = contactDto.Text,
             Url = contactDto.Url,
-            TEntity = user,
-            TEntityId = user.Id
+            TEntity = userEntity,
+            TEntityId = userEntity.Id
         };
 
         _userContactRepository.AddAsync(contact);
@@ -62,18 +62,18 @@ public class ContactService : IContactService
         return _mapper.Map<ContactDto>(contact);
     }
 
-    public Contact<Organization> Get(Organization organization, Guid contactGuid)
+    public ContactEntity<OrganizationEntity> Get(OrganizationEntity organizationEntity, Guid contactGuid)
     {
-        var contact = organization.Contacts.SingleOrDefault(c => c.Id == contactGuid);
+        var contact = organizationEntity.Contacts.SingleOrDefault(c => c.Id == contactGuid);
         if (contact is null)
             throw new EntityNotFound("The contact is not found");
 
         return contact;
     }
 
-    public ContactDto GetDto(Organization organization, Guid contactGuid)
+    public ContactDto GetDto(OrganizationEntity organizationEntity, Guid contactGuid)
     {
-        return _mapper.Map<ContactDto>(Get(organization, contactGuid));
+        return _mapper.Map<ContactDto>(Get(organizationEntity, contactGuid));
     }
 
     public async Task<Pagination<ContactDto>> Get(OrganizationContactParams organizationContactParams)
@@ -87,7 +87,7 @@ public class ContactService : IContactService
         var organizationContacts = await _organizationContactRepository.ListAsync(spec);
 
         var data = _mapper
-            .Map<IReadOnlyList<Contact<Organization>>, IReadOnlyList<ContactDto>>(organizationContacts);
+            .Map<IReadOnlyList<ContactEntity<OrganizationEntity>>, IReadOnlyList<ContactDto>>(organizationContacts);
 
         return new Pagination<ContactDto>(organizationContactParams.PageNumber, organizationContactParams.PageSize,
             totalItems, data);
@@ -104,28 +104,28 @@ public class ContactService : IContactService
         var userContacts = await _userContactRepository.ListAsync(spec);
 
         var data = _mapper
-            .Map<IReadOnlyList<Contact<User>>, IReadOnlyList<ContactDto>>(userContacts);
+            .Map<IReadOnlyList<ContactEntity<UserEntity>>, IReadOnlyList<ContactDto>>(userContacts);
 
         return new Pagination<ContactDto>(userContactParams.PageNumber, userContactParams.PageSize, totalItems, data);
     }
 
-    public Contact<User> Get(User user, Guid contactGuid)
+    public ContactEntity<UserEntity> Get(UserEntity userEntity, Guid contactGuid)
     {
-        var contact = user.Contacts.SingleOrDefault(c => c.Id == contactGuid);
+        var contact = userEntity.Contacts.SingleOrDefault(c => c.Id == contactGuid);
         if (contact is null)
             throw new EntityNotFound("The contact is not found");
 
         return contact;
     }
 
-    public ContactDto GetDto(User user, Guid contactGuid)
+    public ContactDto GetDto(UserEntity userEntity, Guid contactGuid)
     {
-        return _mapper.Map<ContactDto>(Get(user, contactGuid));
+        return _mapper.Map<ContactDto>(Get(userEntity, contactGuid));
     }
 
-    public ContactDto Update(Organization organization, ContactDto contactDto)
+    public ContactDto Update(OrganizationEntity organizationEntity, ContactDto contactDto)
     {
-        var contact = Get(organization, contactDto.Id);
+        var contact = Get(organizationEntity, contactDto.Id);
 
         _mapper.Map(contactDto, contact);
         _organizationContactRepository.Save();
@@ -133,9 +133,9 @@ public class ContactService : IContactService
         return _mapper.Map<ContactDto>(contact);
     }
 
-    public ContactDto Update(User user, ContactDto contactDto)
+    public ContactDto Update(UserEntity userEntity, ContactDto contactDto)
     {
-        var contact = user.Contacts.FirstOrDefault(c => c.Id == contactDto.Id);
+        var contact = userEntity.Contacts.FirstOrDefault(c => c.Id == contactDto.Id);
         if (contact is null)
             throw new EntityNotFound("The contact is not found");
 
@@ -146,18 +146,18 @@ public class ContactService : IContactService
         return _mapper.Map<ContactDto>(contact);
     }
 
-    public void Delete(Organization organization, Guid contactGuid)
+    public void Delete(OrganizationEntity organizationEntity, Guid contactGuid)
     {
-        var contact = Get(organization, contactGuid);
+        var contact = Get(organizationEntity, contactGuid);
 
         _organizationContactRepository.Delete(contact);
 
         _organizationContactRepository.Save();
     }
 
-    public void Delete(User user, Guid contactGuid)
+    public void Delete(UserEntity userEntity, Guid contactGuid)
     {
-        var contact = Get(user, contactGuid);
+        var contact = Get(userEntity, contactGuid);
 
         _userContactRepository.Delete(contact);
 

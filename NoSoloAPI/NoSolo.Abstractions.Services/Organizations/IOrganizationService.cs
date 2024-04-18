@@ -16,8 +16,8 @@ public interface IOrganizationService
 
     Task<Pagination<OrganizationDto>> GetMy(Guid memberGuid);
     Task<Pagination<OrganizationDto>> Get(OrganizationParams organizationParams);
-    Task<Organization> Get(Guid organizationGuid, OrganizationIncludeEnum include);
-    Task<Organization> Get(Guid organizationGuid, List<OrganizationIncludeEnum> includes);
+    Task<OrganizationEntity> Get(Guid organizationGuid, OrganizationIncludeEnum include);
+    Task<OrganizationEntity> Get(Guid organizationGuid, List<OrganizationIncludeEnum> includes);
     Task<OrganizationDto> Get(Guid organizationGuid);
     
     Task<OrganizationDto> Update(UpdateOrganizationDto organizationDto, string email);

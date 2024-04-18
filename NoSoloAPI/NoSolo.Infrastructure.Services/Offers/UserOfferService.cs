@@ -13,7 +13,7 @@ public class UserOfferService : IUserOfferService
     private readonly IOfferService _offerService;
     private readonly IUserService _userService;
 
-    private User? _user;
+    private UserEntity? _user;
 
     public UserOfferService(IOfferService offerService, IUserService userService)
     {

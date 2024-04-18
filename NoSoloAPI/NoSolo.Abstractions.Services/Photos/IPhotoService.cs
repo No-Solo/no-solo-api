@@ -11,14 +11,14 @@ namespace NoSolo.Abstractions.Services.Photos;
 
 public interface IPhotoService
 {
-    Task<OrganizationPhotoDto> Add(Organization organization, IFormFile file);
-    Task<UserPhotoDto> Add(User user, IFormFile file);
-    Task<OrganizationPhotoDto> GetMainDto(Organization organization);
-    Task<UserPhotoDto> GetMainDto(User user);
-    Task<OrganizationPhoto> GetMain(Organization organization);
-    Task<OrganizationPhoto> Get(Organization organization, Guid photoGuid);
+    Task<OrganizationPhotoDto> Add(OrganizationEntity organizationEntity, IFormFile file);
+    Task<UserPhotoDto> Add(UserEntity userEntity, IFormFile file);
+    Task<OrganizationPhotoDto> GetMainDto(OrganizationEntity organizationEntity);
+    Task<UserPhotoDto> GetMainDto(UserEntity userEntity);
+    Task<OrganizationPhotoEntity> GetMain(OrganizationEntity organizationEntity);
+    Task<OrganizationPhotoEntity> Get(OrganizationEntity organizationEntity, Guid photoGuid);
     Task<Pagination<OrganizationPhotoDto>> Get(OrganizationPhotoParams organizationPhotoParams);
-    Task<OrganizationPhotoDto> SetMainPhoto(Organization organization, Guid photoGuid);
-    Task Delete(Organization organization, Guid photoGuid);
-    Task Delete(User user);
+    Task<OrganizationPhotoDto> SetMainPhoto(OrganizationEntity organizationEntity, Guid photoGuid);
+    Task Delete(OrganizationEntity organizationEntity, Guid photoGuid);
+    Task Delete(UserEntity userEntity);
 }

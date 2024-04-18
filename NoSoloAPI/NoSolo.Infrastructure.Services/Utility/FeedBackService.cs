@@ -19,7 +19,7 @@ public class FeedBackService : IFeedBackService
 
     public async Task<FeedBackDto> Create(NewFeedBackDto newFeedBackDto)
     {
-        var feedBack = new FeedBack()
+        var feedBack = new FeedBackEntity()
         {
             FirstName = newFeedBackDto.FirstName,
             LastName = newFeedBackDto.LastName,

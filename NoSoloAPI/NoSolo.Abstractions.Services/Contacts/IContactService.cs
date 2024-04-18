@@ -12,16 +12,16 @@ namespace NoSolo.Abstractions.Services.Contacts;
 
 public interface IContactService
 {
-    ContactDto Add(Organization organization, NewContactDto contactDto);
-    ContactDto Add(User user, NewContactDto contactDto);
-    Contact<Organization> Get(Organization organization, Guid contactGuid);
-    ContactDto GetDto(Organization organization, Guid contactGuid);
+    ContactDto Add(OrganizationEntity organizationEntity, NewContactDto contactDto);
+    ContactDto Add(UserEntity userEntity, NewContactDto contactDto);
+    ContactEntity<OrganizationEntity> Get(OrganizationEntity organizationEntity, Guid contactGuid);
+    ContactDto GetDto(OrganizationEntity organizationEntity, Guid contactGuid);
     Task<Pagination<ContactDto>> Get(OrganizationContactParams organizationContactParams);
     Task<Pagination<ContactDto>> Get(UserContactParams userContactParams);
-    Contact<User> Get(User user, Guid contactGuid);
-    ContactDto GetDto(User user, Guid contactGuid);
-    ContactDto Update(Organization organization, ContactDto contactDto);
-    ContactDto Update(User user, ContactDto contactDto);
-    void Delete(Organization organization, Guid contactGuid);
-    void Delete(User user, Guid contactGuid);
+    ContactEntity<UserEntity> Get(UserEntity userEntity, Guid contactGuid);
+    ContactDto GetDto(UserEntity userEntity, Guid contactGuid);
+    ContactDto Update(OrganizationEntity organizationEntity, ContactDto contactDto);
+    ContactDto Update(UserEntity userEntity, ContactDto contactDto);
+    void Delete(OrganizationEntity organizationEntity, Guid contactGuid);
+    void Delete(UserEntity userEntity, Guid contactGuid);
 }

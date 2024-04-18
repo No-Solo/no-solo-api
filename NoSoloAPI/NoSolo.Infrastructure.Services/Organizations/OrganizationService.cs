@@ -3,7 +3,6 @@ using NoSolo.Abstractions.Data.Data;
 using NoSolo.Abstractions.Services.Memberships;
 using NoSolo.Abstractions.Services.Organizations;
 using NoSolo.Abstractions.Services.Users;
-using NoSolo.Abstractions.Services.Utility;
 using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Organizations.Organizations;
 using NoSolo.Core.Entities.Organization;
@@ -21,7 +20,7 @@ public class OrganizationService : IOrganizationService
     private readonly IUserService _userService;
     private readonly IMemberService _memberService;
 
-    private User? _user;
+    private UserEntity? _user;
 
     public OrganizationService(IUnitOfWork unitOfWork, IMapper mapper, IUserService userService,
         IMemberService memberService)
@@ -38,13 +37,15 @@ public class OrganizationService : IOrganizationService
     {
         _user ??= await _userService.GetUser(email, UserInclude.Membership);
 
-        var organization = new Organization()
+        var organization = new OrganizationEntity()
         {
+            DateCreated = DateTime.UtcNow,
+            Deleted = false,
             Name = organizationDto.Name,
             Description = organizationDto.Description,
             NumberOfEmployees = organizationDto.NumberOfEmployees,
             Address = organizationDto.Address,
-            WebSiteUrl = organizationDto.WebSiteUrl
+            WebSiteUri = organizationDto.WebSiteUri
         };
 
         await _memberService.CreateMember(organization, _user, RoleEnum.Owner);
@@ -132,7 +133,7 @@ public class OrganizationService : IOrganizationService
 
         var organization = await Get(organizationGuid, OrganizationIncludeEnum.Members);
 
-        _unitOfWork.Repository<Organization>().Delete(organization);
+        _unitOfWork.Repository<OrganizationEntity>().Delete(organization);
         await _unitOfWork.Complete();
     }
 
@@ -142,18 +143,18 @@ public class OrganizationService : IOrganizationService
 
         var countSpec = new OrganizationWithFiltersForCountSpecification(organizationParams);
 
-        var totalItems = await _unitOfWork.Repository<Organization>().CountAsync(countSpec);
+        var totalItems = await _unitOfWork.Repository<OrganizationEntity>().CountAsync(countSpec);
 
-        var organizations = await _unitOfWork.Repository<Organization>().ListAsync(spec);
+        var organizations = await _unitOfWork.Repository<OrganizationEntity>().ListAsync(spec);
 
         var data = _mapper
-            .Map<IReadOnlyList<Organization>, IReadOnlyList<OrganizationDto>>(organizations);
+            .Map<IReadOnlyList<OrganizationEntity>, IReadOnlyList<OrganizationDto>>(organizations);
 
         return new Pagination<OrganizationDto>(organizationParams.PageNumber, organizationParams.PageSize, totalItems,
             data);
     }
 
-    public async Task<Organization> Get(Guid organizationGuid, OrganizationIncludeEnum include)
+    public async Task<OrganizationEntity> Get(Guid organizationGuid, OrganizationIncludeEnum include)
     {
         var organizationParams = new OrganizationParams()
         {
@@ -164,7 +165,7 @@ public class OrganizationService : IOrganizationService
         return await GetOrganizationByParams(organizationParams);
     }
 
-    public async Task<Organization> Get(Guid organizationGuid, List<OrganizationIncludeEnum> includes)
+    public async Task<OrganizationEntity> Get(Guid organizationGuid, List<OrganizationIncludeEnum> includes)
     {
         var organizationParams = new OrganizationParams()
         {
@@ -175,13 +176,13 @@ public class OrganizationService : IOrganizationService
         return await GetOrganizationByParams(organizationParams);
     }
 
-    private async Task<Organization> GetOrganizationByParams(OrganizationParams organizationParams)
+    private async Task<OrganizationEntity> GetOrganizationByParams(OrganizationParams organizationParams)
     {
         var spec = new OrganizationWithSpecificationParams(organizationParams);
 
-        var organization = await _unitOfWork.Repository<Organization>().GetEntityWithSpec(spec);
+        var organization = await _unitOfWork.Repository<OrganizationEntity>().GetEntityWithSpec(spec);
         if (organization is null)
-            throw new EntityNotFound("The organization is not found");
+            throw new EntityNotFound("The organizationEntity is not found");
 
         return organization;
     }

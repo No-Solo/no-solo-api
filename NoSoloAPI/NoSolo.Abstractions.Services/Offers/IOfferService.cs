@@ -10,16 +10,16 @@ namespace NoSolo.Abstractions.Services.Offers;
 
 public interface IOfferService
 {
-    Task<OrganizationOfferDto> Add(Organization organization, NewOrganizationOfferDto organizationOfferDto);
-    Task<UserOfferDto> Add(User user, NewUserOfferDto userOfferDto);
+    Task<OrganizationOfferDto> Add(OrganizationEntity organizationEntity, NewOrganizationOfferDto organizationOfferDto);
+    Task<UserOfferDto> Add(UserEntity userEntity, NewUserOfferDto userOfferDto);
     Task<Pagination<OrganizationOfferDto>> Get(OrganizationOfferParams organizationOfferParams);
     Task<Pagination<UserOfferDto>> Get(UserOfferParams userOfferParams);
     Task<OrganizationOfferDto> GetOrganizationOfferDto(Guid offerGuid);
     Task<UserOfferDto> GetUserOfferDto(Guid offerGuid);
-    Task<OrganizationOffer> Get(Organization organization, Guid offerGuid);
-    Task<UserOffer> Get(User user, Guid offerGuid);
-    Task<OrganizationOfferDto> Update(Organization organization, OrganizationOfferDto organizationOfferDto);
-    Task<UserOfferDto> Update(User user, UserOfferDto userOfferDto);
-    Task Delete(Organization organization, Guid offerGuid);
-    Task Delete(User user, Guid offerGuid);
+    Task<OrganizationOfferEntity> Get(OrganizationEntity organizationEntity, Guid offerGuid);
+    Task<UserOfferEntity> Get(UserEntity userEntity, Guid offerGuid);
+    Task<OrganizationOfferDto> Update(OrganizationEntity organizationEntity, OrganizationOfferDto organizationOfferDto);
+    Task<UserOfferDto> Update(UserEntity userEntity, UserOfferDto userOfferDto);
+    Task Delete(OrganizationEntity organizationEntity, Guid offerGuid);
+    Task Delete(UserEntity userEntity, Guid offerGuid);
 }

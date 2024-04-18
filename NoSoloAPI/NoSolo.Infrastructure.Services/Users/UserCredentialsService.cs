@@ -19,15 +19,15 @@ public class UserCredentialsService : IUserCredentialsService
 {
     private readonly IMapper _mapper;
     private readonly ITokenService _tokenService;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<UserEntity> _userManager;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRefreshTokenService _refreshTokenService;
     private readonly INotificationService _notificationService;
 
-    private User? _user;
+    private UserEntity? _user;
 
     public UserCredentialsService(IMapper mapper, ITokenService tokenService,
-        UserManager<User> userManager, IUnitOfWork unitOfWork, IRefreshTokenService refreshTokenService, INotificationService notificationService)
+        UserManager<UserEntity> userManager, IUnitOfWork unitOfWork, IRefreshTokenService refreshTokenService, INotificationService notificationService)
     {
         _mapper = mapper;
         _tokenService = tokenService;
@@ -56,7 +56,7 @@ public class UserCredentialsService : IUserCredentialsService
             throw new ExistingAccountException();
 
         var result = await _userManager.CreateAsync(
-            new User()
+            new UserEntity()
             {
                 UserName = signUpDto.UserName,
                 Email = signUpDto.Email,
@@ -157,7 +157,7 @@ public class UserCredentialsService : IUserCredentialsService
         await _userManager.ChangePasswordAsync(user, passwordUpdate.OldPassword, passwordUpdate.Password);
     }
 
-    private async Task<User> GetUserByEmailWithAllIncludes(string email)
+    private async Task<UserEntity> GetUserByEmailWithAllIncludes(string email)
     {
         var userParams = new UserParams()
         {
@@ -175,10 +175,10 @@ public class UserCredentialsService : IUserCredentialsService
 
         var spec = new UserWithSpecificationParams(userParams);
 
-        return await _unitOfWork.Repository<User>().GetEntityWithSpec(spec);
+        return await _unitOfWork.Repository<UserEntity>().GetEntityWithSpec(spec);
     }
 
-    private async Task<User> Find(string email)
+    private async Task<UserEntity> Find(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
         if (user is null)
