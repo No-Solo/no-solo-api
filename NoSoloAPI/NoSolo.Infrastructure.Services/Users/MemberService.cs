@@ -11,12 +11,12 @@ namespace NoSolo.Infrastructure.Services.Users;
 public class MemberService : IMemberService
 {
     private readonly IUserService _userService;
-    private readonly IGenericRepository<MemberEntity> _genericRepository;
+    private readonly IRepository<MemberEntity> _repository;
 
-    public MemberService(IUserService userService, IGenericRepository<MemberEntity> genericRepository)
+    public MemberService(IUserService userService, IRepository<MemberEntity> repository)
     {
         _userService = userService;
-        _genericRepository = genericRepository;
+        _repository = repository;
     }
 
     public async Task CreateMember(OrganizationEntity organizationEntity, UserEntity userEntity, RoleEnum role)
@@ -30,8 +30,8 @@ public class MemberService : IMemberService
             OrganizationId = organizationEntity.Id
         };
 
-        _genericRepository.AddAsync(member);
-        _genericRepository.Save();
+        _repository.AddAsync(member);
+        _repository.Save();
     }
 
     public async Task AddMember(OrganizationEntity organizationEntity, UserEntity userEntity, RoleEnum role)
@@ -132,7 +132,7 @@ public class MemberService : IMemberService
 
         if (newRole == RoleEnum.None)
             await Delete(email, targetEmail, organizationGuid);
-        _genericRepository.Save();
+        _repository.Save();
     }
 
     public async Task Delete(string email, string targetEmail, Guid organizationGuid)
@@ -151,7 +151,7 @@ public class MemberService : IMemberService
         if (!await More(member.Role, removingMember.Role))
             throw new NotAccessException();
 
-        _genericRepository.Delete(removingMember);
-        _genericRepository.Save();
+        _repository.Delete(removingMember);
+        _repository.Save();
     }
 }

@@ -11,10 +11,10 @@ namespace NoSolo.Infrastructure.Services.Users;
 
 public class UserService : IUserService
 {
-    private readonly IGenericRepository<UserEntity> _userRepository;
+    private readonly IRepository<UserEntity> _userRepository;
     private readonly IMapper _mapper;
 
-    public UserService(IGenericRepository<UserEntity> userRepository, IMapper mapper)
+    public UserService(IRepository<UserEntity> userRepository, IMapper mapper)
     {
         _userRepository = userRepository;
         _mapper = mapper;

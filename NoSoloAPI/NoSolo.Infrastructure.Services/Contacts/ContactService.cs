@@ -15,12 +15,12 @@ namespace NoSolo.Infrastructure.Services.Contacts;
 
 public class ContactService : IContactService
 {
-    private readonly IGenericRepository<ContactEntity<OrganizationEntity>> _organizationContactRepository;
-    private readonly IGenericRepository<ContactEntity<UserEntity>> _userContactRepository;
+    private readonly IRepository<ContactEntity<OrganizationEntity>> _organizationContactRepository;
+    private readonly IRepository<ContactEntity<UserEntity>> _userContactRepository;
     private readonly IMapper _mapper;
 
-    public ContactService(IGenericRepository<ContactEntity<OrganizationEntity>> organizationContactRepository,
-        IGenericRepository<ContactEntity<UserEntity>> userContactRepository, IMapper mapper)
+    public ContactService(IRepository<ContactEntity<OrganizationEntity>> organizationContactRepository,
+        IRepository<ContactEntity<UserEntity>> userContactRepository, IMapper mapper)
     {
         _organizationContactRepository = organizationContactRepository;
         _userContactRepository = userContactRepository;

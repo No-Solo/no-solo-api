@@ -89,7 +89,7 @@ public static class ScopeServiceExtensions
 
     public static IServiceCollection AddScopedRepositories(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IFeedBackRepository, FeedBackRepositories>();

@@ -8,9 +8,9 @@ namespace NoSolo.Infrastructure.Services.Auth;
 public class RefreshTokenService : IRefreshTokenService
 {
     private readonly ITokenService _tokenService;
-    private readonly IGenericRepository<RefreshToken> _refreshTokenRepository;
+    private readonly IRepository<RefreshToken> _refreshTokenRepository;
 
-    public RefreshTokenService(ITokenService tokenService, IGenericRepository<RefreshToken> refreshTokenRepository)
+    public RefreshTokenService(ITokenService tokenService, IRepository<RefreshToken> refreshTokenRepository)
     {
         _tokenService = tokenService;
         _refreshTokenRepository = refreshTokenRepository;
