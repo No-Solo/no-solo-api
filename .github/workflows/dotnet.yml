@@ -41,7 +41,7 @@ jobs:
         run: dotnet restore NoSoloAPI
 
       - name: Build Solution
-        run: dotnet build -c Release --no-restore NoSoloAPI
+        run: dotnet build -c Release NoSoloAPI
 
       - name: Run Unit Tests
         shell: bash
