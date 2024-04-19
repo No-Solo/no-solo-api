@@ -53,9 +53,9 @@ public class OrganizationService : IOrganizationService
         return _mapper.Map<OrganizationDto>(organization);
     }
 
-    public async Task<OrganizationDto> AddMember(Guid organizationId, string email, string targetEmail)
+    public async Task<OrganizationDto> AddMember(Guid organizationGuid, string email, string targetEmail)
     {
-        var organization = await Get(organizationId, OrganizationIncludeEnum.Members);
+        var organization = await Get(organizationGuid, OrganizationIncludeEnum.Members);
 
         var user = await _userService.GetUser(targetEmail, UserInclude.Membership);
 
@@ -74,7 +74,7 @@ public class OrganizationService : IOrganizationService
         await _memberService.UpdateRoleForMember(email, targetEmail, organizationGuid, newRole);
     }
 
-    public async Task<Pagination<OrganizationDto>> GetMy(Guid userGuid)
+    public async Task<Pagination<OrganizationDto>> GetMy(Guid memberGuid)
     {
         var organizationParams = new OrganizationParams()
         {
@@ -85,7 +85,7 @@ public class OrganizationService : IOrganizationService
                 OrganizationIncludeEnum.Offers,
                 OrganizationIncludeEnum.Photos
             },
-            UserGuid = userGuid
+            UserGuid = memberGuid
         };
         
         return await Get(organizationParams);
