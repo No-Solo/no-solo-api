@@ -1,25 +1,27 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using NoSolo.Abstractions.Services.Localization;
-using NoSolo.Infrastructure.Data.DbContext;
-using NoSolo.Infrastructure.Services.Utility;
-using NoSolo.Web.API.Helpers;
+﻿using NoSolo.Abstractions.Services.Localization;
 
 namespace NoSolo.Web.API.Localization;
 
 public class LocalizationService : ILocalizationService
 {
-    private readonly DataBaseContext _context;
-    private readonly IMemoryCache _cache;
-    private readonly IHostEnvironment _env;
+    // private readonly DataBaseContext _context;
+    // private readonly IMemoryCache _cache;
+    // private readonly IHostEnvironment _env;
     private readonly string _defaultLocale = "en-US";
 
-    public LocalizationService(DataBaseContext context, IMemoryCache cache, IHostEnvironment env)
+    // public LocalizationService(DataBaseContext context, IMemoryCache cache, IHostEnvironment env)
+    // {
+    //     _context = context;
+    //     _cache = cache;
+    //     _locales = Locale.locales.ToList();
+    //     SetLocale(_defaultLocale);
+    //     _env = env;
+    // }
+    
+    public LocalizationService()
     {
-        _context = context;
-        _cache = cache;
         _locales = Locale.locales.ToList();
         SetLocale(_defaultLocale);
-        _env = env;
     }
 
     public List<string> Locales
@@ -37,7 +39,7 @@ public class LocalizationService : ILocalizationService
 
     private string _currentLocale;
 
-    public string Get(string key, string? locale)
+    public string Get(string key, string locale)
     {
         // if (locale is null)
         //     locale = _defaultLocale;
@@ -47,7 +49,7 @@ public class LocalizationService : ILocalizationService
         throw new NotImplementedException();
     }
 
-    public string Get(string key, string orgId, string? locale)
+    public string Get(string key, string orgId, string locale)
     {
         // if (locale is null)
         //     locale = _defaultLocale;
@@ -91,7 +93,7 @@ public class LocalizationService : ILocalizationService
         throw new NotImplementedException();
     }
 
-    public string GetSystem(string key, string? locale = null)
+    public string GetSystem(string key, string locale)
     {
         // if (locale is null)
         //     locale = _defaultLocale;
@@ -101,7 +103,7 @@ public class LocalizationService : ILocalizationService
         throw new NotImplementedException();
     }
 
-    public List<string> GetRange(List<string> keys, string? locale)
+    public List<string> GetRange(List<string> keys, string locale)
     {
         // if (locale is null)
         //     locale = _defaultLocale;
