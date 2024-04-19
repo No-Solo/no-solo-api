@@ -6,7 +6,7 @@ using NoSolo.Infrastructure.Repositories.Base;
 
 namespace NoSolo.Infrastructure.Repositories.UOW;
 
-public class UnitOfWork : IUnitOfWork
+public class UnitOfWork : IUnitOfWork, IDisposable, IAsyncDisposable
 {
     private readonly DataBaseContext _dataBaseContext;
 
@@ -16,6 +16,19 @@ public class UnitOfWork : IUnitOfWork
     {
         _dataBaseContext = dataBaseContext;
     }
+    
+    public async ValueTask DisposeAsync()
+    {
+        await _dataBaseContext.DisposeAsync();
+    }
+
+    public void Dispose()
+    {
+        _ = Task.Run(DisposeAsync, CancellationToken.None)
+            .GetAwaiter()
+            .GetResult();
+    }
+    
 
     public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : class
     {
@@ -30,7 +43,7 @@ public class UnitOfWork : IUnitOfWork
             _repositories.Add(type, repositoryInstance);
         }
 
-        return (IGenericRepository<TEntity>)_repositories[type];
+        return (IGenericRepository<TEntity>)_repositories[type]!;
     }
 
     public async Task<bool> Complete()
@@ -41,10 +54,5 @@ public class UnitOfWork : IUnitOfWork
     public bool HasChanges()
     {
         return _dataBaseContext.ChangeTracker.HasChanges();
-    }
-
-    public void Dispose()
-    {
-        _dataBaseContext.Dispose();
     }
 }
