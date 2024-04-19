@@ -4,12 +4,12 @@ namespace NoSolo.Web.API.Helpers;
 
 public static class ConsoleHelper
 {
-    private static DateTime startedTime = DateTime.Now;
+    private static readonly DateTime StartedTime = DateTime.Now;
     
     public static void ShowStartAppTitle()
     {
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine($"{startedTime} : App execution started");
+        Console.WriteLine($"{StartedTime} : App execution started");
         Console.ResetColor();
     }
 
@@ -17,7 +17,7 @@ public static class ConsoleHelper
     {
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"\n{DateTime.Now} : App execution finished");
-        Console.WriteLine($"{(DateTime.Now - startedTime).TotalSeconds}:seconds\n\n");
+        Console.WriteLine($"{(DateTime.Now - StartedTime).TotalSeconds}:seconds\n\n");
         Console.ResetColor();
     }
     
@@ -28,7 +28,7 @@ public static class ConsoleHelper
         Console.WriteLine("\n\n");
         Console.WriteLine($"> DB context: {context}");
         Console.WriteLine($"> Environment: {builder.Environment.EnvironmentName}");
-        Console.WriteLine($"> API Version: {DateTime.Now.Year - 2023}.{DateTime.Now.Month}.{DateTime.Now.Day}");
+        Console.WriteLine($"> API Version: {DateTime.UtcNow.Year - 2023}.{DateTime.UtcNow.Month}.{DateTime.UtcNow.Day}");
         Console.WriteLine($"> Assembly Version: {Assembly.GetExecutingAssembly().GetName().Version}");
         Console.WriteLine($"> Swagger: https://localhost:5000/swagger/index.html");
         Console.WriteLine("\n\n");
