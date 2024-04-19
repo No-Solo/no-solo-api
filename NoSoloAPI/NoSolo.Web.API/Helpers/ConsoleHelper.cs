@@ -1,7 +1,9 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
 namespace NoSolo.Web.API.Helpers;
 
+[ExcludeFromCodeCoverage]
 public static class ConsoleHelper
 {
     private static readonly DateTime StartedTime = DateTime.Now;

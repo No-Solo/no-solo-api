@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoSolo.Abstractions.Services.Utility;
 using NoSolo.Contracts.Dtos.FeedBack;
@@ -7,6 +8,7 @@ namespace NoSolo.Web.API.Controllers;
 
 [AllowAnonymous]
 [Route("api/feed-back")]
+[ExcludeFromCodeCoverage]
 public class FeedBackController : BaseApiController
 {
     private readonly IFeedBackService _feedBackService;

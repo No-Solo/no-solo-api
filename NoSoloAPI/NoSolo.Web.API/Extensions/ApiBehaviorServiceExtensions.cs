@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Mvc;
 using NoSolo.Web.API.Errors;
 
 namespace NoSolo.Web.API.Extensions;
 
+[ExcludeFromCodeCoverage]
 public static class ApiBehaviorServiceExtensions
 {
     public static IServiceCollection AddApiBehaviourServices(this IServiceCollection services)

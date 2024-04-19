@@ -1,8 +1,11 @@
-﻿namespace NoSolo.Web.API.Localization;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace NoSolo.Web.API.Localization;
+
+[ExcludeFromCodeCoverage]
 public static class Locale
 {
-    public static readonly string[] locales = new string[]
+    public static readonly string[] LOCALES = new string[]
     {
         "af-ZA",
         "am-ET",

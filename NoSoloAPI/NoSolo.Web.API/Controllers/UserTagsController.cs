@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoSolo.Abstractions.Services.Tags;
-using NoSolo.Abstractions.Services.Utility;
 using NoSolo.Abstractions.Services.Utility.Pagination;
 using NoSolo.Contracts.Dtos.Users.Tags;
 using NoSolo.Core.Specification.Users.UserTag;
@@ -11,6 +11,7 @@ namespace NoSolo.Web.API.Controllers;
 
 [AllowAnonymous]
 [Route("api/userEntity/tags")]
+[ExcludeFromCodeCoverage]
 public class UserTagsController : BaseApiController
 {
     private readonly IUserTagsService _userTagsService;

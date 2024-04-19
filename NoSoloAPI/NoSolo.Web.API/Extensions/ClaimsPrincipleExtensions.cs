@@ -1,7 +1,9 @@
-﻿using System.Security.Claims;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 
 namespace NoSolo.Web.API.Extensions;
 
+[ExcludeFromCodeCoverage]
 public static class ClaimsPrincipleExtensions
 {
     public static string GetUsername(this ClaimsPrincipal user)

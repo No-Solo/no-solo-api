@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 
 namespace NoSolo.Web.API.Extensions;
 
+[ExcludeFromCodeCoverage]
 public static class SwaggerServiceExtensions
 {
     public static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services)

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoSolo.Abstractions.Services.Contacts;
 using NoSolo.Abstractions.Services.Utility.Pagination;
@@ -12,6 +13,7 @@ namespace NoSolo.Web.API.Controllers;
 
 [AllowAnonymous]
 [Route("api/contacts")]
+[ExcludeFromCodeCoverage]
 public class ContactsController : BaseApiController
 {
     private readonly IUserContactService _userContactService;

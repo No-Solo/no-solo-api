@@ -1,9 +1,11 @@
-﻿using FluentValidation;
+﻿using System.Diagnostics.CodeAnalysis;
+using FluentValidation;
 using NoSolo.Contracts.Dtos.Auth;
 using NoSolo.Contracts.Validation;
 
 namespace NoSolo.Web.API.Middleware.Validation.Auth;
 
+[ExcludeFromCodeCoverage]
 public class RegisterDtoValidator : AbstractValidator<RegisterDto>
 {
     public RegisterDtoValidator()

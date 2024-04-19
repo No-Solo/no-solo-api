@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoSolo.Abstractions.Services.Auth;
 using NoSolo.Abstractions.Services.Users;
@@ -10,6 +11,7 @@ namespace NoSolo.Web.API.Controllers;
 
 [AllowAnonymous]
 [Route("api/auth")]
+[ExcludeFromCodeCoverage]
 public class AuthController : BaseApiController
 {
     private readonly IAuthService _authService;

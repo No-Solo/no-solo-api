@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoSolo.Abstractions.Services.Requests;
 using NoSolo.Contracts.Dtos.Organizations.Requests;
@@ -9,6 +10,7 @@ namespace NoSolo.Web.API.Controllers;
 
 [Authorize]
 [Route("api/requests")]
+[ExcludeFromCodeCoverage]
 public class RequestsController : BaseApiController
 {
     private readonly IUserRequestService _userRequestService;

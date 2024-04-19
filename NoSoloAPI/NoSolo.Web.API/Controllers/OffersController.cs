@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoSolo.Abstractions.Services.Offers;
 using NoSolo.Abstractions.Services.Utility.Pagination;
@@ -12,6 +13,7 @@ namespace NoSolo.Web.API.Controllers;
 
 [AllowAnonymous]
 [Route("api/offers")]
+[ExcludeFromCodeCoverage]
 public class OffersController : BaseApiController
 {
     private readonly IUserOfferService _userOfferService;

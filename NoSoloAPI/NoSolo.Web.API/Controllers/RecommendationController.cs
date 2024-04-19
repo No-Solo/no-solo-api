@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Mvc;
 using NoSolo.Abstractions.Services.Users;
 using NoSolo.Abstractions.Services.Utility;
 using NoSolo.Abstractions.Services.Utility.Pagination;
@@ -11,6 +12,8 @@ using NoSolo.Core.Specification.Users.UserOffer;
 
 namespace NoSolo.Web.API.Controllers;
 
+[ExcludeFromCodeCoverage]
+[Route("api/recommendations")]
 public class RecommendationController : BaseApiController
 {
     private readonly IRecommendService _recommendService;

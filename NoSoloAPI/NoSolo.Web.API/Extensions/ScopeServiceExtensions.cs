@@ -1,4 +1,5 @@
-﻿using NoSolo.Abstractions.Data.Data;
+﻿using System.Diagnostics.CodeAnalysis;
+using NoSolo.Abstractions.Data.Data;
 using NoSolo.Abstractions.Repositories.Auth;
 using NoSolo.Abstractions.Repositories.Base;
 using NoSolo.Abstractions.Repositories.FeedBack;
@@ -32,6 +33,7 @@ using NoSolo.Infrastructure.Services.Utility;
 
 namespace NoSolo.Web.API.Extensions;
 
+[ExcludeFromCodeCoverage]
 public static class ScopeServiceExtensions
 {
     public static IServiceCollection AddScopedServices(this IServiceCollection services)

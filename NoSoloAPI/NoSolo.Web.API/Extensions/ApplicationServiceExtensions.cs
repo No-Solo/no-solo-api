@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using NoSolo.Abstractions.Services.Email;
 using NoSolo.Infrastructure.Data.DbContext;
 using NoSolo.Infrastructure.Services.Email;
@@ -7,10 +8,9 @@ using NoSolo.Infrastructure.Services.Photos.Settings;
 
 namespace NoSolo.Web.API.Extensions;
 
+[ExcludeFromCodeCoverage]
 public static class ApplicationServiceExtensions
 {
-    private const string Secret = "this is my custom Secret key for authentication";
-
     public static IServiceCollection AddApplicationService(this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -46,13 +46,13 @@ public static class ApplicationServiceExtensions
         return services;
     }
 
-    public static IServiceCollection AddEmailService(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddEmailService(this IServiceCollection services, IConfiguration configuration)
     {
         var smtpSection = configuration.GetRequiredSection("Smtp");
         services.Configure<SmtpOptions>(options =>
         {
             smtpSection.Bind(options);
-            options.Password = configuration["SmtpPassword"];
+            options.Password = configuration["SmtpPassword"]!;
         });
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<INotificationService, EmailNotificationService>();

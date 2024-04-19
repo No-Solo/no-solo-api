@@ -1,7 +1,9 @@
-﻿using NoSolo.Abstractions.Services.Localization;
+﻿using System.Diagnostics.CodeAnalysis;
+using NoSolo.Abstractions.Services.Localization;
 
 namespace NoSolo.Web.API.Localization;
 
+[ExcludeFromCodeCoverage]
 public class LocalizationService : ILocalizationService
 {
     // private readonly DataBaseContext _context;
@@ -20,7 +22,7 @@ public class LocalizationService : ILocalizationService
     
     public LocalizationService()
     {
-        _locales = Locale.locales.ToList();
+        _locales = Locale.LOCALES.ToList();
         SetLocale(_defaultLocale);
     }
 
@@ -117,7 +119,7 @@ public class LocalizationService : ILocalizationService
         throw new NotImplementedException();
     }
 
-    public void SetLocale(string locale)
+    private void SetLocale(string locale)
     {
         if (Locales.Contains(locale))
             _currentLocale = locale;

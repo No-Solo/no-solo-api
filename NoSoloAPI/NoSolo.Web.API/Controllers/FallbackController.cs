@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Mvc;
 
 namespace NoSolo.Web.API.Controllers;
 
+[ExcludeFromCodeCoverage]
 public class FallbackController : Controller
 {
     public IActionResult Index()

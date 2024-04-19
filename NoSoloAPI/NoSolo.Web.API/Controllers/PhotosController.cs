@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoSolo.Abstractions.Services.Photos;
 using NoSolo.Abstractions.Services.Utility;
@@ -11,6 +12,7 @@ namespace NoSolo.Web.API.Controllers;
 
 [AllowAnonymous]
 [Route("api/photos")]
+[ExcludeFromCodeCoverage]
 public class PhotosController : BaseApiController
 {
     private readonly IUserPhotoService _userPhotoService;

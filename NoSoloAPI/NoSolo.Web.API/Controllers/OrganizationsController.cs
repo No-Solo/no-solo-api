@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoSolo.Abstractions.Services.Organizations;
 using NoSolo.Abstractions.Services.Utility;
@@ -12,6 +13,7 @@ namespace NoSolo.Web.API.Controllers;
 
 [Authorize]
 [Route("api/organizations")]
+[ExcludeFromCodeCoverage]
 public class OrganizationsController : BaseApiController
 {
     private readonly IOrganizationService _organizationService;
