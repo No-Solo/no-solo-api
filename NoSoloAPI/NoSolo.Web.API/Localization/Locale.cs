@@ -2,7 +2,7 @@
 
 public static class Locale
 {
-    public static string[] locales = new string[]
+    public static readonly string[] locales = new string[]
     {
         "af-ZA",
         "am-ET",

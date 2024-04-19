@@ -1,10 +1,8 @@
 ﻿using System.Reflection;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NoSolo.Core.Entities.Auth;
-using NoSolo.Core.Entities.FeedBack;
 using NoSolo.Core.Entities.Organization;
 using NoSolo.Core.Entities.User;
 
@@ -16,36 +14,36 @@ public class DataBaseContext : IdentityDbContext<UserEntity, UserRoleEntity, Gui
     {
     }
 
-    public DbSet<UserEntity> Users { get; set; }
-    public DbSet<RefreshToken> RefreshTokens { get; set; }
-    public DbSet<UserTagEntity> UserTags { get; set; }
-    public DbSet<UserOfferEntity> UserOffers { get; set; }
-    public DbSet<OrganizationEntity> Organizations { get; set; }
+    public new DbSet<UserEntity> Users { get; set; } = null!;
+    public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
+    public DbSet<UserTagEntity> UserTags { get; set; } = null!;
+    public DbSet<UserOfferEntity> UserOffers { get; set; } = null!;
+    public DbSet<OrganizationEntity> Organizations { get; set; } = null!;
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(builder);
 
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         // UserEntity
-        modelBuilder.Entity<UserEntity>()
+        builder.Entity<UserEntity>()
             .HasOne(e => e.Photo)
             .WithOne(e => e.User)
             .HasForeignKey<UserPhotoEntity>(e => e.UserGuid);
 
         if (Database.ProviderName == "Npgsql.EntityFrameworkCore.PostgreSQL")
-            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            foreach (var entityType in builder.Model.GetEntityTypes())
             {
                 var properties = entityType.ClrType.GetProperties().Where(p => p.PropertyType == typeof(decimal));
                 var dateTimeProperties = entityType.ClrType.GetProperties()
                     .Where(p => p.PropertyType == typeof(DateTimeOffset));
 
                 foreach (var property in properties)
-                    modelBuilder.Entity(entityType.Name).Property(property.Name).HasConversion<double>();
+                    builder.Entity(entityType.Name).Property(property.Name).HasConversion<double>();
 
                 foreach (var property in dateTimeProperties)
-                    modelBuilder.Entity(entityType.Name).Property(property.Name)
+                    builder.Entity(entityType.Name).Property(property.Name)
                         .HasConversion(new DateTimeOffsetToBinaryConverter());
             }
     }
