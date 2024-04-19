@@ -10,13 +10,10 @@ using Serilog.Formatting.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.ConfigureLogging(logging =>
-{
-    logging.AddSerilog(new LoggerConfiguration()
+builder.Logging.AddSerilog(new LoggerConfiguration()
         .Enrich.FromLogContext()
         .WriteTo.File(new JsonFormatter(), "Logs/log-Serilog-jsonFile.log")
         .CreateLogger());
-});
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
@@ -25,7 +22,7 @@ builder.Services
     .AddControllers(options => { options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true; })
     .AddNewtonsoftJson(options => { options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore; });
 
-builder.Services.AddAplicationService(builder.Configuration);
+builder.Services.AddApplicationService(builder.Configuration);
 
 var app = builder.Build();
 
