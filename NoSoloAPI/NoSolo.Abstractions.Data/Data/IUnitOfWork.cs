@@ -2,10 +2,9 @@
 
 namespace NoSolo.Abstractions.Data.Data;
 
-public interface IUnitOfWork : IDisposable
+public interface IUnitOfWork
 {
     IGenericRepository<TEntity> Repository<TEntity>() where TEntity : class;
     Task<bool> Complete();
     bool HasChanges();
-    new void Dispose();
 }
