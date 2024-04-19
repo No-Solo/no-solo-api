@@ -1,27 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NoSolo.Abstractions.Repositories.Base;
-using NoSolo.Abstractions.Services;
 using NoSolo.Core.Specification.BaseSpecification;
 using NoSolo.Infrastructure.Data.DbContext;
 using NoSolo.Infrastructure.Data.Specification;
 
 namespace NoSolo.Infrastructure.Repositories.Base;
 
-public class GenericRepository<T> : IGenericRepository<T> where T : class
+public class Repository<T> : IRepository<T> where T : class
 {
     private readonly DataBaseContext _dataBaseContext;
 
-    public GenericRepository(DataBaseContext dataBaseContext)
+    public Repository(DataBaseContext dataBaseContext)
     {
         _dataBaseContext = dataBaseContext;
     }
 
-    public async Task<T> GetByIdAsync(int id)
-    {
-        return await _dataBaseContext.Set<T>().FindAsync(id);
-    }
-
-    public async Task<T> GetByGuidAsync(Guid id)
+    public async Task<T?> GetByGuidAsync(Guid id)
     {
         return await _dataBaseContext.Set<T>().FindAsync(id);
     }
@@ -42,7 +36,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _dataBaseContext.Entry(entity).State = EntityState.Modified;
     }
 
-    public async Task<T> GetEntityWithSpec(ISpecification<T> spec)
+    public async Task<T?> GetEntityWithSpec(ISpecification<T> spec)
     {
         return await ApplySpecification(spec).FirstOrDefaultAsync();
     }

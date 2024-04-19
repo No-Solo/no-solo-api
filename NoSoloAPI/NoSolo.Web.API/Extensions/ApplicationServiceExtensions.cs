@@ -11,7 +11,7 @@ public static class ApplicationServiceExtensions
 {
     private const string Secret = "this is my custom Secret key for authentication";
 
-    public static IServiceCollection AddAplicationService(this IServiceCollection services,
+    public static IServiceCollection AddApplicationService(this IServiceCollection services,
         IConfiguration configuration)
     {
         services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));

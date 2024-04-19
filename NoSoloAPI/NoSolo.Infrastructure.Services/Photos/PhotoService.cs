@@ -17,12 +17,12 @@ public class PhotoService : IPhotoService
 {
     private readonly ICloudinaryService _cloudinaryService;
     private readonly IMapper _mapper;
-    private readonly IGenericRepository<OrganizationPhotoEntity> _organizationPhotoRepository;
-    private readonly IGenericRepository<UserPhotoEntity> _userPhotoRepository;
+    private readonly IRepository<OrganizationPhotoEntity> _organizationPhotoRepository;
+    private readonly IRepository<UserPhotoEntity> _userPhotoRepository;
 
     public PhotoService(ICloudinaryService cloudinaryService, IMapper mapper,
-        IGenericRepository<OrganizationPhotoEntity> organizationPhotoRepository,
-        IGenericRepository<UserPhotoEntity> userPhotoRepository)
+        IRepository<OrganizationPhotoEntity> organizationPhotoRepository,
+        IRepository<UserPhotoEntity> userPhotoRepository)
     {
         _cloudinaryService = cloudinaryService;
         _mapper = mapper;

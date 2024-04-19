@@ -142,7 +142,7 @@ public class UserCredentialsService : IUserCredentialsService
         return new UserAuthDto()
         {
             User = _mapper.Map<UserDto>(user),
-            Tokens =
+            Tokens = new TokensDto()
             {
                 AccessToken = await _tokenService.GenerateAccessToken(user),
                 RefreshToken = refreshToken.TokenHash,

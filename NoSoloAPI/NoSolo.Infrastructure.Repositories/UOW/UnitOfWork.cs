@@ -30,20 +30,20 @@ public class UnitOfWork : IUnitOfWork, IDisposable, IAsyncDisposable
     }
     
 
-    public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : class
+    public IRepository<TEntity> Repository<TEntity>() where TEntity : class
     {
         var type = typeof(TEntity).Name;
 
         if (!_repositories.ContainsKey(type))
         {
-            var repositoryType = typeof(GenericRepository<>);
+            var repositoryType = typeof(Repository<>);
             var repositoryInstance =
                 Activator.CreateInstance(repositoryType.MakeGenericType(typeof(TEntity)), _dataBaseContext);
 
             _repositories.Add(type, repositoryInstance);
         }
 
-        return (IGenericRepository<TEntity>)_repositories[type]!;
+        return (IRepository<TEntity>)_repositories[type]!;
     }
 
     public async Task<bool> Complete()

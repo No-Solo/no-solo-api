@@ -14,11 +14,11 @@ namespace NoSolo.Infrastructure.Services.Offers;
 
 public class OfferService : IOfferService
 {
-    private readonly IGenericRepository<OrganizationOfferEntity> _organizationOfferRepository;
-    private readonly IGenericRepository<UserOfferEntity> _userOfferRepository;
+    private readonly IRepository<OrganizationOfferEntity> _organizationOfferRepository;
+    private readonly IRepository<UserOfferEntity> _userOfferRepository;
     private readonly IMapper _mapper;
 
-    public OfferService(IGenericRepository<OrganizationOfferEntity> organizationOfferRepository, IGenericRepository<UserOfferEntity> userOfferRepository, IMapper mapper)
+    public OfferService(IRepository<OrganizationOfferEntity> organizationOfferRepository, IRepository<UserOfferEntity> userOfferRepository, IMapper mapper)
     {
         _organizationOfferRepository = organizationOfferRepository;
         _userOfferRepository = userOfferRepository;
