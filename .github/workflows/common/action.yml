@@ -1,5 +1,6 @@
 name: "Perform common steps"
 description: "Performs common steps over the workflows"
+
 runs:
     using: "composite"
     steps:

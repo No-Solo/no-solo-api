@@ -1,9 +1,10 @@
 name: "SonarCloud"
 description: "SonarCloud performs common steps over the workflows"
+
 runs:
     using: "composite"
     steps:
-        - name: Set up JDK 17
+      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: 17

@@ -29,7 +29,7 @@ jobs:
           fetch-depth: 0
 
       - name: Perform Common Steps
-        uses: common
+        uses: ./.github/workflows/common
 
       - name: Build Solution
         run: dotnet build -c Release NoSoloAPI
@@ -51,4 +51,4 @@ jobs:
     
     steps:
       - name: SonarCloud Common Steps
-        uses: sonar-cloud
+        uses: ./.github/workflows/sonar-cloud
