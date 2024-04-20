@@ -1,6 +1,12 @@
 name: "SonarCloud"
 description: "SonarCloud performs common steps over the workflows"
 
+env:
+  OTNET_NOLOGO: 1
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
 runs:
     using: "composite"
     steps:
@@ -9,11 +15,6 @@ runs:
         with:
           java-version: 17
           distribution: 'zulu'
-
-      - name: Checkout Code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
       - name: Cache SonarCloud Packages
         uses: actions/cache@v3
@@ -32,14 +33,17 @@ runs:
 
       - name: Install SonarCloud Scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: bash
         run: |
           mkdir -p ~/.sonar/scanner
           dotnet tool update dotnet-sonarscanner --tool-path ~/.sonar/scanner
 
       - name: Install JetBrains dotCover
+        shell: bash
         run: dotnet tool install --global JetBrains.dotCover.CommandLineTools --version 2023.3.0
 
       - name: Build and Analyze
+        shell: bash
         run: |
           ~/.sonar/scanner/dotnet-sonarscanner begin /k:"No-Solo_no-solo-api" /o:"no-solo" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"  /d:sonar.cs.dotcover.reportsPaths=dotCover.Output.html
           dotnet build NoSoloAPI
