@@ -13,10 +13,6 @@ on:
   schedule:
     - cron: '0 22 * * *'
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
 jobs:
   pre-check:
     if: ${{ github.triggering_actor != 'dependabot[bot]' }}
