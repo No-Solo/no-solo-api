@@ -5,6 +5,7 @@
       <img src="https://github.com/No-Solo/no-solo-api/blob/main/src/img/NS%20v1.jpg" width="150px"/>
     </td>
     <td valign="center" align="center">
+      <img valign="left" align="left" alt="SonarCloud" src="https://sonarcloud.io/images/project_badges/sonarcloud-black.svg">
       <img alt="Quality Gade" src="https://sonarcloud.io/api/project_badges/measure?project=No-Solo_no-solo-api&metric=alert_status">
       <img alt="Bugs" src="https://sonarcloud.io/api/project_badges/measure?project=No-Solo_no-solo-api&metric=bugs">
       <img alt="Code Smells" src="https://sonarcloud.io/api/project_badges/measure?project=No-Solo_no-solo-api&metric=code_smells">
