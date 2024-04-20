@@ -37,7 +37,7 @@ jobs:
 
       - name: 🛠 Build Solution 🛠
         shell: bash
-        run: dotnet build -c Release --no-restore NoSoloAPI
+        run: dotnet build -c Release NoSoloAPI
 
       - name: ✅ Run Unit Tests ✅
         shell: bash
