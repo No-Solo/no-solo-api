@@ -13,6 +13,10 @@ on:
   schedule:
     - cron: '0 22 * * *'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   pre-check:
     if: ${{ github.triggering_actor != 'dependabot[bot]' }}
@@ -23,20 +27,21 @@ jobs:
       NUGET_PACKAGES: ${{ github.workspace }}/.github/nuget-packages
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      - name: 📝 Fetch Sources 📝
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Perform Common Steps
+      - name: 💡 Perform Common Steps 💡
         uses: ./.github/workflows/common
 
-      - name: Build Solution
-        run: dotnet build -c Release NoSoloAPI
-
-      - name: Run Unit Tests
+      - name: 🛠 Build Solution 🛠
         shell: bash
-        run: dotnet test NoSoloAPI
+        run: dotnet build -c Release --no-restore NoSoloAPI
+
+      - name: ✅ Run Unit Tests ✅
+        shell: bash
+        run: dotnet test
         
   sonarcloud_analysis:
     runs-on: ubuntu-latest

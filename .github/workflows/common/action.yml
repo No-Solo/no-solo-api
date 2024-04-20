@@ -4,17 +4,17 @@ description: "Performs common steps over the workflows"
 runs:
     using: "composite"
     steps:
-        - name: Setup .NET SDK
+        - name: ⚙ Setup .NET SDK ⚙
           uses: actions/setup-dotnet@v3
           with:
             dotnet-version: 7.0.x
 
-        - name: NuGet Cache
+        - name: ♻ NuGet Cache ♻
           uses: actions/cache@v3
           with:
               path: ${{ env.NUGET_PACKAGES }}
               key: ${{ runner.os }}.nuget.${{ hashFiles('**/*.csproj') }}
 
-        - name: Restore Nuget Packages
+        - name: 🔄 Restore Nuget Packages 🔄
           shell: bash
           run: dotnet restore NoSoloAPI
