@@ -63,7 +63,7 @@ jobs:
           distribution: 'zulu'
 
       - name: Cache SonarCloud Packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
@@ -71,7 +71,7 @@ jobs:
 
       - name: Cache SonarCloud Scanner
         id: cache-sonar-scanner
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.sonar/scanner
           key: ${{ runner.os }}-sonar-scanner
