@@ -12,6 +12,8 @@ updates:
       separator: "-"
     reviewers:
       - "sqvlen"
+    open-pull-requests-limit: 50
+    target-branch: main
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
