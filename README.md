@@ -2,7 +2,7 @@
 <table width="100%" border="0">
   <tr>
     <td valign="center">
-      <img src="https://github.com/No-Solo/no-solo-api/blob/main/src/img/NS%20v1.jpg" width="170px"/>
+      <img src="https://github.com/No-Solo/no-solo-api/blob/main/src/img/NS%20v1.jpg" width="120px"/>
     </td>
     <td valign="center" align="center">
       <img valign="left" align="left" alt="SonarCloud" src="https://sonarcloud.io/images/project_badges/sonarcloud-black.svg">
