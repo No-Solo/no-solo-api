@@ -1,0 +1,49 @@
+name: "SonarCloud"
+description: "SonarCloud performs common steps over the workflows"
+runs:
+    using: "composite"
+    steps:
+    - name: 🚀 Set up JDK 17 🚀
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17
+        distribution: 'zulu'
+
+    - name: 📥 Checkout Code 📥
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+    - name: 📦 Cache SonarCloud Packages 📦
+      uses: actions/cache@v3
+      with:
+        path: ~/.sonar/cache
+        key: ${{ runner.os }}-sonar
+        restore-keys: ${{ runner.os }}-sonar
+
+    - name: 🗃️ Cache SonarCloud Scanner 🗃️
+      id: cache-sonar-scanner
+      uses: actions/cache@v3
+      with:
+        path: ~/.sonar/scanner
+        key: ${{ runner.os }}-sonar-scanner
+        restore-keys: ${{ runner.os }}-sonar-scanner
+
+    - name: 🔧 Install SonarCloud Scanner 🔧
+      if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+      run: |
+        mkdir -p ~/.sonar/scanner
+        dotnet tool update dotnet-sonarscanner --tool-path ~/.sonar/scanner
+
+    - name: 🔧 Install JetBrains dotCover 🔧
+      run: dotnet tool install --global JetBrains.dotCover.CommandLineTools --version 2023.3.0
+
+    - name: 🏗️  Build and Analyze 🏗️ 
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: |
+        ~/.sonar/scanner/dotnet-sonarscanner begin /k:"No-Solo_no-solo-api" /o:"no-solo" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"  /d:sonar.cs.dotcover.reportsPaths=dotCover.Output.html
+        dotnet build NoSoloAPI
+        dotnet-dotCover cover-dotnet --AttributeFilters="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" --Filters="-:*.Tests" --Output=dotCover.Output.html --ReportType=HTML -- test "NoSoloAPI"
+        ~/.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
