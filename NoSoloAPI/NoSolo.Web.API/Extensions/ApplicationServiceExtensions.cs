@@ -31,7 +31,7 @@ public static class ApplicationServiceExtensions
                 x => x.MigrationsAssembly("NoSolo.Infrastructure.Data"));
         });
 
-        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        // services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         services.AddApiBehaviourServices();
 
@@ -46,7 +46,7 @@ public static class ApplicationServiceExtensions
         return services;
     }
 
-    private static IServiceCollection AddEmailService(this IServiceCollection services, IConfiguration configuration)
+    private static void AddEmailService(this IServiceCollection services, IConfiguration configuration)
     {
         var smtpSection = configuration.GetRequiredSection("Smtp");
         services.Configure<SmtpOptions>(options =>
@@ -57,7 +57,5 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<INotificationService, EmailNotificationService>();
         services.AddScoped<IEmailTokenService, EmailTokenService>();
-
-        return services;
     }
 }
