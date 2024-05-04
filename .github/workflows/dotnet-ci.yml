@@ -51,8 +51,14 @@ jobs:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     
     steps:
+      - name: 📥 Checkout Code 📥
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
       - name: 💡 SonarCloud Common Steps 💡
         uses: ./.github/workflows/sonar-cloud
+        
   qodana_analysis:
     runs-on: ubuntu-latest
 
