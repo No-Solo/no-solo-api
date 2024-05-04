@@ -31,7 +31,7 @@ public static class ApplicationServiceExtensions
                 x => x.MigrationsAssembly("NoSolo.Infrastructure.Data"));
         });
 
-        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        // services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         services.AddApiBehaviourServices();
 
