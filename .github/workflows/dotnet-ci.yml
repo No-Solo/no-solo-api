@@ -51,8 +51,14 @@ jobs:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     
     steps:
+      - name: 📝 Fetch Sources 📝
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: 💡 SonarCloud Common Steps 💡
         uses: ./.github/workflows/sonar-cloud
+
   qodana_analysis:
     runs-on: ubuntu-latest
 
@@ -62,5 +68,10 @@ jobs:
       pull-requests: write
       checks: write
     steps:
+      - name: 📝 Fetch Sources 📝
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: 💡 Qodana Common Steps 💡
         uses: ./.github/workflows/qodana
