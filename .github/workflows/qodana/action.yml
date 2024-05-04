@@ -3,8 +3,6 @@ description: "Qodana performs common steps over the workflows"
 
 runs:
     using: "composite"
-    env:
-      QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
     steps:
       - uses: actions/checkout@v3
         with:
