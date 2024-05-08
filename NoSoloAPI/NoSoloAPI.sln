@@ -18,7 +18,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSolo.Infrastructure.Repos
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSolo.Contracts", "NoSolo.Contracts\NoSolo.Contracts.csproj", "{F57DCF42-70E5-4EC4-B938-B03221B72908}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSoloAPI.Tests", "NoSoloAPI.Tests\NoSoloAPI.Tests.csproj", "{C5ED406C-C442-4ECC-A785-8B71951C5535}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSolo.Tests", "NoSolo.Tests\NoSolo.Tests.csproj", "{C5ED406C-C442-4ECC-A785-8B71951C5535}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSolo.Worker", "NoSolo.Worker\NoSolo.Worker.csproj", "{70E0CC74-FDFD-4AD3-A96F-69A7911763FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,6 +68,10 @@ Global
 		{C5ED406C-C442-4ECC-A785-8B71951C5535}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5ED406C-C442-4ECC-A785-8B71951C5535}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5ED406C-C442-4ECC-A785-8B71951C5535}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70E0CC74-FDFD-4AD3-A96F-69A7911763FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70E0CC74-FDFD-4AD3-A96F-69A7911763FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70E0CC74-FDFD-4AD3-A96F-69A7911763FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70E0CC74-FDFD-4AD3-A96F-69A7911763FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
