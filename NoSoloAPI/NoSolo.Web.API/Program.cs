@@ -24,6 +24,8 @@ builder.Services
 
 builder.Services.AddApplicationService(builder.Configuration);
 
+builder.Services.AddNoSoloServices(builder.Configuration);
+
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
