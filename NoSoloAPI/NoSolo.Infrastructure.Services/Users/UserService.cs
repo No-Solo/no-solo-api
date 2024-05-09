@@ -9,17 +9,8 @@ using NoSolo.Core.Specification.Users.Users;
 
 namespace NoSolo.Infrastructure.Services.Users;
 
-public class UserService : IUserService
+public class UserService(IRepository<UserEntity> userRepository, IMapper mapper) : IUserService
 {
-    private readonly IRepository<UserEntity> _userRepository;
-    private readonly IMapper _mapper;
-
-    public UserService(IRepository<UserEntity> userRepository, IMapper mapper)
-    {
-        _userRepository = userRepository;
-        _mapper = mapper;
-    }
-
     public async Task<UserDto> Get(string email)
     {
         var user = await GetUser(email, new List<UserInclude>()
@@ -28,7 +19,7 @@ public class UserService : IUserService
             UserInclude.Requests, UserInclude.Tags
         });
 
-        return _mapper.Map<UserDto>(user);
+        return mapper.Map<UserDto>(user);
     }
 
     public async Task<UserEntity> GetUser(string email, List<UserInclude> includes)
@@ -62,17 +53,17 @@ public class UserService : IUserService
                 UserInclude.Requests, UserInclude.Tags
             });
 
-        _mapper.Map(updateUserDto, user);
-        _userRepository.Save();
+        mapper.Map(updateUserDto, user);
+        userRepository.Save();
 
-        return _mapper.Map<UserDto>(user);
+        return mapper.Map<UserDto>(user);
     }
 
     private async Task<UserEntity> GetUserBySpecification(UserParams userParams)
     {
         var spec = new UserWithSpecificationParams(userParams);
 
-        var user = await _userRepository.GetEntityWithSpec(spec);
+        var user = await userRepository.GetEntityWithSpec(spec);
         if (user is null)
             throw new EntityNotFound("The userEntity is not found");
 

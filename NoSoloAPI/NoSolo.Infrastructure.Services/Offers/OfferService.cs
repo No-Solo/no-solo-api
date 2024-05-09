@@ -12,19 +12,12 @@ using NoSolo.Core.Specification.Users.UserOffer;
 
 namespace NoSolo.Infrastructure.Services.Offers;
 
-public class OfferService : IOfferService
+public class OfferService(
+    IRepository<OrganizationOfferEntity> organizationOfferRepository,
+    IRepository<UserOfferEntity> userOfferRepository,
+    IMapper mapper)
+    : IOfferService
 {
-    private readonly IRepository<OrganizationOfferEntity> _organizationOfferRepository;
-    private readonly IRepository<UserOfferEntity> _userOfferRepository;
-    private readonly IMapper _mapper;
-
-    public OfferService(IRepository<OrganizationOfferEntity> organizationOfferRepository, IRepository<UserOfferEntity> userOfferRepository, IMapper mapper)
-    {
-        _organizationOfferRepository = organizationOfferRepository;
-        _userOfferRepository = userOfferRepository;
-        _mapper = mapper;
-    }
-    
     public async Task<OrganizationOfferDto> Add(OrganizationEntity organizationEntity, NewOrganizationOfferDto organizationOfferDto)
     {
         var organizationOffer = new OrganizationOfferEntity
@@ -36,10 +29,10 @@ public class OfferService : IOfferService
             OrganizationId = organizationEntity.Id
         };
 
-        _organizationOfferRepository.AddAsync(organizationOffer);
-        _organizationOfferRepository.Save();
+        organizationOfferRepository.AddAsync(organizationOffer);
+        organizationOfferRepository.Save();
 
-        return _mapper.Map<OrganizationOfferDto>(organizationOffer);
+        return mapper.Map<OrganizationOfferDto>(organizationOffer);
     }
 
     public async Task<UserOfferDto> Add(UserEntity userEntity, NewUserOfferDto userOfferDto)
@@ -53,10 +46,10 @@ public class OfferService : IOfferService
             UserGuid = userEntity.Id
         };
         
-        _userOfferRepository.AddAsync(userOffer);
-        _userOfferRepository.Save();
+        userOfferRepository.AddAsync(userOffer);
+        userOfferRepository.Save();
 
-        return _mapper.Map<UserOfferDto>(userOffer);
+        return mapper.Map<UserOfferDto>(userOffer);
     }
 
     public async Task<Pagination<OrganizationOfferDto>> Get(OrganizationOfferParams organizationOfferParams)
@@ -65,11 +58,11 @@ public class OfferService : IOfferService
 
         var countSpec = new OrganizationOfferWithFiltersForCountSpecification(organizationOfferParams);
 
-        var totalItems = await _organizationOfferRepository.CountAsync(countSpec);
+        var totalItems = await organizationOfferRepository.CountAsync(countSpec);
 
-        var organizationOffers = await _organizationOfferRepository.ListAsync(spec);
+        var organizationOffers = await organizationOfferRepository.ListAsync(spec);
 
-        var data = _mapper
+        var data = mapper
             .Map<IReadOnlyList<OrganizationOfferEntity>, IReadOnlyList<OrganizationOfferDto>>(organizationOffers);
 
         return new Pagination<OrganizationOfferDto>(organizationOfferParams.PageNumber,
@@ -82,11 +75,11 @@ public class OfferService : IOfferService
 
         var countSpec = new UserOfferWithFiltersForCountSpecification(userOfferParams);
 
-        var totalItems = await _userOfferRepository.CountAsync(countSpec);
+        var totalItems = await userOfferRepository.CountAsync(countSpec);
 
-        var userOffers = await _userOfferRepository.ListAsync(spec);
+        var userOffers = await userOfferRepository.ListAsync(spec);
 
-        var data = _mapper
+        var data = mapper
             .Map<IReadOnlyList<UserOfferEntity>, IReadOnlyList<UserOfferDto>>(userOffers);
 
         return new Pagination<UserOfferDto>(userOfferParams.PageNumber, userOfferParams.PageSize, totalItems, data);
@@ -94,12 +87,12 @@ public class OfferService : IOfferService
 
     public async Task<OrganizationOfferDto> GetOrganizationOfferDto(Guid offerGuid)
     {
-        return _mapper.Map<OrganizationOfferDto>(await _organizationOfferRepository.GetByGuidAsync(offerGuid));
+        return mapper.Map<OrganizationOfferDto>(await organizationOfferRepository.GetByGuidAsync(offerGuid));
     }
 
     public async Task<UserOfferDto> GetUserOfferDto(Guid offerGuid)
     {
-        return _mapper.Map<UserOfferDto>(await _userOfferRepository.GetByGuidAsync(offerGuid));
+        return mapper.Map<UserOfferDto>(await userOfferRepository.GetByGuidAsync(offerGuid));
     }
 
     public async Task<OrganizationOfferEntity> Get(OrganizationEntity organizationEntity, Guid offerGuid)
@@ -124,35 +117,35 @@ public class OfferService : IOfferService
     {
         var offer = await Get(organizationEntity, organizationOfferDto.Id);
         
-        _mapper.Map(organizationOfferDto, offer);
-        _organizationOfferRepository.Save();
+        mapper.Map(organizationOfferDto, offer);
+        organizationOfferRepository.Save();
         
-        return _mapper.Map<OrganizationOfferDto>(offer);
+        return mapper.Map<OrganizationOfferDto>(offer);
     }
 
     public async Task<UserOfferDto> Update(UserEntity userEntity, UserOfferDto userOfferDto)
     {
         var offer = await Get(userEntity, userOfferDto.Id);
         
-        _mapper.Map(userOfferDto, offer);
-        _userOfferRepository.Save();
+        mapper.Map(userOfferDto, offer);
+        userOfferRepository.Save();
         
-        return _mapper.Map<UserOfferDto>(offer);
+        return mapper.Map<UserOfferDto>(offer);
     }
 
     public async Task Delete(OrganizationEntity organizationEntity, Guid offerGuid)
     {
         var offer = await Get(organizationEntity, offerGuid);
         
-        _organizationOfferRepository.Delete(offer);
-        _organizationOfferRepository.Save();
+        organizationOfferRepository.Delete(offer);
+        organizationOfferRepository.Save();
     }
 
     public async Task Delete(UserEntity userEntity, Guid offerGuid)
     {
         var offer = await Get(userEntity, offerGuid);
         
-        _userOfferRepository.Delete(offer);
-        _userOfferRepository.Save();
+        userOfferRepository.Delete(offer);
+        userOfferRepository.Save();
     }
 }

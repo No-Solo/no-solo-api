@@ -5,29 +5,21 @@ using NoSolo.Core.Entities.User;
 
 namespace NoSolo.Infrastructure.Services.Auth;
 
-public class RefreshTokenService : IRefreshTokenService
+public class RefreshTokenService(ITokenService tokenService, IRepository<RefreshToken> refreshTokenRepository)
+    : IRefreshTokenService
 {
-    private readonly ITokenService _tokenService;
-    private readonly IRepository<RefreshToken> _refreshTokenRepository;
-
-    public RefreshTokenService(ITokenService tokenService, IRepository<RefreshToken> refreshTokenRepository)
-    {
-        _tokenService = tokenService;
-        _refreshTokenRepository = refreshTokenRepository;
-    }
-    
     public async Task<RefreshToken> GenerateRefreshToken(UserEntity userEntity)
     {
         var refreshToken = new RefreshToken
         {
-            TokenHash = await _tokenService.GenerateRefreshToken(),
+            TokenHash = await tokenService.GenerateRefreshToken(),
             CreatedDate = DateTime.UtcNow,
             ExpiryDate = DateTime.UtcNow.AddDays(30),
             UserEntity = userEntity
         };
 
-        _refreshTokenRepository.AddAsync(refreshToken);
-        _refreshTokenRepository.Save();
+        refreshTokenRepository.AddAsync(refreshToken);
+        refreshTokenRepository.Save();
 
         return refreshToken;
     }

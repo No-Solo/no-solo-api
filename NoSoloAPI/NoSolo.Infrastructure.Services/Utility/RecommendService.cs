@@ -13,24 +13,15 @@ using NoSolo.Core.Specification.Users.UserOffer;
 
 namespace NoSolo.Infrastructure.Services.Utility;
 
-public class RecommendService : IRecommendService
+public class RecommendService(IUnitOfWork unitOfWork, IMapper mapper) : IRecommendService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-
-    public RecommendService(IUnitOfWork unitOfWork, IMapper mapper)
-    {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
-
     public async Task<Pagination<UserOfferDto>> RecommendUsersForOrganizationOfferByTags(
         UserOfferParams userOfferParams)
     {
         if (userOfferParams.Tags is null)
             return null!;
 
-        var usersOffers = await _unitOfWork.Repository<UserOfferEntity>().ListAllAsync();
+        var usersOffers = await unitOfWork.Repository<UserOfferEntity>().ListAllAsync();
 
         var targetOffers = new List<UserOfferEntity>();
 
@@ -48,7 +39,7 @@ public class RecommendService : IRecommendService
                 targetOffers.Add(offer);
         }
 
-        var data = _mapper.Map<IReadOnlyList<UserOfferEntity>, IReadOnlyList<UserOfferDto>>(targetOffers);
+        var data = mapper.Map<IReadOnlyList<UserOfferEntity>, IReadOnlyList<UserOfferDto>>(targetOffers);
 
         return new Pagination<UserOfferDto>(userOfferParams.PageNumber, userOfferParams.PageSize, targetOffers.Count,
             data);
@@ -60,7 +51,7 @@ public class RecommendService : IRecommendService
         if (organizationOfferParams.Tags is null)
             return null!;
 
-        var organizationsOffers = await _unitOfWork.Repository<OrganizationOfferEntity>().ListAllAsync();
+        var organizationsOffers = await unitOfWork.Repository<OrganizationOfferEntity>().ListAllAsync();
 
         var targetOffers = new List<OrganizationOfferEntity>();
 
@@ -78,7 +69,7 @@ public class RecommendService : IRecommendService
                 targetOffers.Add(offer);
         }
 
-        var data = _mapper.Map<IReadOnlyList<OrganizationOfferEntity>, IReadOnlyList<OrganizationOfferDto>>(targetOffers);
+        var data = mapper.Map<IReadOnlyList<OrganizationOfferEntity>, IReadOnlyList<OrganizationOfferDto>>(targetOffers);
 
         return new Pagination<OrganizationOfferDto>(organizationOfferParams.PageNumber,
             organizationOfferParams.PageSize, targetOffers.Count,
