@@ -5,14 +5,8 @@ using NoSolo.Abstractions.Services.Utility;
 
 namespace NoSolo.Web.API.Helpers;
 
-public class CachedAttribute : Attribute, IAsyncActionFilter
+public class CachedAttribute(int timeToLiveSeconds) : Attribute, IAsyncActionFilter
 {
-    private readonly int _timeToLiveSeconds;
-    public CachedAttribute(int timeToLiveSeconds)
-    {
-        _timeToLiveSeconds = timeToLiveSeconds;
-    }
-
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         var cacheService = context.HttpContext.RequestServices.GetRequiredService<IResponseCacheService>();
@@ -37,7 +31,7 @@ public class CachedAttribute : Attribute, IAsyncActionFilter
 
         if (executedContext.Result is OkObjectResult okObjectResult)
         {
-            await cacheService.CacheResponseAsync(cacheKey, okObjectResult.Value, TimeSpan.FromSeconds(_timeToLiveSeconds));
+            await cacheService.CacheResponseAsync(cacheKey, okObjectResult.Value, TimeSpan.FromSeconds(timeToLiveSeconds));
         }
     }
 

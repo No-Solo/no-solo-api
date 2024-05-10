@@ -12,15 +12,8 @@ namespace NoSolo.Web.API.Controllers;
 [AllowAnonymous]
 [Route("api/userEntity/tags")]
 [ExcludeFromCodeCoverage]
-public class UserTagsController : BaseApiController
+public class UserTagsController(IUserTagsService userTagsService) : BaseApiController
 {
-    private readonly IUserTagsService _userTagsService;
-
-    public UserTagsController(IUserTagsService userTagsService)
-    {
-        _userTagsService = userTagsService;
-    }
-
     [Authorize]
     [HttpGet("my")]
     public async Task<Pagination<UserTagDto>> GetAllUserProfileTags(
@@ -28,7 +21,7 @@ public class UserTagsController : BaseApiController
     {
         userTagParams.UserGuid = User.GetUserId();
 
-        return await _userTagsService.Get(userTagParams);
+        return await userTagsService.Get(userTagParams);
     }
 
     [HttpGet("userEntity/{userGuid:guid}")]
@@ -37,40 +30,40 @@ public class UserTagsController : BaseApiController
     {
         userTagParams.UserGuid = userGuid;
 
-        return await _userTagsService.Get(userTagParams);
+        return await userTagsService.Get(userTagParams);
     }
     
     [HttpGet("{userTagGuid:guid}")]
     public async Task<UserTagDto> GetUserProfileTagByGuid(Guid userTagGuid)
     {
-        return await _userTagsService.Get(userTagGuid);
+        return await userTagsService.Get(userTagGuid);
     }
 
     [Authorize]
     [HttpPost("add")]
     public async Task<UserTagDto> AddTagToUserProfile([FromBody] NewUserTagDto userTagDto)
     {
-        return await _userTagsService.Add(userTagDto, User.GetEmail());
+        return await userTagsService.Add(userTagDto, User.GetEmail());
     }
 
     [Authorize]
     [HttpPut("update")]
     public async Task<UserTagDto> UpdateTag([FromBody] UpdateUserTagDto userTagDto)
     {
-        return await _userTagsService.Update(userTagDto, User.GetEmail());
+        return await userTagsService.Update(userTagDto, User.GetEmail());
     }
 
     [Authorize]
     [HttpDelete("delete/{userTagGuid:guid}")]
     public async Task DeleteTagFromUserProfile(Guid userTagGuid)
     {
-        await _userTagsService.Delete(userTagGuid, User.GetEmail());
+        await userTagsService.Delete(userTagGuid, User.GetEmail());
     }
 
     [Authorize]
     [HttpPost("change-active/{userTagGuid:guid}")]
     public async Task<UserTagDto> ChangeActiveTask(Guid userTagGuid)
     {
-        return await _userTagsService.ChangeActiveTask(userTagGuid, User.GetEmail());
+        return await userTagsService.ChangeActiveTask(userTagGuid, User.GetEmail());
     }
 }

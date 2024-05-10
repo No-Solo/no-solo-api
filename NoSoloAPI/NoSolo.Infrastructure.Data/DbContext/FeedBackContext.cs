@@ -2,12 +2,8 @@
 
 namespace NoSolo.Infrastructure.Data.DbContext;
 
-public class FeedBackContext : Microsoft.EntityFrameworkCore.DbContext
+public class FeedBackContext(DbContextOptions<FeedBackContext> options)
+    : Microsoft.EntityFrameworkCore.DbContext(options)
 {
-    public FeedBackContext(DbContextOptions<FeedBackContext> options) : base(options)
-    {
-        
-    }
-    
     public DbSet<Core.Entities.FeedBack.FeedBackEntity> FeedBacks { get; set; }
 }

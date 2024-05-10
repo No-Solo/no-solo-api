@@ -14,63 +14,55 @@ using NoSolo.Core.Specification.Organization.OrganizationPhotoParams;
 
 namespace NoSolo.Infrastructure.Services.Photos;
 
-public class OrganizationPhotoService : IOrganizationPhotoService
+public class OrganizationPhotoService(
+    IPhotoService photoService,
+    IOrganizationService organizationService,
+    IMemberService memberService)
+    : IOrganizationPhotoService
 {
-    private readonly IPhotoService _photoService;
-    private readonly IOrganizationService _organizationService;
-    private readonly IMemberService _memberService;
-
-    public OrganizationPhotoService(IPhotoService photoService,
-        IOrganizationService organizationService, IMemberService memberService)
-    {
-        _photoService = photoService;
-        _organizationService = organizationService;
-        _memberService = memberService;
-    }
-
     public async Task<OrganizationPhotoDto> Add(IFormFile file, Guid organizationGuid, string email)
     {
-        var organization = await _organizationService.Get(organizationGuid, OrganizationIncludeEnum.Photos);
+        var organization = await organizationService.Get(organizationGuid, OrganizationIncludeEnum.Photos);
 
-        if (!await _memberService.MemberHasRoles(new List<RoleEnum>() { RoleEnum.Administrator, RoleEnum.Owner },
+        if (!await memberService.MemberHasRoles(new List<RoleEnum>() { RoleEnum.Administrator, RoleEnum.Owner },
                 organizationGuid, email))
             throw new NotAccessException();
 
-        return await _photoService.Add(organization, file);
+        return await photoService.Add(organization, file);
     }
 
     public async Task<OrganizationPhotoDto> GetMain(Guid organizationGuid)
     {
-        var organization = await _organizationService.Get(organizationGuid, OrganizationIncludeEnum.Photos);
+        var organization = await organizationService.Get(organizationGuid, OrganizationIncludeEnum.Photos);
 
-        return await _photoService.GetMainDto(organization);
+        return await photoService.GetMainDto(organization);
     }
 
     public async Task<Pagination<OrganizationPhotoDto>> GetAll(Guid organizationGuid)
     {
         var organizationPhotoParams = new OrganizationPhotoParams() { OrganizationGuid = organizationGuid };
 
-        return await _photoService.Get(organizationPhotoParams);
+        return await photoService.Get(organizationPhotoParams);
     }
 
     public async Task<OrganizationPhotoDto> SetMainPhoto(Guid photoGuid, Guid organizationGuid, string email)
     {
-        var organization = await _organizationService.Get(organizationGuid, OrganizationIncludeEnum.Photos);
+        var organization = await organizationService.Get(organizationGuid, OrganizationIncludeEnum.Photos);
 
-        if (!await _memberService.MemberHasRoles(new List<RoleEnum>() { RoleEnum.Owner }, organizationGuid, email))
+        if (!await memberService.MemberHasRoles(new List<RoleEnum>() { RoleEnum.Owner }, organizationGuid, email))
             throw new NotAccessException();
 
-        return await _photoService.SetMainPhoto(organization, photoGuid);
+        return await photoService.SetMainPhoto(organization, photoGuid);
     }
 
     public async Task Delete(Guid photoGuid, Guid organizationGuid, string email)
     {
-        var organization = await _organizationService.Get(organizationGuid, OrganizationIncludeEnum.Photos);
+        var organization = await organizationService.Get(organizationGuid, OrganizationIncludeEnum.Photos);
 
-        if (!await _memberService.MemberHasRoles(new List<RoleEnum>() { RoleEnum.Owner, RoleEnum.Administrator },
+        if (!await memberService.MemberHasRoles(new List<RoleEnum>() { RoleEnum.Owner, RoleEnum.Administrator },
                 organizationGuid, email))
             throw new NotAccessException();
 
-        await _photoService.Delete(organization, photoGuid);
+        await photoService.Delete(organization, photoGuid);
     }
 }

@@ -4,13 +4,9 @@ using StackExchange.Redis;
 
 namespace NoSolo.Infrastructure.Services.Utility;
 
-public class ResponseCacheService : IResponseCacheService
+public class ResponseCacheService(IConnectionMultiplexer redis) : IResponseCacheService
 {
-    private readonly IDatabase _database;
-    public ResponseCacheService(IConnectionMultiplexer redis)
-    {
-        _database = redis.GetDatabase();
-    }
+    private readonly IDatabase _database = redis.GetDatabase();
 
     public async Task CacheResponseAsync(string cacheKey, object response, TimeSpan timeToLive)
     {

@@ -13,20 +13,12 @@ using NoSolo.Core.Specification.Users.UserContact;
 
 namespace NoSolo.Infrastructure.Services.Contacts;
 
-public class ContactService : IContactService
+public class ContactService(
+    IRepository<ContactEntity<OrganizationEntity>> organizationContactRepository,
+    IRepository<ContactEntity<UserEntity>> userContactRepository,
+    IMapper mapper)
+    : IContactService
 {
-    private readonly IRepository<ContactEntity<OrganizationEntity>> _organizationContactRepository;
-    private readonly IRepository<ContactEntity<UserEntity>> _userContactRepository;
-    private readonly IMapper _mapper;
-
-    public ContactService(IRepository<ContactEntity<OrganizationEntity>> organizationContactRepository,
-        IRepository<ContactEntity<UserEntity>> userContactRepository, IMapper mapper)
-    {
-        _organizationContactRepository = organizationContactRepository;
-        _userContactRepository = userContactRepository;
-        _mapper = mapper;
-    }
-
     public ContactDto Add(OrganizationEntity organizationEntity, NewContactDto contactDto)
     {
         var contact = new ContactEntity<OrganizationEntity>
@@ -38,11 +30,11 @@ public class ContactService : IContactService
             TEntityId = organizationEntity.Id
         };
 
-        _organizationContactRepository.AddAsync(contact);
+        organizationContactRepository.AddAsync(contact);
 
-        _organizationContactRepository.Save();
+        organizationContactRepository.Save();
 
-        return _mapper.Map<ContactDto>(contact);
+        return mapper.Map<ContactDto>(contact);
     }
 
     public ContactDto Add(UserEntity userEntity, NewContactDto contactDto)
@@ -56,10 +48,10 @@ public class ContactService : IContactService
             TEntityId = userEntity.Id
         };
 
-        _userContactRepository.AddAsync(contact);
-        _userContactRepository.Save();
+        userContactRepository.AddAsync(contact);
+        userContactRepository.Save();
 
-        return _mapper.Map<ContactDto>(contact);
+        return mapper.Map<ContactDto>(contact);
     }
 
     public ContactEntity<OrganizationEntity> Get(OrganizationEntity organizationEntity, Guid contactGuid)
@@ -73,7 +65,7 @@ public class ContactService : IContactService
 
     public ContactDto GetDto(OrganizationEntity organizationEntity, Guid contactGuid)
     {
-        return _mapper.Map<ContactDto>(Get(organizationEntity, contactGuid));
+        return mapper.Map<ContactDto>(Get(organizationEntity, contactGuid));
     }
 
     public async Task<Pagination<ContactDto>> Get(OrganizationContactParams organizationContactParams)
@@ -82,11 +74,11 @@ public class ContactService : IContactService
 
         var countSpec = new OrganizationContactWithFiltersForCountSpecification(organizationContactParams);
 
-        var totalItems = await _organizationContactRepository.CountAsync(countSpec);
+        var totalItems = await organizationContactRepository.CountAsync(countSpec);
 
-        var organizationContacts = await _organizationContactRepository.ListAsync(spec);
+        var organizationContacts = await organizationContactRepository.ListAsync(spec);
 
-        var data = _mapper
+        var data = mapper
             .Map<IReadOnlyList<ContactEntity<OrganizationEntity>>, IReadOnlyList<ContactDto>>(organizationContacts);
 
         return new Pagination<ContactDto>(organizationContactParams.PageNumber, organizationContactParams.PageSize,
@@ -99,11 +91,11 @@ public class ContactService : IContactService
 
         var countSpec = new UserContactWithFiltersForCountSpecification(userContactParams);
 
-        var totalItems = await _userContactRepository.CountAsync(countSpec);
+        var totalItems = await userContactRepository.CountAsync(countSpec);
 
-        var userContacts = await _userContactRepository.ListAsync(spec);
+        var userContacts = await userContactRepository.ListAsync(spec);
 
-        var data = _mapper
+        var data = mapper
             .Map<IReadOnlyList<ContactEntity<UserEntity>>, IReadOnlyList<ContactDto>>(userContacts);
 
         return new Pagination<ContactDto>(userContactParams.PageNumber, userContactParams.PageSize, totalItems, data);
@@ -120,17 +112,17 @@ public class ContactService : IContactService
 
     public ContactDto GetDto(UserEntity userEntity, Guid contactGuid)
     {
-        return _mapper.Map<ContactDto>(Get(userEntity, contactGuid));
+        return mapper.Map<ContactDto>(Get(userEntity, contactGuid));
     }
 
     public ContactDto Update(OrganizationEntity organizationEntity, ContactDto contactDto)
     {
         var contact = Get(organizationEntity, contactDto.Id);
 
-        _mapper.Map(contactDto, contact);
-        _organizationContactRepository.Save();
+        mapper.Map(contactDto, contact);
+        organizationContactRepository.Save();
 
-        return _mapper.Map<ContactDto>(contact);
+        return mapper.Map<ContactDto>(contact);
     }
 
     public ContactDto Update(UserEntity userEntity, ContactDto contactDto)
@@ -139,28 +131,28 @@ public class ContactService : IContactService
         if (contact is null)
             throw new EntityNotFound("The contact is not found");
 
-        _mapper.Map(contactDto, contact);
+        mapper.Map(contactDto, contact);
         
-        _userContactRepository.Save();
+        userContactRepository.Save();
 
-        return _mapper.Map<ContactDto>(contact);
+        return mapper.Map<ContactDto>(contact);
     }
 
     public void Delete(OrganizationEntity organizationEntity, Guid contactGuid)
     {
         var contact = Get(organizationEntity, contactGuid);
 
-        _organizationContactRepository.Delete(contact);
+        organizationContactRepository.Delete(contact);
 
-        _organizationContactRepository.Save();
+        organizationContactRepository.Save();
     }
 
     public void Delete(UserEntity userEntity, Guid contactGuid)
     {
         var contact = Get(userEntity, contactGuid);
 
-        _userContactRepository.Delete(contact);
+        userContactRepository.Delete(contact);
 
-        _organizationContactRepository.Save();
+        organizationContactRepository.Save();
     }
 }

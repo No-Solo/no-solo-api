@@ -9,14 +9,9 @@ using NoSolo.Infrastructure.Services.Email.Options;
 
 namespace NoSolo.Infrastructure.Services.Email;
 
-public class EmailService : IEmailService
+public class EmailService(IOptions<SmtpOptions> options) : IEmailService
 {
-    private readonly SmtpOptions _options;
-
-    public EmailService(IOptions<SmtpOptions> options)
-    {
-        _options = options.Value;
-    }
+    private readonly SmtpOptions _options = options.Value;
 
     public async Task SendEmailAsync(string email, string subject, string messageText)
     {

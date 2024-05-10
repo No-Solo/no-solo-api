@@ -14,35 +14,28 @@ namespace NoSolo.Web.API.Controllers;
 [Authorize]
 [Route("api/organizations")]
 [ExcludeFromCodeCoverage]
-public class OrganizationsController : BaseApiController
+public class OrganizationsController(IOrganizationService organizationService) : BaseApiController
 {
-    private readonly IOrganizationService _organizationService;
-
-    public OrganizationsController(IOrganizationService organizationService)
-    {
-        _organizationService = organizationService;
-    }
-
     [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<Pagination<OrganizationDto>>> GetAllOrganizations(
         [FromQuery] OrganizationParams organizationParams)
     {
-        return await _organizationService.Get(organizationParams);
+        return await organizationService.Get(organizationParams);
     }
 
     [AllowAnonymous]
     [HttpGet("{organizationId:guid}")]
     public async Task<OrganizationDto> GetOrganization(Guid organizationId)
     {
-        return await _organizationService.Get(organizationId);
+        return await organizationService.Get(organizationId);
     }
 
     [Authorize]
     [HttpGet("my")]
     public async Task<Pagination<OrganizationDto>> GetMy()
     {
-        return await _organizationService.GetMy(User.GetUserId());
+        return await organizationService.GetMy(User.GetUserId());
     }
     
     [Authorize]
@@ -50,14 +43,14 @@ public class OrganizationsController : BaseApiController
     public async Task<ActionResult<OrganizationDto>> CreateOrganization(
         [FromBody] NewOrganizationDto organizationDto)
     {
-        return await _organizationService.Create(organizationDto, User.GetEmail());
+        return await organizationService.Create(organizationDto, User.GetEmail());
     }
 
     [Authorize]
     [HttpDelete("delete/{organizationId:guid}")]
     public async Task DeleteOrganization(Guid organizationId)
     {
-        await _organizationService.Delete(organizationId, User.GetEmail());
+        await organizationService.Delete(organizationId, User.GetEmail());
     }
 
     [Authorize]
@@ -65,27 +58,27 @@ public class OrganizationsController : BaseApiController
     public async Task<ActionResult<OrganizationDto>> UpdateOrganization(
         [FromBody] UpdateOrganizationDto organizationDto)
     {
-        return await _organizationService.Update(organizationDto, User.GetEmail());
+        return await organizationService.Update(organizationDto, User.GetEmail());
     }
 
     [Authorize]
     [HttpPost("add-to/{organizationId:guid}/{targetEmail}")]
     public async Task AddMemberToOrganization(Guid organizationId, string targetEmail)
     {
-        await _organizationService.AddMember(organizationId, User.GetEmail(), targetEmail);
+        await organizationService.AddMember(organizationId, User.GetEmail(), targetEmail);
     }
 
     [Authorize]
     [HttpPost("remove-from/{organizationId:guid}/{targetEmail}")]
     public async Task RemoveMemberFromOrganization(Guid organizationId, string targetEmail)
     {
-        await _organizationService.RemoveMember(organizationId, User.GetEmail(), targetEmail);
+        await organizationService.RemoveMember(organizationId, User.GetEmail(), targetEmail);
     }
 
     [Authorize]
     [HttpPost("upgrade-role/{organizationId:guid}/{targetEmail}/{role}")]
     public async Task UpgradeRoleForMember(Guid organizationId, string targetEmail, RoleEnum role)
     {
-        await _organizationService.UpdateRoleForMember(organizationId, User.GetEmail(), targetEmail, role);
+        await organizationService.UpdateRoleForMember(organizationId, User.GetEmail(), targetEmail, role);
     }
 }

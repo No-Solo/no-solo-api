@@ -12,34 +12,26 @@ namespace NoSolo.Web.API.Controllers;
 [AllowAnonymous]
 [Route("api/auth")]
 [ExcludeFromCodeCoverage]
-public class AuthController : BaseApiController
+public class AuthController(IAuthService authService, IUserCredentialsService userCredentialsService)
+    : BaseApiController
 {
-    private readonly IAuthService _authService;
-    private readonly IUserCredentialsService _userCredentialsService;
-
-    public AuthController(IAuthService authService, IUserCredentialsService userCredentialsService)
-    {
-        _authService = authService;
-        _userCredentialsService = userCredentialsService;
-    }
-
     [HttpPost("send-code/{email}")]
     public async Task ResendVerificationCode(string email)
     {
-        await _authService.SendVerificationCode(email);
+        await authService.SendVerificationCode(email);
     }
 
     [Authorize]
     [HttpPost("refresh-token")]
     public async Task<TokensDto> RefreshToken([FromBody] TokensDto tokenModel)
     {
-        return await _authService.RefreshToken(tokenModel);
+        return await authService.RefreshToken(tokenModel);
     }
 
     [Authorize]
     [HttpGet("me")]
     public async Task<UserDto> GetCurrentUser()
     {
-        return await _userCredentialsService.GetAuthorizedUser(User.GetEmail());
+        return await userCredentialsService.GetAuthorizedUser(User.GetEmail());
     }
 }

@@ -8,12 +8,9 @@ using NoSolo.Core.Entities.User;
 
 namespace NoSolo.Infrastructure.Data.DbContext;
 
-public class DataBaseContext : IdentityDbContext<UserEntity, UserRoleEntity, Guid>
+public class DataBaseContext(DbContextOptions<DataBaseContext> options)
+    : IdentityDbContext<UserEntity, UserRoleEntity, Guid>(options)
 {
-    public DataBaseContext(DbContextOptions<DataBaseContext> options) : base(options)
-    {
-    }
-
     public new DbSet<UserEntity> Users { get; set; } = null!;
     public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
     public DbSet<UserTagEntity> UserTags { get; set; } = null!;

@@ -15,35 +15,22 @@ using NoSolo.Core.Specification.Users.Users;
 
 namespace NoSolo.Infrastructure.Services.Users;
 
-public class UserCredentialsService : IUserCredentialsService
+public class UserCredentialsService(
+    IMapper mapper,
+    ITokenService tokenService,
+    UserManager<UserEntity> userManager,
+    IUnitOfWork unitOfWork,
+    IRefreshTokenService refreshTokenService,
+    INotificationService notificationService)
+    : IUserCredentialsService
 {
-    private readonly IMapper _mapper;
-    private readonly ITokenService _tokenService;
-    private readonly UserManager<UserEntity> _userManager;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IRefreshTokenService _refreshTokenService;
-    private readonly INotificationService _notificationService;
-
-    private UserEntity? _user;
-
-    public UserCredentialsService(IMapper mapper, ITokenService tokenService,
-        UserManager<UserEntity> userManager, IUnitOfWork unitOfWork, IRefreshTokenService refreshTokenService, INotificationService notificationService)
-    {
-        _mapper = mapper;
-        _tokenService = tokenService;
-        _userManager = userManager;
-        _unitOfWork = unitOfWork;
-        _refreshTokenService = refreshTokenService;
-        _notificationService = notificationService;
-
-        _user = null;
-    }
+    private UserEntity? _user = null;
 
     public async Task<UserDto> GetAuthorizedUser(string email)
     {
         _user ??= await GetUserByEmailWithAllIncludes(email);
 
-        return _mapper.Map<UserDto>(_user);
+        return mapper.Map<UserDto>(_user);
     }
 
     public async Task<UserDto> SignUp(RegisterDto signUpDto)
@@ -51,11 +38,11 @@ public class UserCredentialsService : IUserCredentialsService
         if (_user is not null)
             throw new AuthenticationException("You are authorized");
 
-        if (await _userManager.FindByEmailAsync(signUpDto.Email) is not null ||
-            await _userManager.FindByNameAsync(signUpDto.UserName) is not null)
+        if (await userManager.FindByEmailAsync(signUpDto.Email) is not null ||
+            await userManager.FindByNameAsync(signUpDto.UserName) is not null)
             throw new ExistingAccountException();
 
-        var result = await _userManager.CreateAsync(
+        var result = await userManager.CreateAsync(
             new UserEntity()
             {
                 UserName = signUpDto.UserName,
@@ -84,9 +71,9 @@ public class UserCredentialsService : IUserCredentialsService
 
         _user = await GetUserByEmailWithAllIncludes(signUpDto.Email);
 
-        await _notificationService.SendVerificationCode(signUpDto.Email);
+        await notificationService.SendVerificationCode(signUpDto.Email);
         
-        return _mapper.Map<UserDto>(_user);
+        return mapper.Map<UserDto>(_user);
     }
 
     public async Task<UserAuthDto> SignIn(LoginDto login)
@@ -94,23 +81,23 @@ public class UserCredentialsService : IUserCredentialsService
         if (_user is not null)
             throw new AuthException("You are authorized");
 
-        _user = await _userManager.FindByEmailAsync(login.Login);
+        _user = await userManager.FindByEmailAsync(login.Login);
 
         if (_user is null)
-            _user = await _userManager.FindByNameAsync(login.Login);
-        if (_user is null || !await _userManager.CheckPasswordAsync(_user, login.Password))
+            _user = await userManager.FindByNameAsync(login.Login);
+        if (_user is null || !await userManager.CheckPasswordAsync(_user, login.Password))
             throw new InvalidCredentialsException("Invalid password or login");
 
-        var refreshToken = await _refreshTokenService.GenerateRefreshToken(_user);
+        var refreshToken = await refreshTokenService.GenerateRefreshToken(_user);
 
         return new UserAuthDto()
         {
             Tokens = new TokensDto()
             {
-                AccessToken = await _tokenService.GenerateAccessToken(_user),
+                AccessToken = await tokenService.GenerateAccessToken(_user),
                 RefreshToken = refreshToken.TokenHash
             },
-            User = _mapper.Map<UserDto>(_user)
+            User = mapper.Map<UserDto>(_user)
         };
     }
 
@@ -118,7 +105,7 @@ public class UserCredentialsService : IUserCredentialsService
     {
         var user = await Find(verificationCode.Email);
 
-        var result = await _userManager.ConfirmEmailAsync(user, verificationCode.VerificationCode);
+        var result = await userManager.ConfirmEmailAsync(user, verificationCode.VerificationCode);
 
         if (!result.Succeeded)
         {
@@ -129,22 +116,22 @@ public class UserCredentialsService : IUserCredentialsService
             throw new InvalidCredentialsException("Invalid verification code");
         }
 
-        return _mapper.Map<UserDto>(user);
+        return mapper.Map<UserDto>(user);
     }
 
     public async Task<UserAuthDto> ResetPassword(ResetPasswordDto resetPasswordDto)
     {
         var user = await Find(resetPasswordDto.Email);
-        await _userManager.ResetPasswordAsync(user, resetPasswordDto.Code, resetPasswordDto.Password);
+        await userManager.ResetPasswordAsync(user, resetPasswordDto.Code, resetPasswordDto.Password);
 
-        var refreshToken = await _refreshTokenService.GenerateRefreshToken(user);
+        var refreshToken = await refreshTokenService.GenerateRefreshToken(user);
 
         return new UserAuthDto()
         {
-            User = _mapper.Map<UserDto>(user),
+            User = mapper.Map<UserDto>(user),
             Tokens = new TokensDto()
             {
-                AccessToken = await _tokenService.GenerateAccessToken(user),
+                AccessToken = await tokenService.GenerateAccessToken(user),
                 RefreshToken = refreshToken.TokenHash,
             }
         };
@@ -154,7 +141,7 @@ public class UserCredentialsService : IUserCredentialsService
     {
         var user = await Find(passwordUpdate.Email);
 
-        await _userManager.ChangePasswordAsync(user, passwordUpdate.OldPassword, passwordUpdate.Password);
+        await userManager.ChangePasswordAsync(user, passwordUpdate.OldPassword, passwordUpdate.Password);
     }
 
     private async Task<UserEntity> GetUserByEmailWithAllIncludes(string email)
@@ -175,12 +162,12 @@ public class UserCredentialsService : IUserCredentialsService
 
         var spec = new UserWithSpecificationParams(userParams);
 
-        return await _unitOfWork.Repository<UserEntity>().GetEntityWithSpec(spec);
+        return await unitOfWork.Repository<UserEntity>().GetEntityWithSpec(spec);
     }
 
     private async Task<UserEntity> Find(string email)
     {
-        var user = await _userManager.FindByEmailAsync(email);
+        var user = await userManager.FindByEmailAsync(email);
         if (user is null)
             throw new InvalidCredentialsException("Invalid email");
 

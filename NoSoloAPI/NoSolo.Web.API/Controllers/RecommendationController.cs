@@ -14,24 +14,17 @@ namespace NoSolo.Web.API.Controllers;
 
 [ExcludeFromCodeCoverage]
 [Route("api/recommendations")]
-public class RecommendationController : BaseApiController
+public class RecommendationController(IRecommendService recommendService) : BaseApiController
 {
-    private readonly IRecommendService _recommendService;
-
-    public RecommendationController(IRecommendService recommendService)
-    {
-        _recommendService = recommendService;
-    }
-
     [HttpGet("users")]
     public async Task<Pagination<UserOfferDto>> GetRecommendedUsersForOrganizationOfferByTags([FromQuery] UserOfferParams userOfferParams)
     {
-        return await _recommendService.RecommendUsersForOrganizationOfferByTags(userOfferParams);
+        return await recommendService.RecommendUsersForOrganizationOfferByTags(userOfferParams);
     }
     
     [HttpGet("organizations")]
     public async Task<Pagination<OrganizationOfferDto>> GetRecommendedOrganizationsForUserOfferByTags([FromQuery] OrganizationOfferParams organizationOfferParams)
     {
-        return await _recommendService.RecommendOrganizationsForUserOfferByTags(organizationOfferParams);
+        return await recommendService.RecommendOrganizationsForUserOfferByTags(organizationOfferParams);
     }
 }

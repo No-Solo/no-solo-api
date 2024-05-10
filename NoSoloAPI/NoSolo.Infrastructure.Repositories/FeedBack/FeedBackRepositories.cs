@@ -4,42 +4,35 @@ using NoSolo.Infrastructure.Data.DbContext;
 
 namespace NoSolo.Infrastructure.Repositories.FeedBack;
 
-public class FeedBackRepositories : IFeedBackRepository
+public class FeedBackRepositories(FeedBackContext feedBackContext) : IFeedBackRepository
 {
-    private readonly FeedBackContext _feedBackContext;
-
-    public FeedBackRepositories(FeedBackContext feedBackContext)
-    {
-        _feedBackContext = feedBackContext;
-    }
-
     public async Task<IReadOnlyList<Core.Entities.FeedBack.FeedBackEntity>> Get()
     {
-        return await _feedBackContext.Set<Core.Entities.FeedBack.FeedBackEntity>()
+        return await feedBackContext.Set<Core.Entities.FeedBack.FeedBackEntity>()
             .ToListAsync();
     }
 
     public async Task<Core.Entities.FeedBack.FeedBackEntity> Get(Guid feedBackGuid)
     {
-        return await _feedBackContext.Set<Core.Entities.FeedBack.FeedBackEntity>()
+        return await feedBackContext.Set<Core.Entities.FeedBack.FeedBackEntity>()
             .FindAsync(feedBackGuid);
     }
 
     public async Task Delete(Core.Entities.FeedBack.FeedBackEntity feedBackEntity)
     {
-        _feedBackContext.Set<Core.Entities.FeedBack.FeedBackEntity>()
+        feedBackContext.Set<Core.Entities.FeedBack.FeedBackEntity>()
             .Remove(feedBackEntity);
     }
 
     public async void AddAsync(Core.Entities.FeedBack.FeedBackEntity feedBackEntity)
     {
-        await _feedBackContext.Set<Core.Entities.FeedBack.FeedBackEntity>()
+        await feedBackContext.Set<Core.Entities.FeedBack.FeedBackEntity>()
             .AddAsync(feedBackEntity);
     }
 
     public void Save()
     {
-        if (_feedBackContext.ChangeTracker.HasChanges())
-            _feedBackContext.SaveChanges();
+        if (feedBackContext.ChangeTracker.HasChanges())
+            feedBackContext.SaveChanges();
     }
 }

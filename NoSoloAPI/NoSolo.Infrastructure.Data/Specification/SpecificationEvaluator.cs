@@ -3,7 +3,7 @@ using NoSolo.Core.Specification.BaseSpecification;
 
 namespace NoSolo.Infrastructure.Data.Specification;
 
-public class SpecificationEvaluator<TEntity> where TEntity : class
+public abstract class SpecificationEvaluator<TEntity> where TEntity : class
 {
     public static IQueryable<TEntity> GetQuery(IQueryable<TEntity> inputQuery, ISpecification<TEntity> specification)
     {

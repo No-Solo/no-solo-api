@@ -10,17 +10,9 @@ using NoSolo.Core.Entities.User;
 
 namespace NoSolo.Infrastructure.Services.Auth;
 
-public class TokenService : ITokenService
+public class TokenService(IConfiguration configuration, UserManager<UserEntity> userManager)
+    : ITokenService
 {
-    private readonly IConfiguration _configuration;
-    private readonly UserManager<UserEntity> _userManager;
-
-    public TokenService(IConfiguration configuration, UserManager<UserEntity> userManager)
-    {
-        _configuration = configuration;
-        _userManager = userManager;
-    }
-
     public async Task<string> GenerateAccessToken(UserEntity userEntity)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -33,14 +25,14 @@ public class TokenService : ITokenService
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
-        var roles = await _userManager.GetRolesAsync(userEntity);
+        var roles = await userManager.GetRolesAsync(userEntity);
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         var claimsIdentity = new ClaimsIdentity(claims);
 
-        Console.WriteLine(_configuration["SecurityTokenKey"]);
+        Console.WriteLine(configuration["SecurityTokenKey"]);
         var signingCredentials = new SigningCredentials(
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])),
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
             SecurityAlgorithms.HmacSha256Signature
         );
 
@@ -49,8 +41,8 @@ public class TokenService : ITokenService
             Subject = claimsIdentity,
             Expires = DateTime.Now.AddMinutes(15),
             SigningCredentials = signingCredentials,
-            Issuer = _configuration["Jwt:Issuer"],
-            Audience = _configuration["Jwt:Audience"]
+            Issuer = configuration["Jwt:Issuer"],
+            Audience = configuration["Jwt:Audience"]
         };
         var securityToken = tokenHandler.CreateToken(tokenDescriptor);
 
@@ -73,12 +65,12 @@ public class TokenService : ITokenService
     {
         var tokenValidationParameters = new TokenValidationParameters
         {
-            ValidAudience = _configuration["Jwt:Audience"],
-            ValidIssuer = _configuration["Jwt:Issuer"],
+            ValidAudience = configuration["Jwt:Audience"],
+            ValidIssuer = configuration["Jwt:Issuer"],
             ValidateAudience = true, //you might want to validate the audience and issuer depending on your use case
             ValidateIssuer = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
             ValidateLifetime = false //here we are saying that we don't care about the token's expiration date
         };
         var tokenHandler = new JwtSecurityTokenHandler();

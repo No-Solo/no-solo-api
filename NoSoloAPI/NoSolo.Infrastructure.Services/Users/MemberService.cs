@@ -8,17 +8,9 @@ using NoSolo.Core.Exceptions;
 
 namespace NoSolo.Infrastructure.Services.Users;
 
-public class MemberService : IMemberService
+public class MemberService(IUserService userService, IRepository<MemberEntity> repository)
+    : IMemberService
 {
-    private readonly IUserService _userService;
-    private readonly IRepository<MemberEntity> _repository;
-
-    public MemberService(IUserService userService, IRepository<MemberEntity> repository)
-    {
-        _userService = userService;
-        _repository = repository;
-    }
-
     public async Task CreateMember(OrganizationEntity organizationEntity, UserEntity userEntity, RoleEnum role)
     {
         var member = new MemberEntity
@@ -30,8 +22,8 @@ public class MemberService : IMemberService
             OrganizationId = organizationEntity.Id
         };
 
-        _repository.AddAsync(member);
-        _repository.Save();
+        repository.AddAsync(member);
+        repository.Save();
     }
 
     public async Task AddMember(OrganizationEntity organizationEntity, UserEntity userEntity, RoleEnum role)
@@ -101,7 +93,7 @@ public class MemberService : IMemberService
 
     public async Task<MemberEntity> GetMember(string email, Guid organizationGuid)
     {
-        var user = await _userService.GetUser(email, UserInclude.Membership);
+        var user = await userService.GetUser(email, UserInclude.Membership);
         var member = user.OrganizationUsers.SingleOrDefault(m => m.OrganizationId == organizationGuid);
         if (member is null)
             throw new EntityNotFound("The membership is not found");
@@ -132,7 +124,7 @@ public class MemberService : IMemberService
 
         if (newRole == RoleEnum.None)
             await Delete(email, targetEmail, organizationGuid);
-        _repository.Save();
+        repository.Save();
     }
 
     public async Task Delete(string email, string targetEmail, Guid organizationGuid)
@@ -151,7 +143,7 @@ public class MemberService : IMemberService
         if (!await More(member.Role, removingMember.Role))
             throw new NotAccessException();
 
-        _repository.Delete(removingMember);
-        _repository.Save();
+        repository.Delete(removingMember);
+        repository.Save();
     }
 }
