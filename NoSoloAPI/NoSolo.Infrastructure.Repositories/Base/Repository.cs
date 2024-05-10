@@ -6,34 +6,28 @@ using NoSolo.Infrastructure.Data.Specification;
 
 namespace NoSolo.Infrastructure.Repositories.Base;
 
-public class Repository<T> : IRepository<T> where T : class
+public class Repository<T>(DataBaseContext dataBaseContext) : IRepository<T>
+    where T : class
 {
-    private readonly DataBaseContext _dataBaseContext;
-
-    public Repository(DataBaseContext dataBaseContext)
-    {
-        _dataBaseContext = dataBaseContext;
-    }
-
     public async Task<T?> GetByGuidAsync(Guid id)
     {
-        return await _dataBaseContext.Set<T>().FindAsync(id);
+        return await dataBaseContext.Set<T>().FindAsync(id);
     }
 
     public async Task<IReadOnlyList<T>> ListAllAsync()
     {
-        return await _dataBaseContext.Set<T>().ToListAsync();
+        return await dataBaseContext.Set<T>().ToListAsync();
     }
 
     public async void AddAsync(T entity)
     {
-        await _dataBaseContext.Set<T>().AddAsync(entity);
+        await dataBaseContext.Set<T>().AddAsync(entity);
     }
 
     public void Update(T entity)
     {
-        _dataBaseContext.Set<T>().Attach(entity);
-        _dataBaseContext.Entry(entity).State = EntityState.Modified;
+        dataBaseContext.Set<T>().Attach(entity);
+        dataBaseContext.Entry(entity).State = EntityState.Modified;
     }
 
     public async Task<T?> GetEntityWithSpec(ISpecification<T> spec)
@@ -53,17 +47,17 @@ public class Repository<T> : IRepository<T> where T : class
 
     private IQueryable<T> ApplySpecification(ISpecification<T> spec)
     {
-        return SpecificationEvaluator<T>.GetQuery(_dataBaseContext.Set<T>().AsQueryable(), spec);
+        return SpecificationEvaluator<T>.GetQuery(dataBaseContext.Set<T>().AsQueryable(), spec);
     }
 
     public void Delete(T entity)
     {
-        _dataBaseContext.Set<T>().Remove(entity);
+        dataBaseContext.Set<T>().Remove(entity);
     }
 
     public void Save()
     {
-        if (_dataBaseContext.ChangeTracker.HasChanges())
-            _dataBaseContext.SaveChanges();
+        if (dataBaseContext.ChangeTracker.HasChanges())
+            dataBaseContext.SaveChanges();
     }
 }

@@ -6,17 +6,8 @@ using NoSolo.Core.Entities.FeedBack;
 
 namespace NoSolo.Infrastructure.Services.Utility;
 
-public class FeedBackService : IFeedBackService
+public class FeedBackService(IFeedBackRepository feedBackRepository, IMapper mapper) : IFeedBackService
 {
-    private readonly IFeedBackRepository _feedBackRepository;
-    private readonly IMapper _mapper;
-
-    public FeedBackService(IFeedBackRepository feedBackRepository, IMapper mapper)
-    {
-        _feedBackRepository = feedBackRepository;
-        _mapper = mapper;
-    }
-
     public async Task<FeedBackDto> Create(NewFeedBackDto newFeedBackDto)
     {
         var feedBack = new FeedBackEntity()
@@ -27,25 +18,25 @@ public class FeedBackService : IFeedBackService
             FeedBackText = newFeedBackDto.FeedBackText
         };
 
-        _feedBackRepository.AddAsync(feedBack);
-        _feedBackRepository.Save();
+        feedBackRepository.AddAsync(feedBack);
+        feedBackRepository.Save();
         
-        return _mapper.Map<FeedBackDto>(feedBack);
+        return mapper.Map<FeedBackDto>(feedBack);
     }
 
     public async Task<FeedBackDto> Get(Guid feedbackGuid)
     {
-        return _mapper.Map<FeedBackDto>(await _feedBackRepository.Get(feedbackGuid));
+        return mapper.Map<FeedBackDto>(await feedBackRepository.Get(feedbackGuid));
     }
 
     public async Task<IReadOnlyList<FeedBackDto>> Get()
     {
-        return _mapper.Map<IReadOnlyList<FeedBackDto>>(await _feedBackRepository.Get());
+        return mapper.Map<IReadOnlyList<FeedBackDto>>(await feedBackRepository.Get());
     }
 
     public async Task Delete(Guid feedbackGuid)
     {
-        await _feedBackRepository.Delete(await _feedBackRepository.Get(feedbackGuid));
-        _feedBackRepository.Save();
+        await feedBackRepository.Delete(await feedBackRepository.Get(feedbackGuid));
+        feedBackRepository.Save();
     }
 }

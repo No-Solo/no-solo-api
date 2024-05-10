@@ -1,8 +1,10 @@
-﻿using MassTransit;
+﻿using System.Diagnostics.CodeAnalysis;
+using MassTransit;
 using NoSolo.Worker;
 
 namespace NoSolo.Web.API.Extensions;
 
+[ExcludeFromCodeCoverage]
 public static class QueueExtensions
 {
     public static IServiceCollection AddMassTransitService(this IServiceCollection services)

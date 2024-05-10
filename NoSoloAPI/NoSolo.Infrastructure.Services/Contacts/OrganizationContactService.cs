@@ -12,66 +12,58 @@ using NoSolo.Core.Specification.Organization.OrganizationContact;
 
 namespace NoSolo.Infrastructure.Services.Contacts;
 
-public class OrganizationContactService : IOrganizationContactService
+public class OrganizationContactService(
+    IOrganizationService organizationService,
+    IMemberService memberService,
+    IContactService contactService)
+    : IOrganizationContactService
 {
-    private readonly IOrganizationService _organizationService;
-    private readonly IMemberService _memberService;
-    private readonly IContactService _contactService;
-
-    public OrganizationContactService(IOrganizationService organizationService, IMemberService memberService,
-        IContactService contactService)
-    {
-        _organizationService = organizationService;
-        _memberService = memberService;
-        _contactService = contactService;
-    }
-
     public async Task<ContactDto> Add(NewContactDto contactDto, Guid organizationGuid, string email)
     {
-        if (!await _memberService.MemberHasRoles(new List<RoleEnum>() { RoleEnum.Administrator, RoleEnum.Owner },
+        if (!await memberService.MemberHasRoles(new List<RoleEnum>() { RoleEnum.Administrator, RoleEnum.Owner },
                 organizationGuid, email))
             throw new NotAccessException();
 
         var organization =
-            await _organizationService.Get(organizationGuid, OrganizationIncludeEnum.Contacts);
+            await organizationService.Get(organizationGuid, OrganizationIncludeEnum.Contacts);
 
-        return _contactService.Add(organization, contactDto);
+        return contactService.Add(organization, contactDto);
     }
 
     public async Task<Pagination<ContactDto>> Get(OrganizationContactParams organizationContactParams)
     {
-        return await _contactService.Get(organizationContactParams);
+        return await contactService.Get(organizationContactParams);
     }
 
     public async Task<ContactDto> Get(Guid contactGuid, Guid organizationGuid)
     {
         var organization =
-            await _organizationService.Get(organizationGuid, OrganizationIncludeEnum.Contacts);
+            await organizationService.Get(organizationGuid, OrganizationIncludeEnum.Contacts);
 
-        return _contactService.GetDto(organization, contactGuid);
+        return contactService.GetDto(organization, contactGuid);
     }
 
     public async Task<ContactDto> Update(ContactDto contactDto, Guid organizationGuid, string email)
     {
         var organization =
-            await _organizationService.Get(organizationGuid, OrganizationIncludeEnum.Contacts);
+            await organizationService.Get(organizationGuid, OrganizationIncludeEnum.Contacts);
 
-        if (!await _memberService.MemberHasRoles(new List<RoleEnum>() { RoleEnum.Administrator, RoleEnum.Owner },
+        if (!await memberService.MemberHasRoles(new List<RoleEnum>() { RoleEnum.Administrator, RoleEnum.Owner },
                 organizationGuid, email))
             throw new NotAccessException();
 
-        return _contactService.Update(organization, contactDto);
+        return contactService.Update(organization, contactDto);
     }
 
     public async Task Delete(Guid contactGuid, Guid organizationGuid, string email)
     {
         var organization =
-            await _organizationService.Get(organizationGuid, OrganizationIncludeEnum.Contacts);
+            await organizationService.Get(organizationGuid, OrganizationIncludeEnum.Contacts);
 
-        if (!await _memberService.MemberHasRoles(new List<RoleEnum>() { RoleEnum.Administrator, RoleEnum.Owner },
+        if (!await memberService.MemberHasRoles(new List<RoleEnum>() { RoleEnum.Administrator, RoleEnum.Owner },
                 organizationGuid, email))
             throw new NotAccessException();
 
-        _contactService.Delete(organization, contactGuid);
+        contactService.Delete(organization, contactGuid);
     }
 }

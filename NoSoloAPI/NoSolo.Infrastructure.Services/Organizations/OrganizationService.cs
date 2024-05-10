@@ -13,29 +13,18 @@ using NoSolo.Core.Specification.Organization.Organization;
 
 namespace NoSolo.Infrastructure.Services.Organizations;
 
-public class OrganizationService : IOrganizationService
+public class OrganizationService(
+    IUnitOfWork unitOfWork,
+    IMapper mapper,
+    IUserService userService,
+    IMemberService memberService)
+    : IOrganizationService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-    private readonly IUserService _userService;
-    private readonly IMemberService _memberService;
-
-    private UserEntity? _user;
-
-    public OrganizationService(IUnitOfWork unitOfWork, IMapper mapper, IUserService userService,
-        IMemberService memberService)
-    {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-        _userService = userService;
-        _memberService = memberService;
-
-        _user = null;
-    }
+    private UserEntity? _user = null;
 
     public async Task<OrganizationDto> Create(NewOrganizationDto organizationDto, string email)
     {
-        _user ??= await _userService.GetUser(email, UserInclude.Membership);
+        _user ??= await userService.GetUser(email, UserInclude.Membership);
 
         var organization = new OrganizationEntity()
         {
@@ -48,30 +37,30 @@ public class OrganizationService : IOrganizationService
             WebSiteUri = organizationDto.WebSiteUri
         };
 
-        await _memberService.CreateMember(organization, _user, RoleEnum.Owner);
+        await memberService.CreateMember(organization, _user, RoleEnum.Owner);
 
-        return _mapper.Map<OrganizationDto>(organization);
+        return mapper.Map<OrganizationDto>(organization);
     }
 
     public async Task<OrganizationDto> AddMember(Guid organizationGuid, string email, string targetEmail)
     {
         var organization = await Get(organizationGuid, OrganizationIncludeEnum.Members);
 
-        var user = await _userService.GetUser(targetEmail, UserInclude.Membership);
+        var user = await userService.GetUser(targetEmail, UserInclude.Membership);
 
-        await _memberService.AddMember(organization, user, RoleEnum.Member);
+        await memberService.AddMember(organization, user, RoleEnum.Member);
 
-        return _mapper.Map<OrganizationDto>(organization);
+        return mapper.Map<OrganizationDto>(organization);
     }
 
     public async Task RemoveMember(Guid organizationGuid, string email, string targetEmail)
     {
-        await _memberService.Delete(email, targetEmail, organizationGuid);
+        await memberService.Delete(email, targetEmail, organizationGuid);
     }
 
     public async Task UpdateRoleForMember(Guid organizationGuid, string email, string targetEmail, RoleEnum newRole)
     {
-        await _memberService.UpdateRoleForMember(email, targetEmail, organizationGuid, newRole);
+        await memberService.UpdateRoleForMember(email, targetEmail, organizationGuid, newRole);
     }
 
     public async Task<Pagination<OrganizationDto>> GetMy(Guid memberGuid)
@@ -107,34 +96,34 @@ public class OrganizationService : IOrganizationService
 
         var organization = await GetOrganizationByParams(organizationParams);
 
-        return _mapper.Map<OrganizationDto>(organization);
+        return mapper.Map<OrganizationDto>(organization);
     }
 
     public async Task<OrganizationDto> Update(UpdateOrganizationDto organizationDto, string email)
     {
-        if (!await _memberService.MemberHasRoles(new List<RoleEnum>() { RoleEnum.Owner, RoleEnum.Administrator },
+        if (!await memberService.MemberHasRoles(new List<RoleEnum>() { RoleEnum.Owner, RoleEnum.Administrator },
                 organizationDto.Id, email))
             throw new NotAccessException();
 
         var organization = await Get(organizationDto.Id, OrganizationIncludeEnum.Members);
 
-        _mapper.Map(organizationDto, organization);
+        mapper.Map(organizationDto, organization);
         organization.LastUpdated = DateTime.UtcNow;
         
-        await _unitOfWork.Complete();
+        await unitOfWork.Complete();
 
-        return _mapper.Map<OrganizationDto>(organization);
+        return mapper.Map<OrganizationDto>(organization);
     }
 
     public async Task Delete(Guid organizationGuid, string email)
     {
-        if (!await _memberService.MemberHasRoles(new List<RoleEnum>() { RoleEnum.Owner }, organizationGuid, email))
+        if (!await memberService.MemberHasRoles(new List<RoleEnum>() { RoleEnum.Owner }, organizationGuid, email))
             throw new NotAccessException();
 
         var organization = await Get(organizationGuid, OrganizationIncludeEnum.Members);
 
-        _unitOfWork.Repository<OrganizationEntity>().Delete(organization);
-        await _unitOfWork.Complete();
+        unitOfWork.Repository<OrganizationEntity>().Delete(organization);
+        await unitOfWork.Complete();
     }
 
     public async Task<Pagination<OrganizationDto>> Get(OrganizationParams organizationParams)
@@ -143,11 +132,11 @@ public class OrganizationService : IOrganizationService
 
         var countSpec = new OrganizationWithFiltersForCountSpecification(organizationParams);
 
-        var totalItems = await _unitOfWork.Repository<OrganizationEntity>().CountAsync(countSpec);
+        var totalItems = await unitOfWork.Repository<OrganizationEntity>().CountAsync(countSpec);
 
-        var organizations = await _unitOfWork.Repository<OrganizationEntity>().ListAsync(spec);
+        var organizations = await unitOfWork.Repository<OrganizationEntity>().ListAsync(spec);
 
-        var data = _mapper
+        var data = mapper
             .Map<IReadOnlyList<OrganizationEntity>, IReadOnlyList<OrganizationDto>>(organizations);
 
         return new Pagination<OrganizationDto>(organizationParams.PageNumber, organizationParams.PageSize, totalItems,
@@ -180,7 +169,7 @@ public class OrganizationService : IOrganizationService
     {
         var spec = new OrganizationWithSpecificationParams(organizationParams);
 
-        var organization = await _unitOfWork.Repository<OrganizationEntity>().GetEntityWithSpec(spec);
+        var organization = await unitOfWork.Repository<OrganizationEntity>().GetEntityWithSpec(spec);
         if (organization is null)
             throw new EntityNotFound("The organizationEntity is not found");
 

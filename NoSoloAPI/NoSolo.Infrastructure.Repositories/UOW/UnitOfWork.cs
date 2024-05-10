@@ -6,20 +6,13 @@ using NoSolo.Infrastructure.Repositories.Base;
 
 namespace NoSolo.Infrastructure.Repositories.UOW;
 
-public class UnitOfWork : IUnitOfWork, IDisposable, IAsyncDisposable
+public class UnitOfWork(DataBaseContext dataBaseContext) : IUnitOfWork, IDisposable, IAsyncDisposable
 {
-    private readonly DataBaseContext _dataBaseContext;
+    private readonly Hashtable _repositories = new Hashtable();
 
-    private Hashtable _repositories = new Hashtable();
-
-    public UnitOfWork(DataBaseContext dataBaseContext)
-    {
-        _dataBaseContext = dataBaseContext;
-    }
-    
     public async ValueTask DisposeAsync()
     {
-        await _dataBaseContext.DisposeAsync();
+        await dataBaseContext.DisposeAsync();
     }
 
     public void Dispose()
@@ -38,7 +31,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable, IAsyncDisposable
         {
             var repositoryType = typeof(Repository<>);
             var repositoryInstance =
-                Activator.CreateInstance(repositoryType.MakeGenericType(typeof(TEntity)), _dataBaseContext);
+                Activator.CreateInstance(repositoryType.MakeGenericType(typeof(TEntity)), dataBaseContext);
 
             _repositories.Add(type, repositoryInstance);
         }
@@ -48,11 +41,11 @@ public class UnitOfWork : IUnitOfWork, IDisposable, IAsyncDisposable
 
     public async Task<bool> Complete()
     {
-        return await _dataBaseContext.SaveChangesAsync() > 0;
+        return await dataBaseContext.SaveChangesAsync() > 0;
     }
 
     public bool HasChanges()
     {
-        return _dataBaseContext.ChangeTracker.HasChanges();
+        return dataBaseContext.ChangeTracker.HasChanges();
     }
 }

@@ -13,26 +13,16 @@ using NoSolo.Core.Specification.Organization.OrganizationPhotoParams;
 
 namespace NoSolo.Infrastructure.Services.Photos;
 
-public class PhotoService : IPhotoService
+public class PhotoService(
+    ICloudinaryService cloudinaryService,
+    IMapper mapper,
+    IRepository<OrganizationPhotoEntity> organizationPhotoRepository,
+    IRepository<UserPhotoEntity> userPhotoRepository)
+    : IPhotoService
 {
-    private readonly ICloudinaryService _cloudinaryService;
-    private readonly IMapper _mapper;
-    private readonly IRepository<OrganizationPhotoEntity> _organizationPhotoRepository;
-    private readonly IRepository<UserPhotoEntity> _userPhotoRepository;
-
-    public PhotoService(ICloudinaryService cloudinaryService, IMapper mapper,
-        IRepository<OrganizationPhotoEntity> organizationPhotoRepository,
-        IRepository<UserPhotoEntity> userPhotoRepository)
-    {
-        _cloudinaryService = cloudinaryService;
-        _mapper = mapper;
-        _organizationPhotoRepository = organizationPhotoRepository;
-        _userPhotoRepository = userPhotoRepository;
-    }
-
     public async Task<OrganizationPhotoDto> Add(OrganizationEntity organizationEntity, IFormFile file)
     {
-        var result = await _cloudinaryService.AddPhotoAsync(file);
+        var result = await cloudinaryService.AddPhotoAsync(file);
         if (result.Error is not null)
             throw new PhotoException($"Failed to add photo to organizationEntity: {result.Error.Message}");
 
@@ -48,21 +38,21 @@ public class PhotoService : IPhotoService
         if (organizationEntity.Photos.Count is 0)
             photo.IsMain = true;
 
-        _organizationPhotoRepository.AddAsync(photo);
-        _organizationPhotoRepository.Save();
+        organizationPhotoRepository.AddAsync(photo);
+        organizationPhotoRepository.Save();
 
-        return _mapper.Map<OrganizationPhotoDto>(photo);
+        return mapper.Map<OrganizationPhotoDto>(photo);
     }
 
     public async Task<UserPhotoDto> Add(UserEntity userEntity, IFormFile file)
     {
         if (userEntity.Photo is not null && userEntity.Photo.PublicId is not null)
         {
-            await _cloudinaryService.DeletePhotoAsync(userEntity.Photo.PublicId);
+            await cloudinaryService.DeletePhotoAsync(userEntity.Photo.PublicId);
             userEntity.Photo = null;
         }
         
-        var result = await _cloudinaryService.AddPhotoAsync(file);
+        var result = await cloudinaryService.AddPhotoAsync(file);
 
         if (result.Error is not null)
             throw new BadRequestException(result.Error.Message);
@@ -75,17 +65,17 @@ public class PhotoService : IPhotoService
             UserGuid = userEntity.Id
         };
 
-        _userPhotoRepository.AddAsync(photo);
-        _userPhotoRepository.Save();
+        userPhotoRepository.AddAsync(photo);
+        userPhotoRepository.Save();
         
-        return _mapper.Map<UserPhotoDto>(photo);
+        return mapper.Map<UserPhotoDto>(photo);
     }
 
     public async Task<OrganizationPhotoDto> GetMainDto(OrganizationEntity organizationEntity)
     {
         var photo = await GetMain(organizationEntity);
 
-        return _mapper.Map<OrganizationPhotoDto>(photo);
+        return mapper.Map<OrganizationPhotoDto>(photo);
     }
 
     public Task<UserPhotoDto> GetMainDto(UserEntity userEntity)
@@ -93,7 +83,7 @@ public class PhotoService : IPhotoService
         if (userEntity.Photo is null)
             throw new PhotoException(404,"You don't have a photo");
 
-        return Task.FromResult(_mapper.Map<UserPhotoDto>(userEntity.Photo));
+        return Task.FromResult(mapper.Map<UserPhotoDto>(userEntity.Photo));
     }
 
     public Task<OrganizationPhotoEntity> GetMain(OrganizationEntity organizationEntity)
@@ -122,11 +112,11 @@ public class PhotoService : IPhotoService
 
         var countSpec = new OrganizationPhotoWithPaginationForCountSpecification(organizationPhotoParams);
 
-        var totalItems = await _organizationPhotoRepository.CountAsync(countSpec);
+        var totalItems = await organizationPhotoRepository.CountAsync(countSpec);
 
-        var photos = await _organizationPhotoRepository.ListAsync(spec);
+        var photos = await organizationPhotoRepository.ListAsync(spec);
 
-        var data = _mapper
+        var data = mapper
             .Map<IReadOnlyList<OrganizationPhotoEntity>, IReadOnlyList<OrganizationPhotoDto>>(photos);
 
         return new Pagination<OrganizationPhotoDto>(organizationPhotoParams.PageNumber,
@@ -145,9 +135,9 @@ public class PhotoService : IPhotoService
         currentMainPhoto.IsMain = false;
         photo.IsMain = true;
 
-        _organizationPhotoRepository.Save();
+        organizationPhotoRepository.Save();
         
-        return _mapper.Map<OrganizationPhotoDto>(photo);
+        return mapper.Map<OrganizationPhotoDto>(photo);
     }
 
     public async Task Delete(OrganizationEntity organizationEntity, Guid photoGuid)
@@ -158,13 +148,13 @@ public class PhotoService : IPhotoService
 
         if (photo.PublicId is not null)
         {
-            var result = await _cloudinaryService.DeletePhotoAsync(photo.PublicId);
+            var result = await cloudinaryService.DeletePhotoAsync(photo.PublicId);
 
             if (result.Error is not null)
                 throw new PhotoException($"Failed to delete a photo: {result.Error.Message}");
 
-            _organizationPhotoRepository.Delete(photo);
-            _organizationPhotoRepository.Save();
+            organizationPhotoRepository.Delete(photo);
+            organizationPhotoRepository.Save();
         }
     }
 
@@ -174,7 +164,7 @@ public class PhotoService : IPhotoService
             throw new PhotoException("You don't have a photo");
 
         userEntity.Photo = null;
-        _userPhotoRepository.Save();
+        userPhotoRepository.Save();
         
         return Task.CompletedTask;
     }

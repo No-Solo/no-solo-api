@@ -9,17 +9,9 @@ using NoSolo.Core.Enums;
 
 namespace NoSolo.Infrastructure.Services.Requests;
 
-public class UserRequestService : IUserRequestService
+public class UserRequestService(IUserRequestRepository userRequestRepository, IMapper mapper)
+    : IUserRequestService
 {
-    private readonly IUserRequestRepository _userRequestRepository;
-    private readonly IMapper _mapper;
-
-    public UserRequestService(IUserRequestRepository userRequestRepository, IMapper mapper)
-    {
-        _userRequestRepository = userRequestRepository;
-        _mapper = mapper;
-    }
-    
     public async Task<UserRequestDto> Send(Guid userGuid, Guid organizationOfferGuid)
     {
         var request = new RequestEntity<UserEntity, OrganizationOfferEntity>()
@@ -29,29 +21,29 @@ public class UserRequestService : IUserRequestService
             UEntityId = organizationOfferGuid
         };
 
-        _userRequestRepository.Add(request);
+        userRequestRepository.Add(request);
         
-        return _mapper.Map<UserRequestDto>(request);
+        return mapper.Map<UserRequestDto>(request);
     }
 
     public async Task<UserRequestDto> Get(Guid userGuid, Guid organizationOfferGuid)
     {
-        return _mapper.Map<UserRequestDto>(await _userRequestRepository.GetByOrganizationOffer(userGuid));
+        return mapper.Map<UserRequestDto>(await userRequestRepository.GetByOrganizationOffer(userGuid));
     }
 
     public async Task<UserRequestDto> Get(Guid userRequestGuid)
     {
-        return _mapper.Map<UserRequestDto>(await _userRequestRepository.GetRequest(userRequestGuid));
+        return mapper.Map<UserRequestDto>(await userRequestRepository.GetRequest(userRequestGuid));
     }
 
     public async Task<IReadOnlyList<UserRequestDto>> GetByUser(Guid userGuid)
     {
-        return _mapper.Map<IReadOnlyList<UserRequestDto>>(await _userRequestRepository.GetByUser(userGuid));
+        return mapper.Map<IReadOnlyList<UserRequestDto>>(await userRequestRepository.GetByUser(userGuid));
     }
 
     public async Task<IReadOnlyList<UserRequestDto>> GetByOrganizationOffer(Guid organizationOffer)
     {
-        return _mapper.Map<IReadOnlyList<UserRequestDto>>(await _userRequestRepository.GetByOrganizationOffer(organizationOffer));
+        return mapper.Map<IReadOnlyList<UserRequestDto>>(await userRequestRepository.GetByOrganizationOffer(organizationOffer));
 
     }
 
@@ -68,7 +60,7 @@ public class UserRequestService : IUserRequestService
 
         request.Status = newStatus;
         
-        _userRequestRepository.Save();
+        userRequestRepository.Save();
 
         return newStatus;
     }
@@ -77,12 +69,12 @@ public class UserRequestService : IUserRequestService
     {
         var request = await GetRequest(userGuid, organizationOfferGuid);
         
-        _userRequestRepository.Delete(request);
-        _userRequestRepository.Save();
+        userRequestRepository.Delete(request);
+        userRequestRepository.Save();
     }
     
     private async Task<RequestEntity<UserEntity, OrganizationOfferEntity>> GetRequest(Guid userGuid, Guid organizationOfferGuid)
     {
-        return await _userRequestRepository.Get(userGuid, organizationOfferGuid);
+        return await userRequestRepository.Get(userGuid, organizationOfferGuid);
     }
 }

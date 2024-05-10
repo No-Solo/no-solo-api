@@ -5,30 +5,20 @@ using NoSolo.Web.API.Errors;
 
 namespace NoSolo.Web.API.Middleware;
 
-public class ExceptionMiddleware
+public class ExceptionMiddleware(
+    RequestDelegate requestDelegate,
+    ILogger<ExceptionMiddleware> logger,
+    IHostEnvironment environment)
 {
-    private readonly IHostEnvironment _environment;
-    private readonly ILogger<ExceptionMiddleware> _logger;
-    private readonly RequestDelegate _requestDelegate;
-
-    public ExceptionMiddleware(RequestDelegate requestDelegate,
-        ILogger<ExceptionMiddleware> logger,
-        IHostEnvironment environment)
-    {
-        _requestDelegate = requestDelegate;
-        _logger = logger;
-        _environment = environment;
-    }
-
     public async Task InvokeAsync(HttpContext context)
     {
         try
         {
-            await _requestDelegate(context);
+            await requestDelegate(context);
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, exception.Message);
+            logger.LogError(exception, exception.Message);
 
             await HandleExceptionAsync(context, exception);
         }
@@ -41,7 +31,7 @@ public class ExceptionMiddleware
 
         var response = new ApiResponse((int)HttpStatusCode.InternalServerError);
 
-        if (_environment.IsDevelopment() && exception is BaseException customException &&
+        if (environment.IsDevelopment() && exception is BaseException customException &&
             customException.StatusCode != 0)
         {
             response = new ApiException(customException.StatusCode, customException.Message,

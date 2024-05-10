@@ -14,23 +14,16 @@ namespace NoSolo.Web.API.Controllers;
 [AllowAnonymous]
 [Route("api/contacts")]
 [ExcludeFromCodeCoverage]
-public class ContactsController : BaseApiController
+public class ContactsController(
+    IUserContactService userContactService,
+    IOrganizationContactService organizationContactService)
+    : BaseApiController
 {
-    private readonly IUserContactService _userContactService;
-    private readonly IOrganizationContactService _organizationContactService;
-
-    public ContactsController(IUserContactService userContactService,
-        IOrganizationContactService organizationContactService)
-    {
-        _userContactService = userContactService;
-        _organizationContactService = organizationContactService;
-    }
-
     [AllowAnonymous]
     [HttpGet("userEntity")]
     public async Task<Pagination<ContactDto>> GetUserContacts([FromQuery] UserContactParams userContactParams)
     {
-        return await _userContactService.Get(userContactParams, userContactParams.UserGuid);
+        return await userContactService.Get(userContactParams, userContactParams.UserGuid);
     }
 
     [Authorize]
@@ -38,35 +31,35 @@ public class ContactsController : BaseApiController
     public async Task<Pagination<ContactDto>> GetAuthorizedUserContacts(
         [FromQuery] UserContactParams userContactParams)
     {
-        return await _userContactService.Get(userContactParams, User.GetUserId());
+        return await userContactService.Get(userContactParams, User.GetUserId());
     }
 
     [Authorize]
     [HttpGet("userEntity/my/{contactGuid:guid}")]
     public async Task<ContactDto> GetMyUserProfileContactByGuid(Guid contactGuid)
     {
-        return await _userContactService.Get(contactGuid, User.GetEmail());
+        return await userContactService.Get(contactGuid, User.GetEmail());
     }
 
     [Authorize]
     [HttpPut("userEntity/my/update")]
     public async Task<ContactDto> UpdateUserProfileContact(ContactDto contactDto)
     {
-        return await _userContactService.Update(contactDto, User.GetEmail());
+        return await userContactService.Update(contactDto, User.GetEmail());
     }
 
     [Authorize]
     [HttpPost("userEntity/my/add")]
     public async Task<ContactDto> AddContactToUserProfile(NewContactDto contactDto)
     {
-        return await _userContactService.Add(contactDto, User.GetEmail());
+        return await userContactService.Add(contactDto, User.GetEmail());
     }
 
     [Authorize]
     [HttpDelete("userEntity/my/delete/{contactGuid:guid}")]
     public async Task DeleteContactFromUserProfile(Guid contactGuid)
     {
-        await _userContactService.Delete(contactGuid, User.GetEmail());
+        await userContactService.Delete(contactGuid, User.GetEmail());
     }
 
 
@@ -75,21 +68,21 @@ public class ContactsController : BaseApiController
     public async Task<Pagination<ContactDto>> GetOrganizationContacts(
         [FromQuery] OrganizationContactParams organizationContactParams)
     {
-        return await _organizationContactService.Get(organizationContactParams);
+        return await organizationContactService.Get(organizationContactParams);
     }
 
     [AllowAnonymous]
     [HttpGet("organizationEntity/{organizationId:Guid}/{contactId:guid}")]
     public async Task<ContactDto> GetOrganizationContactByGuid(Guid organizationId, Guid contactId)
     {
-        return await _organizationContactService.Get(contactId, organizationId);
+        return await organizationContactService.Get(contactId, organizationId);
     }
 
     [Authorize]
     [HttpPut("organizationEntity/{organizationId:guid}/update")]
     public async Task<ContactDto> UpdateUserProfileContact(Guid organizationId, ContactDto contactDto)
     {
-        return await _organizationContactService.Update(contactDto, organizationId, User.GetEmail());
+        return await organizationContactService.Update(contactDto, organizationId, User.GetEmail());
     }
 
     [Authorize]
@@ -97,13 +90,13 @@ public class ContactsController : BaseApiController
     public async Task<ContactDto> AddContactToOrganization([FromBody] NewContactDto contactDto,
         Guid organizationId)
     {
-        return await _organizationContactService.Add(contactDto, organizationId, User.GetEmail());
+        return await organizationContactService.Add(contactDto, organizationId, User.GetEmail());
     }
 
     [Authorize]
     [HttpDelete("organizationEntity/{organizationId:guid}/delete/{contactId:guid}")]
     public async Task DeleteContactFromUserProfile(Guid organizationId, Guid contactId)
     {
-        await _organizationContactService.Delete(contactId, organizationId, User.GetEmail());
+        await organizationContactService.Delete(contactId, organizationId, User.GetEmail());
     }
 }

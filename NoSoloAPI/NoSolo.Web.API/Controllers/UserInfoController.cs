@@ -10,25 +10,18 @@ namespace NoSolo.Web.API.Controllers;
 [AllowAnonymous]
 [Route("api/userEntity-info")]
 [ExcludeFromCodeCoverage]
-public class UserInfoController : BaseApiController
+public class UserInfoController(IUserService userService) : BaseApiController
 {
-    private readonly IUserService _userService;
-
-    public UserInfoController(IUserService userService)
-    {
-        _userService = userService;
-    }
-
     [Authorize]
     [HttpPut]
     public async Task<UserDto> UpdateUserInfo(UpdateUserDto updateUserDto)
     {
-        return await _userService.Update(updateUserDto, User.GetEmail());
+        return await userService.Update(updateUserDto, User.GetEmail());
     }
 
     [HttpGet("{email}")]
     public async Task<UserDto> GetUserInfo(string email)
     {
-        return await _userService.Get(email);
+        return await userService.Get(email);
     }
 }

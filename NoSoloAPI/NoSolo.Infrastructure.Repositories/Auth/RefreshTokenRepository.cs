@@ -5,18 +5,11 @@ using NoSolo.Infrastructure.Data.DbContext;
 
 namespace NoSolo.Infrastructure.Repositories.Auth;
 
-public class RefreshTokenRepository : IRefreshTokenRepository
+public class RefreshTokenRepository(DataBaseContext dataBaseContext) : IRefreshTokenRepository
 {
-    private readonly DataBaseContext _dataBaseContext;
-
-    public RefreshTokenRepository(DataBaseContext dataBaseContext)
-    {
-        _dataBaseContext = dataBaseContext;
-    }
-
     public async Task<RefreshToken> GetActiveByUserId(Guid userId)
     {
-        return await _dataBaseContext.RefreshTokens
+        return await dataBaseContext.RefreshTokens
             .FirstOrDefaultAsync(x => x.UserId == userId && x.ExpiryDate >= DateTime.UtcNow);
     }
 }
