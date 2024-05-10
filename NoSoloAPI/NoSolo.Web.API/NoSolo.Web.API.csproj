@@ -14,7 +14,7 @@
         <PackageReference Include="MassTransit.AmazonSQS" Version="8.2.2" />
         <PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.2.2" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.14" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.4" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.18" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
             <PrivateAssets>all</PrivateAssets>
